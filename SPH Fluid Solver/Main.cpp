@@ -7,7 +7,7 @@
 
 int main()
 {
-    Simulation simulation = Simulation(StuffedBox);
+    Simulation simulation = Simulation(StuffedBoxZoomed);
     simulation.run();
     return 0;
 }

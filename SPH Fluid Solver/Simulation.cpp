@@ -14,6 +14,10 @@ Simulation::Simulation(SimulationPreset preset = StuffedBox) {
 		break;
 	case StuffedBox:
 		init_stuffed_box_simulation();
+		break;
+	case StuffedBoxZoomed:
+		init_stuffed_box_zoomed_simulation();
+		break;
 	}
 
 }
@@ -63,6 +67,47 @@ void  Simulation::init_stuffed_box_simulation() {
 		}
 		pos.y = 210;
 		pos.x += 10;
+	}
+}
+
+
+// _________________________________________________________________________________
+void  Simulation::init_stuffed_box_zoomed_simulation() {
+
+	sf::VideoMode _videoMode = sf::VideoMode();
+	_videoMode.size = sf::Vector2u(800, 800);
+	_window.create(_videoMode, "SPH Fluid Solver");
+	renderer = Renderer(10, 10);
+
+	// Add Particles
+	sf::Vector2f pos = sf::Vector2f(150, 200);
+	for (int i = 0; i < 25; i++) {
+		_particles.push_back(SolidParticle(pos));
+		pos.y += 20;
+	}
+	for (int i = 0; i < 25; i++) {
+		_particles.push_back(SolidParticle(pos));
+		pos.x += 20;
+	}
+	for (int i = 0; i < 25; i++) {
+		_particles.push_back(SolidParticle(pos));
+		pos.y -= 20;
+	}
+	for (int i = 0; i < 25; i++) {
+		_particles.push_back(SolidParticle(pos));
+		pos.x -= 20;
+	}
+
+	pos.x = 170;
+	pos.y = 220;
+
+	for (int i = 0; i < 24; i++) {
+		for (int ii = 0; ii < 24; ii++) {
+			_particles.push_back(FluidParticle(pos));
+			pos.y += 20;
+		}
+		pos.y = 220;
+		pos.x += 20;
 	}
 }
 
