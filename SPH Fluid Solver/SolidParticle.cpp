@@ -2,10 +2,12 @@
 
 #include "./SolidParticle.h"
 
+
 // _________________________________________________________________
-SolidParticle::SolidParticle(sf::Vector2f pos) {
+SolidParticle::SolidParticle(int id, sf::Vector2f pos) {
 	// Initialize Type
 	_type = solid;
+	_id = id;
 
 	// Initialize Position
 	_position.x = pos.x;

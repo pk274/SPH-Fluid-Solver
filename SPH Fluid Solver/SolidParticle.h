@@ -7,7 +7,7 @@
 
 class SolidParticle : public Particle {
   public:
-	static const int _size = 50;
+	static const int _size = 1;
 
-	SolidParticle(sf::Vector2f pos);
+	SolidParticle(int id, sf::Vector2f pos);
 };

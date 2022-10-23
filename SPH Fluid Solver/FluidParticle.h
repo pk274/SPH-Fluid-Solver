@@ -8,7 +8,7 @@
 
 class FluidParticle : public Particle {
   public:
-	static const int _size = 5;
+	static const int _size = 1;
 
-	FluidParticle(sf::Vector2f pos);
+	FluidParticle(int id, sf::Vector2f pos);
 };
