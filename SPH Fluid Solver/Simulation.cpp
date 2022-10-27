@@ -256,7 +256,7 @@ void Simulation::update_physics() {
 			a_p -= _particles[i]._pressure / pow(_particles[i]._density, 2) + neighbors[j]->_pressure / pow(neighbors[j]->_density, 2)
 					* kernel_derivation(neighbors[j]->_distance) * FluidParticle::_mass;
 		}
-		
+		// CQomment to test gitbla
 	}
 }
 
