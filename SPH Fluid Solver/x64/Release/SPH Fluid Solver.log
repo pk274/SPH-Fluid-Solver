@@ -1,0 +1,54 @@
+﻿  FluidParticle.cpp
+  HashManager.cpp
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\HashManager.cpp(10,32): warning C4244: "=": Konvertierung von "double" in "int", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\HashManager.cpp(13,27): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\HashManager.cpp(14,27): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\HashManager.cpp(51,97): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\HashManager.cpp(51,94): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+          with
+          [
+              T=float
+          ]
+  Main.cpp
+  Particle.cpp
+  Renderer.cpp
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(20,41): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(25,34): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(26,34): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(63,43): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(70,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(73,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(84,52): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Renderer.cpp(104,40): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
+  Simulation.cpp
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(33,22): warning C4244: "Argument": Konvertierung von "time_t" in "unsigned int", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(43,47): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(47,47): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(51,47): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(55,47): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(76,23): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(90,62): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(107,23): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(122,62): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(138,23): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(143,61): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(147,61): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(151,61): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(155,61): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(164,62): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(175,38): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(183,17): warning C4244: "return": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(192,45): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(206,38): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(242,51): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Simulation.cpp(242,67): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+  SolidParticle.cpp
+  Code wird generiert.
+  Previous IPDB not found, fall back to full compilation.
+  All 666 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Codegenerierung ist abgeschlossen.
+  SPH Fluid Solver.vcxproj -> C:\Users\paulk\source\repos\SPH Fluid Solver\x64\Release\SPH Fluid Solver.exe

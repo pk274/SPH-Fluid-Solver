@@ -7,7 +7,9 @@
 
 class SolidParticle : public Particle {
   public:
-	static const int _size = 1;
+	static const float _size;
+	static const float _mass;
 
 	SolidParticle(int id, sf::Vector2f pos);
 };
+

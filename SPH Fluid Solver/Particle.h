@@ -17,8 +17,13 @@ class Particle {
 
 	  // Physical Information
 	  sf::Vector2f _position;
+	  sf::Vector2f _velocity;
 
-	  int _distance;
+	  float _density;
+	  float _pressure;
+
+	  sf::Vector2f _distance;
+	  float _distanceNorm;
 
 	  // Rendering Information
 	  sf::Color _stasisColor;

@@ -1,7 +1,11 @@
 // Paul Kull, 2022
 
+#define _USE_MATH_DEFINES
+
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
+#include <algorithm>
 
 #include "./Simulation.h"
 
@@ -11,7 +15,11 @@ Simulation::Simulation(SimulationPreset preset = StuffedBox, int framelimit) {
 	_particles = std::vector<Particle>();
 	_particles.clear();
 
-	_neighborRadius = 4;
+	_neighborRadius = 5;
+	_stiffness = 1;
+	_gravity.x = 0;
+	_gravity.y = -9.8;
+	_viscosity = 1;
 
 	switch (preset) {
 	case Empty:
@@ -178,43 +186,77 @@ void Simulation::update_hashTable() {
 	}
 }
 
-// __________________________________________________________________________________
-float calculate_distance(sf::Vector2f pos1, sf::Vector2f pos2) {
-	return std::abs(std::sqrt(std::pow(pos1.x - pos2.x, 2) + std::pow(pos1.y - pos2.y, 2)));
-}
-
 
 // _________________________________________________________________________________
-std::vector<Particle*> Simulation::find_neighbors(Particle* particle) {
-	std::vector<Particle*> neighbors = std::vector<Particle*>();
-	std::vector<Particle*> possibleNeighbors = _hashManager.return_possible_neighbors(particle);
-	
-	int numPosNeighs = possibleNeighbors.size();
-	for (int i = 0; i < numPosNeighs; i++) {
-		if (possibleNeighbors[i]->_id == particle->_id) { goto END_OF_OUTER_LOOP; }
-		for (int j = 0; j < neighbors.size(); j++) {
-			if (possibleNeighbors[i]->_id == neighbors[j]->_id) { goto END_OF_OUTER_LOOP; }
-		}
-		if (calculate_distance(possibleNeighbors[i]->_position, particle->_position) <= _neighborRadius) {
-			neighbors.push_back(possibleNeighbors[i]);
-		}
-	END_OF_OUTER_LOOP:;
+float kernel(float distance, int h = 1) {
+	float q = distance / h;
+	float a = 5 / (14 * M_PI * pow(h, 2));
+	if (distance < 1) {
+		return a * (pow(2 - q, 3) - 4 * pow(1-q, 3));
 	}
-	return neighbors;
-
+	if (distance < 2) {
+		return a * (pow(2 - q, 3));
+	}
+	return 0;
 }
 
 // _________________________________________________________________________________
+sf::Vector2f kernel_derivation(sf::Vector2f distance, float distanceNorm, int h = 1) {
+	float q = distanceNorm / h;
+	if (distanceNorm < 1) {
+		return sf::Vector2f((float)(15 * q + (3 * q - 4) / 14 * pow(h, 2) * M_PI) * distance);
+	}
+	if (distanceNorm < 2) {
+		return sf::Vector2f((float)(- 15 * pow(q - 2, 2) / 14 * pow(h, 2) * M_PI) * distance);
+	}
+	return sf::Vector2f(0, 0);
+}
+
+
+
+
+// _________________________________________________________________________________
+// ONLY WORKS IF THERE ARE ONLY FLUID PARTICLES, BECAUSE OF FLUIDPARTICLE::_MASS
 void Simulation::update_physics() {
 	_markedParticlesId.clear();
 	int numParticles = _particles.size();
+	std::vector<Particle*> neighbors = std::vector<Particle*>();
+	float density;
+	int h = 1;
+	sf::Vector2f a_nonp;
+	sf::Vector2f a_p;
+	sf::Vector2f a;
+	sf::Vector2f v_ij;
 	for (int i = 0; i < numParticles; i++) {
-		std::vector<Particle*> neighbors = find_neighbors(&_particles[i]);
+		if (_particles[i]._type == solid) { continue; }
+		neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
 		if (_particles[i]._id == _watchedParticleId) {
 			for (int j = 0; j < neighbors.size(); j++) {
 				_markedParticlesId.push_back(neighbors[j]->_id);
 			}
 		}
+		density = 0;
+		for (int j = 0; j < neighbors.size(); j++) {
+			density += FluidParticle::_mass * kernel(neighbors[j]->_distanceNorm);
+		}
+		_particles[i]._density = density;
+		_particles[i]._pressure = std::max(0.f, _stiffness * (_particles[i]._density / FluidParticle::_restDensity - 1));
+		a_nonp.x = 0;
+		a_nonp.y = 0;
+		for (int j = 0; j < neighbors.size(); j++) {
+			v_ij = _particles[i]._velocity - neighbors[j]->_velocity;
+			a_nonp += (FluidParticle::_mass * v_ij * neighbors[j]->_distanceNorm) /
+				(float)(pow(neighbors[j]->_distanceNorm, 2) + 0.01 * h * h) * kernel_derivation(neighbors[j]->_distanceNorm);
+		}
+		a_nonp *= 2 * _viscosity;
+		a_nonp += _gravity;
+		a_p.x = 0;
+		a_p.y = 0;
+		for (int j = 0; j < neighbors.size(); j++) {
+			a_p -= _particles[i]._pressure / pow(_particles[i]._density, 2) + neighbors[j]->_pressure / pow(neighbors[j]->_density, 2)
+					* kernel_derivation(neighbors[j]->_distance) * FluidParticle::_mass;
+		}
+		
 	}
 }
 

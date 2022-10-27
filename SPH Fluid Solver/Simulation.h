@@ -25,6 +25,9 @@ class Simulation {
 	  // std::vector<FluidParticle> _fluidParticles;
 	  std::vector<Particle> _particles;
 	  int _neighborRadius;
+	  float _stiffness;
+	  sf::Vector2f _gravity;
+	  float _viscosity;
 
 	  Renderer _renderer;
 	  sf::VideoMode _videoMode;
