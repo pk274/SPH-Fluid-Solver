@@ -3,8 +3,8 @@
 #include "./SolidParticle.h"
 
 
-const float SolidParticle::_size = 1.;
-const float SolidParticle::_mass = 1.;
+const float SolidParticle::_size = 2.f;
+const float SolidParticle::_mass = 8.f;
 
 
 // _________________________________________________________________

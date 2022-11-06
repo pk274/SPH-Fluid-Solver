@@ -4,6 +4,7 @@
 
 #include <map>
 
+#include "./Functions.h"
 #include "./Particle.h"
 
 class HashManager {
@@ -18,7 +19,7 @@ class HashManager {
 	float _p2DIVcellSize;
 	std::pair<unsigned int, unsigned int> _neighboringCells[9];
 
-	HashManager(int radius = 10, int size = 3000, int prime1 = 73856093, int prime2 = 19349663);
+	HashManager(int radius = 10, int size = 1);
 
 	void insert_item(Particle* particle);
 	std::pair<unsigned int, unsigned int> hash(sf::Vector2f pos);

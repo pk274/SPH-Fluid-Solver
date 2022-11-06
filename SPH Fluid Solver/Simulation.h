@@ -3,31 +3,34 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+#include "./Functions.h"
 #include "./Particle.h"
 #include "./SolidParticle.h"
 #include "./FluidParticle.h"
 #include "./HashManager.h"
+#include "./TestManager.h"
 
 #include "Renderer.h"
 
 enum SimulationPreset {
-	Empty = 0,
+	Alone = 0,
 	SmallBox = 1,
 	StuffedBox = 2,
-	StuffedBoxZoomed = 3
+	SingleParticle = 3,
+	RotatedBox = 4,
+	FewParticles = 5,
+	BreakingDam = 10
 };
 
 
 
 class Simulation {
   public:
-	  // std::vector<SolidParticle> _solidParticles;
-	  // std::vector<FluidParticle> _fluidParticles;
 	  std::vector<Particle> _particles;
-	  int _neighborRadius;
-	  float _stiffness;
+	  float _neighborRadius;
+	  double _stiffness;
 	  sf::Vector2f _gravity;
-	  float _viscosity;
+	  double _viscosity;
 
 	  Renderer _renderer;
 	  sf::VideoMode _videoMode;
@@ -36,19 +39,23 @@ class Simulation {
 
 	  HashManager _hashManager;
 
+	  bool _moveParticles;
+
 	  sf::Clock _clock;
 	  int _watchedParticleId;
 	  std::vector<int> _markedParticlesId;
+	  std::vector<int> _testedParticlesId;
 	  sf::Time _lastUpdate;
 
 	  Simulation(SimulationPreset preset, int framelimit = 30);
 	  void init_empty_simulation();
-	  void init_small_box();
 	  void init_stuffed_box_simulation(int size = 50, int zoom = 5);
-	  void init_stuffed_box_zoomed_simulation();
+	  void init_single_particle_simulation(int size = 50, int zoom = 5);
+	  void init_rotated_box_simulation(int size, int zoom, int rotation);
+	  void init_random_particles_simulation(int size, int zoom, int numParticles);
+	  void init_breaking_dam_simulation(int size = 50, int zoom = 5);
 
 	  void update_hashTable();
-	  std::vector<Particle*> find_neighbors(Particle* particle);
 
 	  void update_physics();
 

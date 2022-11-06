@@ -7,7 +7,7 @@
 
 int main()
 {
-    Simulation simulation = Simulation(StuffedBox);
+    Simulation simulation = Simulation(BreakingDam);
     simulation.run();
     return 0;
 }

@@ -4,14 +4,10 @@
 #include "HashManager.h"
 
 // __________________________________________________________________________
-HashManager::HashManager(int radius, int hashtableSize, int prime1, int prime2) {
-	_cellSize = radius;
+HashManager::HashManager(int radius, int hashtableSize) {
+	_cellSize = radius * 2;
 	_hastableSize = hashtableSize;
 	_sqrtHashtableSize = std::ceil(std::sqrt(hashtableSize));
-	_prime1 = prime1;
-	_prime2 = prime2;
-	_p1DIVcellSize = _prime1 / _cellSize;
-	_p2DIVcellSize = _prime2 / _cellSize;
 	_Buckets = std::map<std::pair<unsigned int, unsigned int>, std::vector<Particle*>>();
 	reset_buckets();
 }
@@ -43,17 +39,6 @@ std::pair<unsigned int, unsigned int> HashManager::hash(sf::Vector2f pos) {
 	return hashvalue;
 }
 
-// __________________________________________________________________________________
-sf::Vector2f calculate_distance(sf::Vector2f pos1, sf::Vector2f pos2) {
-	return sf::Vector2f(pos1.x - pos2.x, pos1.y - pos2.y);
-}
-
-
-// __________________________________________________________________________________
-float calculate_distance_norm(sf::Vector2f distance) {
-	return std::abs(std::sqrt(std::pow(distance.x, 2) + std::pow(distance.y, 2)));
-}
-
 
 // __________________________________________________________________________
 std::vector<Particle*> HashManager::return_neighbors(Particle* particle, float radius) {
@@ -75,14 +60,15 @@ std::vector<Particle*> HashManager::return_neighbors(Particle* particle, float r
 		Bucket = &_Buckets.find(_neighboringCells[i])->second;
 		for (int j = 0; j < Bucket->size(); j++) {
 			if (Bucket->at(j)->_id == particle->_id) { continue; }
-			distance = calculate_distance(Bucket->at(j)->_position, particle->_position);
-			distanceNorm = calculate_distance_norm(distance);
+			distance = Functions::calculate_distance(Bucket->at(j)->_position, particle->_position);
+			distanceNorm = Functions::calculate_distance_norm(distance);
 			if (distanceNorm <= radius) {
-				Bucket->at(j)->_distance = distance;
-				Bucket->at(j)->_distanceNorm = distanceNorm;
 				neighbors.push_back(Bucket->at(j));
 			}
 		}
 	}
+	std::sort(neighbors.begin(), neighbors.end());
+	neighbors.erase(std::unique(neighbors.begin(), neighbors.end()), neighbors.end());
+
 	return neighbors;
 }
