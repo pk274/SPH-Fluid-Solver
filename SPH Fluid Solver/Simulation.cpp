@@ -16,7 +16,7 @@ constexpr double GRAVITY = 9.8;
 constexpr double STIFFNESS = 200;	// Has to go up with increasing mass of particles
 constexpr double VISCOSITY = 2;	// Has to go down with increasing mass of particles
 constexpr float H = 2.5;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
-constexpr float timeStepSize = 0.09;
+constexpr float timeStepSize = 0.05;
 
 // _________________________________________________________________________________
 Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
