@@ -4,8 +4,9 @@
 
 #include <iostream>
 #include "./TestManager.h"
+#include "./FluidParticle.h"
 
-constexpr double THRESHHOLD = 0.00001;
+constexpr double THRESHHOLD = 0.01;
 
 
 // ______________________________________________________________________________
@@ -33,7 +34,7 @@ std::vector<int> TestManager::test_kernel(std::vector<Particle>* particles, floa
 	bool symmetric = true;
 	bool sumZero;
 	bool areaIsRight;
-	float area = 7.32600732601;
+	float area = FluidParticle::_size;// *FluidParticle::_size;
 	for (int i = 0; i < particles->size(); i++) {
 		// if (particles->at(i)._type == solid) {continue; }
 		kernelDerivativeSum.x = 0;
@@ -54,10 +55,10 @@ std::vector<int> TestManager::test_kernel(std::vector<Particle>* particles, floa
 				symmetric = false;
 			}
 			kernelDerivativeSum += kernelDeriv;
-			areaSum[0][0] += distance_ij.x * kernelDeriv.x * 1 / numNeighbors;
-			areaSum[0][1] += distance_ij.x * kernelDeriv.y * 1 / numNeighbors;
-			areaSum[1][0] += distance_ij.y * kernelDeriv.x * 1 / numNeighbors;
-			areaSum[1][1] += distance_ij.y * kernelDeriv.y * 1 / numNeighbors;
+			areaSum[0][0] += distance_ij.x * kernelDeriv.x;
+			areaSum[0][1] += distance_ij.x * kernelDeriv.y;
+			areaSum[1][0] += distance_ij.y * kernelDeriv.x;
+			areaSum[1][1] += distance_ij.y * kernelDeriv.y;
 		}
 		sumZero = (abs(kernelDerivativeSum.x) < THRESHHOLD) && (abs(kernelDerivativeSum.y) < THRESHHOLD);
 		areaIsRight = true;
@@ -77,7 +78,7 @@ std::vector<int> TestManager::test_kernel(std::vector<Particle>* particles, floa
 
 // _________________________________________________________________________________________
 void TestManager::test_kernel_integral() {
-	int areaSize = 6;
+	int areaSize = 4;
 	float stepSize = 2;
 	float H = 2;
 	double kernelIntegral = 0;
@@ -95,4 +96,5 @@ void TestManager::test_kernel_integral() {
 	}
 	std::cout << "\n" << kernelIntegral << std::endl;
 	std::cout << 4 * kernelSum << std::endl;
+	std::cout << Functions::kernel(0, H) * 4 << std::endl;
 }

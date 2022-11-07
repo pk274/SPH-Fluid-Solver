@@ -10,18 +10,19 @@
 
 #include "./Simulation.h"
 
-constexpr double NEIGHBORHOOD_RADIUS = 4;
-constexpr int NUM_SUPPOSED_NEIGHBORS = 4;
+constexpr double NEIGHBORHOOD_RADIUS = 5;
+constexpr int NUM_SUPPOSED_NEIGHBORS = 7;
 constexpr double GRAVITY = 9.8;
 constexpr double STIFFNESS = 200;	// Has to go up with increasing mass of particles
-constexpr double VISCOSITY = 1.9;	// Has to go down with increasing mass of particles
-constexpr float H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
-constexpr float timeStepSize = 0.05;
+constexpr double VISCOSITY = 2;	// Has to go down with increasing mass of particles
+constexpr float H = 2.5;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
+constexpr float timeStepSize = 0.09;
 
 // _________________________________________________________________________________
 Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 
 	_particles = std::vector<Particle>();
+	_testedParticlesId = std::vector<int>();
 	_particles.clear();
 
 	_neighborRadius = NEIGHBORHOOD_RADIUS;
@@ -52,6 +53,9 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		break;
 	case BreakingDam:
 		init_breaking_dam_simulation(40, 10);
+		break;
+	case BigBreakingDam:
+		init_breaking_dam_simulation(70, 5);
 	}
 
 	_clock = sf::Clock();
@@ -108,29 +112,41 @@ void  Simulation::init_stuffed_box_simulation(int size, int zoom) {
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 
 	// Add Particles
+	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
 	std::vector<Particle> box = placeBox(pos, size);
 	for (int i = 0; i < box.size(); i++) {
 		_particles.push_back(box[i]);
 	}
+	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	box = placeBox(pos, size - 2, _particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * 2);
+	box = placeBox(pos, size - 4, _particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
 
+	pos = sf::Vector2f(SolidParticle::_size * 3, SolidParticle::_size * 3);
 
-	pos.x = SolidParticle::_size;
-	pos.y = SolidParticle::_size;
-
-	for (int i = 0; i < size - 1; i++) {
-		for (int ii = 0; ii < size - 1; ii++) {
+	for (int i = 0; i < size - 5; i++) {
+		for (int ii = 0; ii < size - 5; ii++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.y += FluidParticle::_size;
 		}
-		pos.y = SolidParticle::_size;
+		pos.y = SolidParticle::_size * 3;
 		pos.x += FluidParticle::_size;
 	}
 	_moveParticles = false;
+	_testNeighbors = false;
+	_testKernel = true;
+	_printFPS = false;
+	_printParticleInfo = false;
 }
 
-
-
+// ______________________________________________________________________________________________________
 void Simulation::init_single_particle_simulation(int size, int zoom) {
 
 	_videoMode = sf::VideoMode(800, 800);
@@ -160,6 +176,10 @@ void Simulation::init_single_particle_simulation(int size, int zoom) {
 	_particles.push_back(FluidParticle(_particles.size(), pos));
 
 	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = false;
+	_printParticleInfo = true;
 }
 
 // _________________________________________________________________________________
@@ -174,7 +194,10 @@ void Simulation::init_rotated_box_simulation(int size, int zoom, int rotation) {
 			+ std::cos(rotation * 3.141592653589 / 180) * _particles[i]._position.y;
 		_particles[i]._position += offset;
 	}
-
+	_testNeighbors = true;
+	_testKernel = false;
+	_printFPS = true;
+	_printParticleInfo = false;
 }
 
 // _________________________________________________________________________________
@@ -212,6 +235,10 @@ void Simulation::init_random_particles_simulation(int size, int zoom, int numPar
 		_particles.push_back(FluidParticle(_particles.size(), sf::Vector2f(x, y)));
 	}
 	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = false;
+	_printParticleInfo = false;
 }
 
 
@@ -245,8 +272,8 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 		_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * (size - 4));
-	for (int i = 0; i < size / 2; i++) {
-		for (int j = 0; j < size / 5; j++) {
+	for (int i = 0; i < size / 1.5; i++) {
+		for (int j = 0; j < size / 3; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
@@ -254,6 +281,10 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 		pos.y -= FluidParticle::_size;
 	}
 	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = false;
+	_printParticleInfo = false;
 }
 
 // _________________________________________________________________________________
@@ -283,6 +314,7 @@ void Simulation::update_physics() {
 	double firstFraction;
 	double secondFraction;
 
+	// Find Neighbors
 	for (int i = 0; i < numParticles; i++) {
 		_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
 		if (_particles[i]._id == _watchedParticleId) {
@@ -292,6 +324,7 @@ void Simulation::update_physics() {
 		}
 	}
 
+	// Update Density and Pressure
 	for (int i = 0; i < numParticles; i++) {
 		density = 0;
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
@@ -310,14 +343,15 @@ void Simulation::update_physics() {
 		_particles[i]._pressure = std::max(0., _stiffness * (_particles[i]._density / FluidParticle::_restDensity - 1));
 	}
 
+	// Update Accelerations
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
-		if (_particles[i]._density == 0) { _particles[i]._acceleration = _gravity; }
 		a_nonp.x = 0;
 		a_nonp.y = 0;
 		a_p.x = 0;
 		a_p.y = 0;
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			if (_particles[i]._neighbors[j]->_id == _particles[i]._id) { continue; }
 			distance = Functions::calculate_distance(_particles[i]._position, _particles[i]._neighbors[j]->_position);
 			distanceNorm = Functions::calculate_distance_norm(distance);
 			v_ij = _particles[i]._velocity - _particles[i]._neighbors[j]->_velocity;
@@ -349,6 +383,7 @@ void Simulation::update_physics() {
 		_particles[i]._acceleration = a_p + a_nonp;
 	}
 
+	// Update Position and Velocity
 	if (!_moveParticles) { return; }
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
@@ -390,12 +425,23 @@ void Simulation::run() {
 			int randomValue = std::rand() % _particles.size();
 			_watchedParticleId = randomValue;
 		}
+
 		update_hashTable();
 		update_physics();
-		// std::vector<int> _testedParticlesId = TestManager::test_correct_neighbor_amount(&_particles, NUM_SUPPOSED_NEIGHBORS);
-		std::vector<int> _testedParticlesId = TestManager::test_kernel(&_particles, H, _watchedParticleId);
+
+		if (_testNeighbors) {
+			_testedParticlesId.clear();
+			_testedParticlesId = TestManager::test_correct_neighbor_amount(&_particles, NUM_SUPPOSED_NEIGHBORS);
+		}
+		if (_testKernel) {
+			_testedParticlesId.clear();
+			_testedParticlesId = TestManager::test_kernel(&_particles, H, _watchedParticleId);
+		}
+		if (_printFPS) {
+			_renderer.update_information(_particles.size(), numUpdatesPerSec);
+		}
+
 		_renderer.update_graphics(&_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
-		// _renderer.update_information(_particles.size(), numUpdatesPerSec);
 		_renderer.draw(&_window);
 	}
 }

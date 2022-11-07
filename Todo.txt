@@ -1,6 +1,6 @@
 Todo:
 4. Interaktives Infopanel
-1. Kernel Fläche testen
+1. Kernel Fläche testen		-> mehr oder weniger. fläche stimmt noch nicht. nachfragen!
 5. Farbe von geschwindigkeit abhängig machen
 3. randbedingungen
 7. viscosity verbessern?

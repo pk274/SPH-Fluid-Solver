@@ -24,6 +24,6 @@ class Renderer {
 	Renderer(float zoomFactor = 1, float fluidSize = 1, float solidSize = 1, float searchRadius = 3);
 	void update_graphics(std::vector<Particle>* particles, int watchedParticleId, std::vector<int> markedParticlesId, std::vector<int> testedParticlesId);
 	void update_information(int numParticles, float numUpdates);
-	void update_arrows(std::vector<Particle>* particles, Particle* watchedPartile);
+	void update_arrows(Particle* watchedPartile);
 	void draw(sf::RenderWindow* window);
 };

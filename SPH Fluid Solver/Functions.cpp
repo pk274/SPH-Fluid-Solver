@@ -13,7 +13,7 @@ sf::Vector2f Functions::calculate_distance(sf::Vector2f pos1, sf::Vector2f pos2)
 
 // __________________________________________________________________________________
 double Functions::calculate_distance_norm(sf::Vector2f distance) {
-	return std::abs(std::sqrt(std::pow(distance.x, 2) + std::pow(distance.y, 2)));
+	return std::sqrt(std::pow(distance.x, 2) + std::pow(distance.y, 2));
 }
 
 
@@ -29,6 +29,7 @@ double Functions::kernel(double distance, float h) {
 
 // _________________________________________________________________________________
 sf::Vector2f Functions::kernel_derivation(sf::Vector2f distance, float distanceNorm, float h) {
+	if (distanceNorm == 0) { return sf::Vector2f(0, 0); }
 	float q = distanceNorm / h;
 	float a = 5 / (14 * M_PI * h * h);
 	float t1 = std::max(1 - q, 0.f);

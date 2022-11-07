@@ -91,11 +91,11 @@ void Renderer::update_graphics(std::vector<Particle>* particles, int watchedPart
 			_particleShapes[i].setFillColor(sf::Color::Green);
 			_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
 			// std::cout << particles->at(i)._position.x << " " << particles->at(i)._position.y << "			"
-			// 	<< particles->at(i)._velocity.x << " " << particles->at(i)._velocity.y << "			" <<
-			// 	particles->at(i)._acceleration.x << " " << particles->at(i)._acceleration.y << std::endl;
+			// 	<< particles->at(i)._velocity.x << " " << particles->at(i)._velocity.y << "			A: " <<
+			// 	particles->at(i)._acceleration.x << " " << particles->at(i)._pressureAcc.y << std::endl;
 			// std::cout << "d: " << particles->at(i)._density << "			" << "p: " <<
 			// 	particles->at(i)._pressure << std::endl;
-			update_arrows(particles, &particles->at(i));
+			update_arrows(&particles->at(i));
 			continue;
 		}
 		int numMarkedParticles = markedParticlesId.size();
@@ -116,29 +116,44 @@ void Renderer::update_information(int numParticles, float numUpdates) {
 }
 
 // ___________________________________________________________
-void Renderer::update_arrows(std::vector<Particle>* particles, Particle* watchedParticle) {
+void Renderer::update_arrows(Particle* watchedParticle) {
+	float scalingFactor = 10;
+	int thickness = 5;
+
 	_arrowBodies.clear();
 	_arrowHeads.clear();
-	int scalingFactor = 10;
+
+	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_acceleration) * scalingFactor;
+	float sizePress = Functions::calculate_distance_norm(watchedParticle->_pressureAcc) * scalingFactor;
+
+	// Calculate angle difference to vector (1, 0)
 	float angleAccel = std::acos(watchedParticle->_acceleration.x /
 		Functions::calculate_distance_norm(watchedParticle->_acceleration)) * 180 / M_PI;
-	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_acceleration) * scalingFactor;
-	float anglePress = std::acos(watchedParticle->_acceleration.x /
+	float anglePress = std::acos(watchedParticle->_pressureAcc.x /
 		Functions::calculate_distance_norm(watchedParticle->_pressureAcc)) * 180 / M_PI;;
-	float sizePress = Functions::calculate_distance_norm(watchedParticle->_pressureAcc) * scalingFactor;
-	int thickness = 10;
+
 	sf::Vector2f particleSizeOffsetAccel = sf::Vector2f(FluidParticle::_size / 2 + thickness / _zoomFactor / 2, FluidParticle::_size / 2);
-	sf::Vector2f particleSizeOffsetPress = sf::Vector2f(FluidParticle::_size / 2 - thickness / _zoomFactor / 2, FluidParticle::_size / 2);
+	sf::Vector2f particleSizeOffsetPress = sf::Vector2f(FluidParticle::_size / 2 + thickness / _zoomFactor / 2, FluidParticle::_size / 2);
 	// Add arrow for acceleration
 	_arrowBodies.push_back(sf::RectangleShape(sf::Vector2f(sizeAccel, thickness)));
-	_arrowBodies[0].setFillColor(sf::Color::Yellow);
-	_arrowBodies[0].setPosition((watchedParticle->_position + particleSizeOffsetAccel) * _zoomFactor);
-	_arrowBodies[0].rotate(angleAccel);
+	_arrowBodies.back().setFillColor(sf::Color::Yellow);
+	_arrowBodies.back().setPosition((watchedParticle->_position + particleSizeOffsetAccel) * _zoomFactor);
+	if (watchedParticle->_acceleration.y > 0) {
+		_arrowBodies.back().rotate(angleAccel);
+	}
+	else {
+		_arrowBodies.back().rotate(-angleAccel);
+	}
 	// Add arrow for pressure
 	_arrowBodies.push_back(sf::RectangleShape(sf::Vector2f(sizePress, thickness)));
-	_arrowBodies[1].setFillColor(sf::Color::Color(150, 200, 100));
-	_arrowBodies[1].setPosition((watchedParticle->_position + particleSizeOffsetPress) * _zoomFactor);
-	_arrowBodies[1].rotate(-anglePress);
+	_arrowBodies.back().setFillColor(sf::Color::Color(150, 200, 100));
+	_arrowBodies.back().setPosition((watchedParticle->_position + particleSizeOffsetPress) * _zoomFactor);
+	if (watchedParticle->_pressureAcc.y > 0) {
+		_arrowBodies.back().rotate(anglePress);
+	}
+	else {
+		_arrowBodies.back().rotate(-anglePress);
+	}
 	// _arrowHeads.push_back(sf::CircleShape(size / 10, 3));
 	// _arrowHeads[0].setPosition((watchedParticle->_position + watchedParticle->_acceleration +
 	// 	sf::Vector2f(FluidParticle::_size + thickness / 4 / _zoomFactor, - FluidParticle::_size)) * _zoomFactor);
@@ -155,6 +170,7 @@ void Renderer::draw(sf::RenderWindow* window) {
 	window->clear(sf::Color::Black);
 	int numShapes = _particleShapes.size();
 
+	window->draw(_searchRadiusShape);
 	for (int i = 0; i < numShapes; i++) {
 		window->draw(_particleShapes[i]);
 	}
@@ -164,6 +180,5 @@ void Renderer::draw(sf::RenderWindow* window) {
 	for (int i = 0; i < _arrowBodies.size(); i++) {
 		window->draw(_arrowBodies[i]);
 	}
-	window->draw(_searchRadiusShape);
 	window->display();
 }

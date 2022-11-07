@@ -4,3 +4,6 @@ Sei n = 2500
 
 Somit ist V_i = 10.000cm^2 / 2500 = 4 cm^2
 und m_i = 1 g/cm^2 * 4 cm^2 = 4 g
+
+
+Fragen:	-Fläche Stimmt nicht für Kernel equasion

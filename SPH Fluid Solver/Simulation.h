@@ -19,7 +19,8 @@ enum SimulationPreset {
 	SingleParticle = 3,
 	RotatedBox = 4,
 	FewParticles = 5,
-	BreakingDam = 10
+	BreakingDam = 10,
+	BigBreakingDam = 11
 };
 
 
@@ -40,6 +41,10 @@ class Simulation {
 	  HashManager _hashManager;
 
 	  bool _moveParticles;
+	  bool _testNeighbors;
+	  bool _testKernel;
+	  bool _printFPS;
+	  bool _printParticleInfo;
 
 	  sf::Clock _clock;
 	  int _watchedParticleId;

@@ -59,10 +59,9 @@ std::vector<Particle*> HashManager::return_neighbors(Particle* particle, float r
 		if (!_Buckets.contains(_neighboringCells[i])) { continue; }
 		Bucket = &_Buckets.find(_neighboringCells[i])->second;
 		for (int j = 0; j < Bucket->size(); j++) {
-			if (Bucket->at(j)->_id == particle->_id) { continue; }
 			distance = Functions::calculate_distance(Bucket->at(j)->_position, particle->_position);
 			distanceNorm = Functions::calculate_distance_norm(distance);
-			if (distanceNorm <= radius) {
+			if (distanceNorm < radius) {
 				neighbors.push_back(Bucket->at(j));
 			}
 		}
