@@ -90,11 +90,11 @@ void Renderer::update_graphics(std::vector<Particle>* particles, int watchedPart
 		if (particles->at(i)._id == watchedParticleId) {
 			_particleShapes[i].setFillColor(sf::Color::Green);
 			_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
-			std::cout << particles->at(i)._position.x << " " << particles->at(i)._position.y << "			"
-				<< particles->at(i)._velocity.x << " " << particles->at(i)._velocity.y << "			" <<
-				particles->at(i)._acceleration.x << " " << particles->at(i)._acceleration.y << std::endl;
-			std::cout << "d: " << particles->at(i)._density << "			" << "p: " <<
-				particles->at(i)._pressure << std::endl;
+			// std::cout << particles->at(i)._position.x << " " << particles->at(i)._position.y << "			"
+			// 	<< particles->at(i)._velocity.x << " " << particles->at(i)._velocity.y << "			" <<
+			// 	particles->at(i)._acceleration.x << " " << particles->at(i)._acceleration.y << std::endl;
+			// std::cout << "d: " << particles->at(i)._density << "			" << "p: " <<
+			// 	particles->at(i)._pressure << std::endl;
 			update_arrows(particles, &particles->at(i));
 			continue;
 		}

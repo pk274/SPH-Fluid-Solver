@@ -19,7 +19,7 @@ double Functions::calculate_distance_norm(sf::Vector2f distance) {
 
 
 // _________________________________________________________________________________
-double Functions::kernel(double distance, int h) {
+double Functions::kernel(double distance, float h) {
 	double q = distance / h;
 	double a = 5 / (14 * M_PI * h * h);
 	double t1 = std::max(1 - q, 0.);
@@ -28,7 +28,7 @@ double Functions::kernel(double distance, int h) {
 }
 
 // _________________________________________________________________________________
-sf::Vector2f Functions::kernel_derivation(sf::Vector2f distance, float distanceNorm, int h) {
+sf::Vector2f Functions::kernel_derivation(sf::Vector2f distance, float distanceNorm, float h) {
 	float q = distanceNorm / h;
 	float a = 5 / (14 * M_PI * h * h);
 	float t1 = std::max(1 - q, 0.f);

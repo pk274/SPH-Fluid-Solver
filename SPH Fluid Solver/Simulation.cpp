@@ -10,12 +10,12 @@
 
 #include "./Simulation.h"
 
-constexpr double NEIGHBORHOOD_RADIUS = 6;
-constexpr int NUM_SUPPOSED_NEIGHBORS = 6;
+constexpr double NEIGHBORHOOD_RADIUS = 4;
+constexpr int NUM_SUPPOSED_NEIGHBORS = 4;
 constexpr double GRAVITY = 9.8;
-constexpr double STIFFNESS = 120;	// Has to go up with increasing mass of particles
-constexpr double VISCOSITY = 1.;	// Has to go down with increasing mass of particles
-constexpr float H = 3;
+constexpr double STIFFNESS = 200;	// Has to go up with increasing mass of particles
+constexpr double VISCOSITY = 1.9;	// Has to go down with increasing mass of particles
+constexpr float H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
 constexpr float timeStepSize = 0.05;
 
 // _________________________________________________________________________________
@@ -393,7 +393,7 @@ void Simulation::run() {
 		update_hashTable();
 		update_physics();
 		// std::vector<int> _testedParticlesId = TestManager::test_correct_neighbor_amount(&_particles, NUM_SUPPOSED_NEIGHBORS);
-		std::vector<int> _testedParticlesId = TestManager::test_kernel(&_particles, H);
+		std::vector<int> _testedParticlesId = TestManager::test_kernel(&_particles, H, _watchedParticleId);
 		_renderer.update_graphics(&_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
 		// _renderer.update_information(_particles.size(), numUpdatesPerSec);
 		_renderer.draw(&_window);

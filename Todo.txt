@@ -1,0 +1,8 @@
+Todo:
+4. Interaktives Infopanel
+1. Kernel Fläche testen
+5. Farbe von geschwindigkeit abhängig machen
+3. randbedingungen
+7. viscosity verbessern?
+2. Graphen für Dichte
+6. Incompressibility sicherstellen

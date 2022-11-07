@@ -7,7 +7,8 @@
 
 int main()
 {
-    Simulation simulation = Simulation(BreakingDam);
+    // TestManager::test_kernel_integral();
+    Simulation simulation = Simulation(SmallBox);
     simulation.run();
     return 0;
 }
