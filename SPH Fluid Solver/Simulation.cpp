@@ -150,6 +150,7 @@ void  Simulation::init_stuffed_box_simulation(int size, int zoom) {
 	_testKernel = true;
 	_printFPS = true;
 	_printParticleInfo = false;
+	_deleteParticles = false;
 }
 
 // ______________________________________________________________________________________________________
@@ -180,6 +181,7 @@ void Simulation::init_single_particle_simulation(int size, int zoom) {
 	_testKernel = false;
 	_printFPS = true;
 	_printParticleInfo = true;
+	_deleteParticles = true;
 }
 
 // _________________________________________________________________________________
@@ -198,6 +200,7 @@ void Simulation::init_rotated_box_simulation(int size, int zoom, int rotation) {
 	_testKernel = false;
 	_printFPS = true;
 	_printParticleInfo = false;
+	_deleteParticles = false;
 }
 
 // _________________________________________________________________________________
@@ -227,6 +230,7 @@ void Simulation::init_random_particles_simulation(int size, int zoom, int numPar
 	_testKernel = false;
 	_printFPS = false;
 	_printParticleInfo = false;
+	_deleteParticles = true;
 }
 
 
@@ -261,6 +265,7 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 	_testKernel = false;
 	_printFPS = true;
 	_printParticleInfo = false;
+	_deleteParticles = true;
 }
 
 // _________________________________________________________________________________
@@ -293,6 +298,7 @@ void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 	_testKernel = false;
 	_printFPS = true;
 	_printParticleInfo = false;
+	_deleteParticles = false;
 }
 
 
@@ -413,6 +419,8 @@ void Simulation::update_physics() {
 		}
 	}
 
+	// Delete stray particles
+	if (!_deleteParticles) { return; }
 	for (int i = 0; i < _particles.size(); i++) {
 		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = _particles[i]._density; }
 		if (_particles[i]._type == solid) { continue; }
@@ -532,7 +540,7 @@ void Simulation::run() {
 		}
 
 		_renderFile.open("./renderFile", std::fstream::in);
-		_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
+		// _avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_window.create(_videoMode, "SPH Fluid Solver");
 		sf::Time elapsedTime;
@@ -567,7 +575,7 @@ void Simulation::run() {
 				if (type[0] == 'D') {
 					_renderFile >> density;
 					_averageDensity = density;
-					_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
+					// _avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
 					continue;
 				}
 				_renderFile >> xValue >> yValue >> speed;
@@ -607,6 +615,6 @@ void Simulation::run() {
 
 	}
 
-	_avgDensityFile.close();
+	// _avgDensityFile.close();
 	_renderFile.close();
 }

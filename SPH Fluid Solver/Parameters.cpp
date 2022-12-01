@@ -10,7 +10,7 @@ const double Parameters::GRAVITY = 980;
 const double Parameters::STIFFNESS = 1000000;	
 const double Parameters::VISCOSITY = 35;	// 5000 so funny
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
-const float Parameters::timeStepSize = 0.00003;		// 0.00007
+const float Parameters::timeStepSize = 0.00005;		// 0.00007
 
 const float Parameters::GRAPH_ZOOM = 6;
 const float Parameters::GRAPH_SPEED = 2;

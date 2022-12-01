@@ -50,6 +50,7 @@ class Simulation {
 	  bool _testKernel;
 	  bool _printFPS;
 	  bool _printParticleInfo;
+	  bool _deleteParticles;
 
 	  sf::Clock _clock;
 	  int _watchedParticleId;
