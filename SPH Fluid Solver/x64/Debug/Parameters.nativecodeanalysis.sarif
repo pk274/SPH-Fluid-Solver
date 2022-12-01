@@ -1,0 +1,43 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.32.31328.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/users/paulk/source/repos/sph fluid solver/sph fluid solver/parameters.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "bb0baf6211cc085ab696fd18e8bd0d826b8d1f179f1d7f81b0c4e065dceeb6af"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/paulk/source/repos/sph fluid solver/sph fluid solver/parameters.h"
+          },
+          "hashes": {
+            "sha-256": "952c1ed6bde32a83af5862327036f47713f68dfed98a65485d9ef493d86a9dec"
+          }
+        }
+      ]
+    }
+  ]
+}

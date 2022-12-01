@@ -1,2 +1,3 @@
-﻿  Main.cpp
+﻿  Parameters.cpp
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(13,47): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
   SPH Fluid Solver.vcxproj -> C:\Users\paulk\source\repos\SPH Fluid Solver\x64\Debug\SPH Fluid Solver.exe

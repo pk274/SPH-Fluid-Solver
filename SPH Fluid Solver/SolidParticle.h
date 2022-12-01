@@ -10,6 +10,9 @@ class SolidParticle : public Particle {
 	static const float _size;
 	static const float _mass;
 
+	// Rendering Information
+	const static sf::Color _stasisColor;
+
 	SolidParticle(int id, sf::Vector2f pos);
 };
 

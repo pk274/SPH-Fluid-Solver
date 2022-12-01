@@ -26,9 +26,6 @@ class Particle {
 
 	  std::vector<Particle*> _neighbors;
 
-	  // Rendering Information
-	  sf::Color _stasisColor;
-
 	  sf::Time _lastUpdated;
 
 };

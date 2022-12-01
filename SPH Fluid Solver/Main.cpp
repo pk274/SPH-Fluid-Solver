@@ -5,9 +5,10 @@
 
 #include "./Simulation.h"
 
+
 int main()
 {
-    Simulation simulation = Simulation(BreakingDam);
+    Simulation simulation = Simulation(ManyLayers);
     simulation.run();
     return 0;
 }

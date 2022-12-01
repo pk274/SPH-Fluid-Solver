@@ -7,16 +7,11 @@
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 
 #include "./Simulation.h"
+#include "Parameters.h"
 
-constexpr double NEIGHBORHOOD_RADIUS = 5;
-constexpr int NUM_SUPPOSED_NEIGHBORS = 7;
-constexpr double GRAVITY = 9.8;
-constexpr double STIFFNESS = 200;	// Has to go up with increasing mass of particles
-constexpr double VISCOSITY = 2;	// Has to go down with increasing mass of particles
-constexpr float H = 2.5;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
-constexpr float timeStepSize = 0.05;
 
 // _________________________________________________________________________________
 Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
@@ -25,11 +20,11 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 	_testedParticlesId = std::vector<int>();
 	_particles.clear();
 
-	_neighborRadius = NEIGHBORHOOD_RADIUS;
-	_stiffness = STIFFNESS;
+	_neighborRadius = Parameters::NEIGHBORHOOD_RADIUS;
+	_stiffness = Parameters::STIFFNESS;
 	_gravity.x = 0;
-	_gravity.y = GRAVITY;
-	_viscosity = VISCOSITY;
+	_gravity.y = Parameters::GRAVITY;
+	_viscosity = Parameters::VISCOSITY;
 
 
 	switch (preset) {
@@ -52,10 +47,20 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_random_particles_simulation(35, 10, 10);
 		break;
 	case BreakingDam:
-		init_breaking_dam_simulation(40, 10);
+		init_breaking_dam_simulation(39, 10);
 		break;
 	case BigBreakingDam:
-		init_breaking_dam_simulation(70, 5);
+		init_breaking_dam_simulation(76, 5);
+		break;
+	case GiantFuckingBox:
+		init_stuffed_box_simulation(300, 1);
+		break;
+	case FourLayers:
+		init_layer_simulation(39, 10, 4);
+		break;
+	case ManyLayers:
+		init_layer_simulation(39, 10, 10);
+		break;
 	}
 
 	_clock = sf::Clock();
@@ -63,6 +68,9 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 	std::srand(std::time(nullptr));
 	_watchedParticleId = _particles.size() - 1;
 	_hashManager = HashManager(_neighborRadius, 300);
+	_maxTimeStep = 0;
+
+	_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
 
 }
 
@@ -92,7 +100,7 @@ std::vector<Particle> placeBox(sf::Vector2f pos, int size, int startId = 0) {
 // _________________________________________________________________________________
 void Simulation::init_empty_simulation() {
 	
-	_videoMode = sf::VideoMode(800, 800);
+	_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 	_zoomFactor = 50;
 	_window.create(_videoMode, "SPH Fluid Solver");
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
@@ -106,8 +114,6 @@ void Simulation::init_empty_simulation() {
 // _________________________________________________________________________________
 void  Simulation::init_stuffed_box_simulation(int size, int zoom) {
 
-	_videoMode = sf::VideoMode(800, 800);
-	_window.create(_videoMode, "SPH Fluid Solver");
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 
@@ -142,15 +148,13 @@ void  Simulation::init_stuffed_box_simulation(int size, int zoom) {
 	_moveParticles = false;
 	_testNeighbors = false;
 	_testKernel = true;
-	_printFPS = false;
+	_printFPS = true;
 	_printParticleInfo = false;
 }
 
 // ______________________________________________________________________________________________________
 void Simulation::init_single_particle_simulation(int size, int zoom) {
 
-	_videoMode = sf::VideoMode(800, 800);
-	_window.create(_videoMode, "SPH Fluid Solver");
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 
@@ -160,14 +164,10 @@ void Simulation::init_single_particle_simulation(int size, int zoom) {
 	for (int i = 0; i < box.size(); i++) {
 		_particles.push_back(box[i]);
 	}
-	pos.y = size * SolidParticle::_size;
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < size; j++) {
-			_particles.push_back(SolidParticle(_particles.size(), pos));
-			pos.x += SolidParticle::_size;
-		}
-		pos.x = 0;
-		pos.y += SolidParticle::_size;
+	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	box = placeBox(pos, size - 2, _particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
 	}
 
 
@@ -178,7 +178,7 @@ void Simulation::init_single_particle_simulation(int size, int zoom) {
 	_moveParticles = true;
 	_testNeighbors = false;
 	_testKernel = false;
-	_printFPS = false;
+	_printFPS = true;
 	_printParticleInfo = true;
 }
 
@@ -203,8 +203,6 @@ void Simulation::init_rotated_box_simulation(int size, int zoom, int rotation) {
 // _________________________________________________________________________________
 void Simulation::init_random_particles_simulation(int size, int zoom, int numParticles) {
 	
-	_videoMode = sf::VideoMode(800, 800);
-	_window.create(_videoMode, "SPH Fluid Solver");
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 
@@ -216,16 +214,6 @@ void Simulation::init_random_particles_simulation(int size, int zoom, int numPar
 	}
 	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
 	box = placeBox(pos, size - 2, _particles.size());
-	for (int i = 0; i < box.size(); i++) {
-		_particles.push_back(box[i]);
-	}
-	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * 2);
-	box = placeBox(pos, size - 4, _particles.size());
-	for (int i = 0; i < box.size(); i++) {
-		_particles.push_back(box[i]);
-	}
-	pos = sf::Vector2f(SolidParticle::_size * 3, SolidParticle::_size * 3);
-	box = placeBox(pos, size - 6, _particles.size());
 	for (int i = 0; i < box.size(); i++) {
 		_particles.push_back(box[i]);
 	}
@@ -245,8 +233,6 @@ void Simulation::init_random_particles_simulation(int size, int zoom, int numPar
 // _________________________________________________________________________________
 void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 	
-	_videoMode = sf::VideoMode(800, 800);
-	_window.create(_videoMode, "SPH Fluid Solver");
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 
@@ -261,31 +247,55 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 	for (int i = 0; i < box.size(); i++) {
 		_particles.push_back(box[i]);
 	}
-	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * 2);
-	box = placeBox(pos, size - 4, _particles.size());
-	for (int i = 0; i < box.size(); i++) {
-		_particles.push_back(box[i]);
-	}
-	pos = sf::Vector2f(SolidParticle::_size * 3, SolidParticle::_size * 3);
-	box = placeBox(pos, size - 6, _particles.size());
-	for (int i = 0; i < box.size(); i++) {
-		_particles.push_back(box[i]);
-	}
-	pos = sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * (size - 4));
-	for (int i = 0; i < size / 1.5; i++) {
+	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
+	for (int i = 0; i < size / 3; i++) {
 		for (int j = 0; j < size / 3; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
-		pos.x = SolidParticle::_size * 4;
+		pos.x = SolidParticle::_size * 2;
 		pos.y -= FluidParticle::_size;
 	}
 	_moveParticles = true;
 	_testNeighbors = false;
 	_testKernel = false;
-	_printFPS = false;
+	_printFPS = true;
 	_printParticleInfo = false;
 }
+
+// _________________________________________________________________________________
+void Simulation::init_layer_simulation(int size, int zoom, int layers) {
+	_zoomFactor = zoom;
+	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
+
+	// Add Particles for arena
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	std::vector<Particle> box = placeBox(pos, size);
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	box = placeBox(pos, size - 2, _particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
+	for (int i = 0; i < layers; i++) {
+		for (int j = 0; j < size - 3; j++) {
+			_particles.push_back(FluidParticle(_particles.size(), pos));
+			pos.x += FluidParticle::_size;
+		}
+		pos.x = SolidParticle::_size * 2;
+		pos.y -= FluidParticle::_size;
+	}
+	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = true;
+	_printParticleInfo = false;
+}
+
+
 
 // _________________________________________________________________________________
 void Simulation::update_hashTable() {
@@ -300,9 +310,9 @@ void Simulation::update_hashTable() {
 // _________________________________________________________________________________
 void Simulation::update_physics() {
 	_markedParticlesId.clear();
-	int numParticles = _particles.size();
+	_averageDensity = 0;
 	double density;
-	float h = H;
+	float h = Parameters::H;
 	float particleMass;
 	sf::Vector2f a_nonp;
 	sf::Vector2f a_p;
@@ -314,34 +324,40 @@ void Simulation::update_physics() {
 	double firstFraction;
 	double secondFraction;
 
+	int numParticles = _particles.size();
+	_numFluidParticles = 0;
+
 	// Find Neighbors
 	for (int i = 0; i < numParticles; i++) {
+		if (_particles[i]._type == solid) { continue; }
 		_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
-		if (_particles[i]._id == _watchedParticleId) {
-			for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
-				_markedParticlesId.push_back(_particles[i]._neighbors[j]->_id);
-			}
-		}
+		// if (_particles[i]._id == _watchedParticleId) {
+		// 	for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+		// 		_markedParticlesId.push_back(_particles[i]._neighbors[j]->_id);
+		// 	}
+		// }
 	}
 
 	// Update Density and Pressure
 	for (int i = 0; i < numParticles; i++) {
+		if (_particles[i]._type == solid) { continue; }
+		_numFluidParticles++;
 		density = 0;
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 			distanceNorm = Functions::calculate_distance_norm(Functions::calculate_distance(
 				_particles[i]._position, _particles[i]._neighbors[j]->_position));
 			if (_particles[i]._neighbors[j]->_type == fluid) {
-				density += FluidParticle::_mass * Functions::kernel(distanceNorm, H);
+				density += FluidParticle::_mass * Functions::kernel(distanceNorm);
 			}
 			else {
-				float x = SolidParticle::_mass;
-				float y = Functions::kernel(distanceNorm, H);
-				density += SolidParticle::_mass * Functions::kernel(distanceNorm, H);
+				density += SolidParticle::_mass * Functions::kernel(distanceNorm);
 			}
 		}
 		_particles[i]._density = density;
+		_averageDensity += std::max((float) density, FluidParticle::_restDensity);
 		_particles[i]._pressure = std::max(0., _stiffness * (_particles[i]._density / FluidParticle::_restDensity - 1));
 	}
+	_averageDensity = _averageDensity / _numFluidParticles;
 
 	// Update Accelerations
 	for (int i = 0; i < numParticles; i++) {
@@ -359,22 +375,23 @@ void Simulation::update_physics() {
 
 			if (_particles[i]._neighbors[j]->_type == solid) {
 				a_nonp += (float)((SolidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij)) /
-					(Functions::scalar_product2D(x_ij, x_ij) + 0.01f * h * h)) *
-					Functions::kernel_derivation(distance, distanceNorm, H);
+					(Functions::scalar_product2D(x_ij, x_ij) + 0.01f * h * h))
+					* Functions::kernel_derivation(distance, distanceNorm);
 				firstFraction = _particles[i]._pressure / (_particles[i]._density * _particles[i]._density);
 				secondFraction = firstFraction;
 				a_p -= (float)(firstFraction + secondFraction) *
-					Functions::kernel_derivation(distance, distanceNorm, H) * SolidParticle::_mass;
+					Functions::kernel_derivation(distance, distanceNorm) * SolidParticle::_mass;
 			}
 			else {
 				a_nonp += (float)((FluidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij)) /
-					(Functions::scalar_product2D(x_ij, x_ij) + 0.01f * h * h)) *
-					Functions::kernel_derivation(distance, distanceNorm, h);
+					(Functions::scalar_product2D(x_ij, x_ij) + 0.01f * h * h
+					* _particles[i]._neighbors[j]->_density))
+					* Functions::kernel_derivation(distance, distanceNorm);
 				firstFraction = _particles[i]._pressure / (_particles[i]._density * _particles[i]._density);
 				secondFraction = _particles[i]._neighbors[j]->_pressure /
 					(_particles[i]._neighbors[j]->_density * _particles[i]._neighbors[j]->_density);
 				a_p -= (float)(firstFraction + secondFraction) *
-					Functions::kernel_derivation(distance, distanceNorm, h) * FluidParticle::_mass;
+					Functions::kernel_derivation(distance, distanceNorm) * FluidParticle::_mass;
 			}
 		}
 		a_nonp *= (float)(2 * _viscosity);
@@ -387,61 +404,209 @@ void Simulation::update_physics() {
 	if (!_moveParticles) { return; }
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
-		_particles[i]._velocity += timeStepSize * _particles[i]._acceleration;
-		_particles[i]._position += timeStepSize * _particles[i]._velocity;
-		_particles[i]._lastUpdated = _clock.getElapsedTime();			// NOT necessary right now
+		_particles[i]._velocity += Parameters::timeStepSize * _particles[i]._acceleration;
+		_particles[i]._position += Parameters::timeStepSize * _particles[i]._velocity;
+
+		if (Functions::calculate_distance_norm(_particles[i]._velocity) > _maxVelocity) {
+			_maxVelocity = Functions::calculate_distance_norm(_particles[i]._velocity);
+			_maxTimeStep = 0.1 * Parameters::H / _maxVelocity;
+		}
+	}
+
+	for (int i = 0; i < _particles.size(); i++) {
+		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = _particles[i]._density; }
+		if (_particles[i]._type == solid) { continue; }
+		// Delete Particles which fell out of the window
+		if (_particles[i]._position.x < -10 || _particles[i]._position.y < -10 ||
+			_particles[i]._position.x > Parameters::WINDOW_WIDTH / _zoomFactor ||
+			_particles[i]._position.y > Parameters::WINDOW_HEIGHT / _zoomFactor) {
+			_particles.erase(_particles.begin() + i);
+			_numFluidParticles--;
+		}
 	}
 }
 
 
 
-
 // _________________________________________________________________________________
 void Simulation::run() {
-	bool runSimulation = true;
-	sf::Time elapsedTime;
-	float numUpdatesPerSec = 0;
 
-	while (runSimulation) {
+	if (Parameters::INTERACTIVE) {
+		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
+		_window.create(_videoMode, "SPH Fluid Solver");
+		bool runSimulation = true;
+		sf::Time elapsedTime;
+		float numUpdatesPerSec = 0;
+		int numIterations = 0;
+		while (runSimulation) {
+			// Update Clock
+			elapsedTime = _clock.getElapsedTime();
+			numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
 
-		// Update Clock
-		elapsedTime = _clock.getElapsedTime();
-		numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
+			_lastUpdate = elapsedTime;
 
-		_lastUpdate = elapsedTime;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-			// Pause
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+				// Pause
+          		continue;
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				// Close application
+				_window.close();
+				runSimulation = false;
+				break;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+				// Switch observed particle randomly
+				int randomValue = std::rand() % _particles.size();
+				_watchedParticleId = randomValue;
+				//while (_particles[_watchedParticleId]._type != fluid) {
+				//	int randomValue = std::rand() % _particles.size();
+				//	_watchedParticleId = randomValue;
+				//}
+			}
+
+			update_hashTable();
+			update_physics();
+
+			if (_testNeighbors) {
+				_testedParticlesId.clear();
+				_testedParticlesId = TestManager::test_correct_neighbor_amount(&_particles);
+			}
+			if (_testKernel) {
+				_testedParticlesId.clear();
+				_testedParticlesId = TestManager::test_kernel(&_particles, Parameters::H);
+			}
+			_renderer.update_information(elapsedTime, _particles.size(),
+				_numFluidParticles, numUpdatesPerSec, _averageDensity, _maxTimeStep,
+				_watchedParticleDensity);
+
+			_renderer.update_graphics(&_particles, _numFluidParticles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
+			_renderer.draw(&_window);
+
+			_avgDensityFile << numIterations * Parameters::timeStepSize << " " << _averageDensity << "\n";
+			numIterations++;
+		}
+
+	}
+
+	else {
+		if (!Parameters::JUST_RENDER) {
+			_renderFile.open("./renderFile", std::fstream::out | std::fstream::trunc);
+			for (int i = 0; i < _particles.size(); i++) {
+				if (_particles[i]._type == solid) {
+					_renderFile << "SolidParticle " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
+						0 << std::endl;
+				}
+			}
+
+			for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH; timeSteps++) {
+				if (timeSteps % 10 == 0) {
+					std::cout << "Calculating step " << timeSteps << " / " << Parameters::SIMULATION_LENGTH << "\r";
+				}
+				update_hashTable();
+				update_physics();
+				int numParticles = _particles.size();
+				if (timeSteps % Parameters::SPEEDUP == 0) {
+					for (int i = 0; i < numParticles; i++) {
+						if (_particles[i]._type == fluid) {
+							_renderFile << "FLuidParticle " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
+								std::min((int)(Functions::calculate_distance_norm(_particles[i]._velocity) * 0.6), 255) << std::endl;
+						}
+					}
+					_renderFile << "Density " << _averageDensity << "\n";
+					_renderFile << "END_OF_UPDATE" << std::endl;
+				}
+				_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
+			}
+			_renderFile.close();
+		}
+		_avgDensityFile.close();
+
+		std::cout << "=======================================================" << std::endl;
+		std::cout << "COMPUTATIONS READY! Press Space to watch the Simulation" << std::endl;
+		std::cout << "=======================================================" << std::endl;
+
+		while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 			continue;
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-			// Close application
-			_window.close();
-			runSimulation = false;
-			break;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-			// Switch observed particle randomly
-			int randomValue = std::rand() % _particles.size();
-			_watchedParticleId = randomValue;
-		}
+		_renderFile.open("./renderFile", std::fstream::in);
+		_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
+		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
+		_window.create(_videoMode, "SPH Fluid Solver");
+		sf::Time elapsedTime;
+		int numUpdatesPerSec;
+		int numShapes = 0;
+		int numFluids = 0;
+		std::string type;
+		float xValue;
+		float yValue;
+		float speed;
+		float density;
+		bool runSimulation = true;
 
-		update_hashTable();
-		update_physics();
+		for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH / Parameters::SPEEDUP; timeSteps++) {
+			elapsedTime = _clock.getElapsedTime();
+			numShapes = 0;
+			numFluids = 0;
+			numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
+			_lastUpdate = elapsedTime;
 
-		if (_testNeighbors) {
-			_testedParticlesId.clear();
-			_testedParticlesId = TestManager::test_correct_neighbor_amount(&_particles, NUM_SUPPOSED_NEIGHBORS);
-		}
-		if (_testKernel) {
-			_testedParticlesId.clear();
-			_testedParticlesId = TestManager::test_kernel(&_particles, H, _watchedParticleId);
-		}
-		if (_printFPS) {
-			_renderer.update_information(_particles.size(), numUpdatesPerSec);
-		}
+			while (true) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+					// Close application
+					runSimulation = false;
+					break;
+				}
 
-		_renderer.update_graphics(&_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
-		_renderer.draw(&_window);
+				_renderFile >> type;
+				if (type[0] == 'E') {
+					break;
+				}
+				if (type[0] == 'D') {
+					_renderFile >> density;
+					_averageDensity = density;
+					_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
+					continue;
+				}
+				_renderFile >> xValue >> yValue >> speed;
+			
+				if (_renderer._fluidParticleShapes.size() + _renderer._solidParticleShapes.size() <= numShapes) {
+					if (type[0] == 'S') {
+						_renderer._solidParticleShapes.push_back(sf::CircleShape(_renderer._solidShapeRadius));
+						_renderer._solidParticleShapes.back().setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
+						_renderer._solidParticleShapes.back().setFillColor(sf::Color::White);
+					}
+					else if (type[0] == 'F') {
+						_renderer._fluidParticleShapes.push_back(sf::CircleShape(_renderer._fluidShapeRadius));
+						_renderer._fluidParticleShapes.back().setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
+						_renderer._fluidParticleShapes.back().setFillColor(sf::Color::Blue + sf::Color::Color(0, speed, 0));
+						numFluids++;
+					}
+				}
+				else {
+					if (type[0] == 'F') {
+						_renderer._fluidParticleShapes.at(numFluids).setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
+						_renderer._fluidParticleShapes.at(numFluids).setFillColor(FluidParticle::_stasisColor + sf::Color::Color(0, speed, 0));
+						numFluids++;
+					}
+				}
+				numShapes++;
+				_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
+			while (numFluids < _renderer._fluidParticleShapes.size()) {
+				_renderer._fluidParticleShapes.pop_back();
+			}
+			numShapes = numFluids + _renderer._solidParticleShapes.size();
+ 			_renderer.update_information(elapsedTime, numShapes, numFluids, numUpdatesPerSec, _averageDensity);
+			_renderer.draw(&_window);
+			if (!runSimulation) { break; }
+		}
+		_window.close();
+
 	}
+
+	_avgDensityFile.close();
+	_renderFile.close();
 }

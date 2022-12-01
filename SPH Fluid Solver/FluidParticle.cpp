@@ -6,6 +6,7 @@
 const float FluidParticle::_size = 2.f;	// cm Durchmesser
 const float FluidParticle::_mass = 4.f;		// g
 const float FluidParticle::_restDensity = 1.f;
+const sf::Color FluidParticle::_stasisColor = sf::Color::Blue;
 
 // _________________________________________________________________
 FluidParticle::FluidParticle(int id, sf::Vector2f pos) {
@@ -22,7 +23,6 @@ FluidParticle::FluidParticle(int id, sf::Vector2f pos) {
 
 
 	// Init Rendering Information
-	_stasisColor = sf::Color::Blue;
 
 
 }

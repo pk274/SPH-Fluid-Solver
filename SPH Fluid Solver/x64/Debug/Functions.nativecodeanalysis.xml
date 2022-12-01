@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\</FILEPATH>
+      <FILENAME>Functions.cpp</FILENAME>
+      <LINE>43</LINE>
+      <COLUMN>20</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetischer Überlauf: Wenn Sie den Operator "+" für einen 4-Bytewert verwenden und das Ergebnis in einen 8-Bytewert umwandeln, wandeln Sie den Wert in den breiteren Typ um, bevor Sie den Operator "+" verwenden, um einen Überlauf zu vermeiden (io.2).</DESCRIPTION>
+    <FUNCTION>Functions::scalar_product2D</FUNCTION>
+    <DECORATED>?scalar_product2D@Functions@@SANV?$Vector2@M@sf@@0@Z</DECORATED>
+    <FUNCLINE>42</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\</FILEPATH>
+      <FILENAME>Functions.cpp</FILENAME>
+      <LINE>43</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetischer Überlauf: Wenn Sie den Operator "*" für einen 4-Bytewert verwenden und das Ergebnis in einen 8-Bytewert umwandeln, wandeln Sie den Wert in den breiteren Typ um, bevor Sie den Operator "*" verwenden, um einen Überlauf zu vermeiden (io.2).</DESCRIPTION>
+    <FUNCTION>Functions::scalar_product2D</FUNCTION>
+    <DECORATED>?scalar_product2D@Functions@@SANV?$Vector2@M@sf@@0@Z</DECORATED>
+    <FUNCLINE>42</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

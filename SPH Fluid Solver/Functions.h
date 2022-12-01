@@ -8,7 +8,8 @@ class Functions {
  public:
 	static sf::Vector2f calculate_distance(sf::Vector2f pos1, sf::Vector2f pos2);
 	static double calculate_distance_norm(sf::Vector2f distance);
-	static double kernel(double distance, float h = 1);
-	static sf::Vector2f kernel_derivation(sf::Vector2f distance, float distanceNorm, float h = 1);
+	static double kernel(double distance);
+	static sf::Vector2f kernel_derivation(sf::Vector2f distance, float distanceNorm);
 	static double scalar_product2D(sf::Vector2f v1, sf::Vector2f v2);
+	static float round(double number, int places = 3);
 };

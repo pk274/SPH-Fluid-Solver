@@ -2,6 +2,7 @@
 // Paul Kull, 2022
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <fstream>
 
 #include "./Functions.h"
 #include "./Particle.h"
@@ -19,6 +20,9 @@ enum SimulationPreset {
 	SingleParticle = 3,
 	RotatedBox = 4,
 	FewParticles = 5,
+	GiantFuckingBox = 6,
+	FourLayers = 7,
+	ManyLayers = 8,
 	BreakingDam = 10,
 	BigBreakingDam = 11
 };
@@ -32,6 +36,7 @@ class Simulation {
 	  double _stiffness;
 	  sf::Vector2f _gravity;
 	  double _viscosity;
+	  int _numFluidParticles;
 
 	  Renderer _renderer;
 	  sf::VideoMode _videoMode;
@@ -51,6 +56,13 @@ class Simulation {
 	  std::vector<int> _markedParticlesId;
 	  std::vector<int> _testedParticlesId;
 	  sf::Time _lastUpdate;
+	  float _averageDensity;
+	  float _maxTimeStep;
+	  float _maxVelocity;
+	  float _watchedParticleDensity;
+
+	  std::fstream _avgDensityFile;
+	  std::fstream _renderFile;
 
 	  Simulation(SimulationPreset preset, int framelimit = 30);
 	  void init_empty_simulation();
@@ -59,6 +71,7 @@ class Simulation {
 	  void init_rotated_box_simulation(int size, int zoom, int rotation);
 	  void init_random_particles_simulation(int size, int zoom, int numParticles);
 	  void init_breaking_dam_simulation(int size = 50, int zoom = 5);
+	  void init_layer_simulation(int size, int zoom, int layers);
 
 	  void update_hashTable();
 

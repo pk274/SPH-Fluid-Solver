@@ -4,7 +4,8 @@
 
 
 const float SolidParticle::_size = 2.f;
-const float SolidParticle::_mass = 8.f;
+const float SolidParticle::_mass = 4.f;
+const sf::Color SolidParticle::_stasisColor = sf::Color::White;
 
 
 // _________________________________________________________________
@@ -20,9 +21,7 @@ SolidParticle::SolidParticle(int id, sf::Vector2f pos) {
 	_velocity.x = 0;
 	_velocity.x = 0;
 
-
-	// Init Rendering Information
-	_stasisColor = sf::Color::White;
-
+	_density = 1;
+	_pressure = 0;
 
 }

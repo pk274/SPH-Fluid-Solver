@@ -5,21 +5,34 @@
 #include <iostream>
 
 #include "./Renderer.h"
+#include "./Parameters.h"
 
+
+static sf::Font font;
 
 // ___________________________________________________________
 Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float searchRadius) {
 	_zoomFactor = zoomFactor;
 
-	_particleShapes = std::vector<sf::CircleShape>();
+	_fluidParticleShapes = std::vector<sf::CircleShape>();
+	_solidParticleShapes = std::vector<sf::CircleShape>();
+	_watchedParticleShape = sf::CircleShape();
 	_arrowBodies = std::vector<sf::RectangleShape>();
 	_arrowHeads = std::vector<sf::CircleShape>();
-	_particleShapes.clear();
+	_infoPanel = sf::RectangleShape(sf::Vector2f(300, 800));
+	_graphBackground = sf::RectangleShape(sf::Vector2f(250, 100));
+	_graphShapes = std::vector<sf::CircleShape>();
+	_fluidParticleShapes.clear();
+	_solidParticleShapes.clear();
 
 	_fluidShapeRadius = _zoomFactor * fluidSize / 2;
 	_solidShapeRadius = _zoomFactor * fluidSize / 2;
 
-	float outlineThickness = 2;
+	_watchedParticleShape.setFillColor(sf::Color::Green);
+	_watchedParticleShape.setRadius(_fluidShapeRadius);
+	_watchedParticleShape.setPosition(sf::Vector2f(-100, -100));
+
+	float outlineThickness = 3;
 	_searchRadiusShape = sf::CircleShape();
 	_searchRadiusShape.setRadius(searchRadius * _zoomFactor);
 	_searchRadiusShape.setFillColor(sf::Color::Transparent);
@@ -29,99 +42,142 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 	_searchRadiusOffset.x = (- searchRadius + FluidParticle::_size / 2) * _zoomFactor;
 	_searchRadiusOffset.y = (- searchRadius + FluidParticle::_size / 2) * _zoomFactor;
 
-	if (!_font.loadFromFile("../Resources/times new roman.ttf")) {
-		std::cout << "ERROR: Could not load font";
+	_infoPanel.setPosition(sf::Vector2f(800, 0));
+	_infoPanel.setFillColor(sf::Color::Color(200, 200, 200));
+	_graphBackground.setPosition(sf::Vector2f(825, 650));
+	_graphBackground.setFillColor(sf::Color::Color(250, 250, 250));
+	_graphBackground.setOutlineColor(sf::Color::Black);
+	_graphBackground.setOutlineThickness(1);
+	_graphShapes.clear();
+	_graphShapesFull = false;
+
+
+	if (!font.loadFromFile("../Resources/times new roman.ttf")) {
+		throw("ERROR: Could not load font");
 	}
-	// _description = sf::Text();
-	// _description.setFont(_font);
-	// _information = sf::Text();
-	// _information.setFont(_font);
-	// 
-	// _description.setString("# of particles:\nUpdates per second:");
-	// _description.setCharacterSize(10);
-	// _description.setFillColor(sf::Color::White);
-	// // _description.setStyle(sf::Text::Underlined);
-	// _information.setPosition(sf::Vector2f(10, 10));
-	// _information.setCharacterSize(10);
-	// _information.setFillColor(sf::Color::White);
-	// _information.setPosition(sf::Vector2f(30, 10));
+
+	_description = sf::Text();
+	_description.setFont(font);
+	_information = sf::Text();
+	_information.setFont(font);
+	
+	_description.setPosition(sf::Vector2f(820, 10));
+	_description.setString(
+		"Current Time:\n\nNumber of particles:\n\n# moving Particles\n\nUpdates per second:\n\nAverage Fluid Density : \n\nMaximum Timestep : \n\n\n\nCurrent Particle:\n\nDensity: ");
+	_description.setCharacterSize(15);
+	_description.setFillColor(sf::Color::Black);
+	_description.setStyle(sf::Text::Underlined);
+
+	_information.setCharacterSize(15);
+	_information.setFillColor(sf::Color::Black);
+	_information.setPosition(sf::Vector2f(1000, 10));
 }
 
 
 // ___________________________________________________________
-void Renderer::update_graphics(std::vector<Particle>* particles, int watchedParticleId, std::vector<int> markedParticlesId, std::vector<int> testedParticlesId) {
+void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, int watchedParticleId, std::vector<int> markedParticlesId, std::vector<int> testedParticlesId) {
 
 
 	// Check whether or not we have the correct amount of shapes
-	if (_particleShapes.size() != particles->size()) {
+	if (_fluidParticleShapes.size() + _solidParticleShapes.size() != particles->size()) {
 		// Add shapes until there are enough
-		while (_particleShapes.size() < particles->size()) {
-			_particleShapes.push_back(sf::CircleShape());
+		while (_fluidParticleShapes.size() + _solidParticleShapes.size() < particles->size()) {
+			if (particles->at(_fluidParticleShapes.size() + _solidParticleShapes.size())._type == solid) {
+				_solidParticleShapes.push_back(sf::CircleShape(_solidShapeRadius));
+				_solidParticleShapes.back().setPosition(particles->at(_fluidParticleShapes.size() + _solidParticleShapes.size() - 1)._position * _zoomFactor);
+				_solidParticleShapes.back().setFillColor(sf::Color::White);
+			}
+			else if (particles->at(_fluidParticleShapes.size() + _solidParticleShapes.size())._type == fluid) {
+				_fluidParticleShapes.push_back(sf::CircleShape(_fluidShapeRadius));
+			}
 		}
 		// Delete shapes until there are little enough
-		while (_particleShapes.size() > particles->size()) {
-			_particleShapes.pop_back();
+		while (_fluidParticleShapes.size() + _solidParticleShapes.size() > particles->size()) {
+			_fluidParticleShapes.pop_back();
+			
 		}
 	}
 
-	int numParticles = _particleShapes.size();
+	int numParticles = particles->size();
+	int fluidIndex = 0;
+	int speed = 0;
 
-	// Update each shapes position
+	// Update each fluid shapes position
 	for (int i = 0; i < numParticles; i++) {
-		_particleShapes[i].setPosition(particles->at(i)._position * _zoomFactor);
-		switch (particles->at(i)._type) {
-		case(fluid):
-			_particleShapes[i].setRadius(_fluidShapeRadius);
-			break;
-		case(solid):
-			_particleShapes[i].setRadius(_solidShapeRadius);
-			break;
+		if (particles->at(i)._id == watchedParticleId) {
+			_watchedParticleShape.setPosition(particles->at(i)._position * _zoomFactor);
+			_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
+			update_arrows(&particles->at(i));
 		}
+		if (particles->at(i)._type == solid) { continue; }
 
-		_particleShapes[i].setFillColor(particles->at(i)._stasisColor);
+		_fluidParticleShapes[fluidIndex].setPosition(particles->at(i)._position * _zoomFactor);
+
+
+		int density = std::min((int)(particles->at(i)._density * 100), 255);
+		speed = std::min((int)(Functions::calculate_distance_norm(particles->at(i)._velocity) * 0.6), 255);
+		_fluidParticleShapes[fluidIndex].setFillColor(FluidParticle::_stasisColor + sf::Color::Color(density, speed, 0));
 
 		int numTestedParticles = testedParticlesId.size();
 		for (int j = 0; j < numTestedParticles; j++) {
 			if (particles->at(i)._id == testedParticlesId[j]) {
-				_particleShapes[i].setFillColor(sf::Color::Cyan);
+				_fluidParticleShapes[fluidIndex].setFillColor(sf::Color::Cyan);
 			}
 		}
 
-		if (particles->at(i)._id == watchedParticleId) {
-			_particleShapes[i].setFillColor(sf::Color::Green);
-			_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
-			// std::cout << particles->at(i)._position.x << " " << particles->at(i)._position.y << "			"
-			// 	<< particles->at(i)._velocity.x << " " << particles->at(i)._velocity.y << "			A: " <<
-			// 	particles->at(i)._acceleration.x << " " << particles->at(i)._pressureAcc.y << std::endl;
-			// std::cout << "d: " << particles->at(i)._density << "			" << "p: " <<
-			// 	particles->at(i)._pressure << std::endl;
-			update_arrows(&particles->at(i));
-			continue;
-		}
 		int numMarkedParticles = markedParticlesId.size();
 		for (int j = 0; j < numMarkedParticles; j++) {
 			if (particles->at(i)._id == markedParticlesId[j]) {
-				_particleShapes[i].setFillColor(sf::Color::Red);
+				_fluidParticleShapes[fluidIndex].setFillColor(sf::Color::Red);
 			}
 		}
+		fluidIndex++;
 	}
 }
 
 
 // ___________________________________________________________
-void Renderer::update_information(int numParticles, float numUpdates) {
-	// _information.setString(std::to_string(numParticles) + "\n" + std::to_string(numUpdates));
-	std::cout << "\r                                   ";
-	std::cout << "\rUpdates per Second: " << numUpdates << "	Number of Particles : " << numParticles << std::flush;
+void Renderer::update_information(sf::Time time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity, float maxStep, float watchedParticleDensity) {
+	// Information in the box
+	_timeInfo = std::to_string(time.asSeconds());
+	_numParticlesInfo = std::to_string(numParticles);
+	_numFluidsInfo = std::to_string(numFluidParticles);
+	_numUpdatesInfo = std::to_string(numUpdates);
+	_avgDensityInfo = std::to_string(avgDensity);
+	_maxStepInfo = std::to_string(maxStep);
+	_watchedParticleDensity = std::to_string(watchedParticleDensity);
+
+	_timeInfo.resize(4, ' ');
+	_numUpdatesInfo.resize(3, ' ');
+	_avgDensityInfo.resize(6, ' ');
+	_maxStepInfo.resize(6, ' ');
+	_watchedParticleDensity.resize(4, ' ');
+
+	_information.setString(_timeInfo + "\n\n" + _numParticlesInfo + "\n\n" + _numFluidsInfo + "\n\n" + _numUpdatesInfo + "\n\n"
+		+ _avgDensityInfo + "\n\n" + _maxStepInfo + "\n\n\n\n\n\n" + _watchedParticleDensity);
+
+
+	// Take care of the Graph
+	for (int i = 0; i < _graphShapes.size(); i++) {
+		_graphShapes[i].move(-Parameters::GRAPH_SPEED, 0);
+		if (_graphShapes[i].getPosition().x < _graphBackground.getPosition().x) {
+			_graphShapes[i].setPosition(sf::Vector2f(1000, 750 - 50 * std::pow(avgDensity, Parameters::GRAPH_ZOOM)));
+			_graphShapesFull = true;
+		}
+	}
+	if (!_graphShapesFull) {
+		_graphShapes.push_back(sf::CircleShape(2));
+		_graphShapes.back().setFillColor(sf::Color::Blue);
+		_graphShapes.back().setPosition(sf::Vector2f(1000, 750 - 50 * std::pow(avgDensity, Parameters::GRAPH_ZOOM)));
+	}
 }
 
 // ___________________________________________________________
 void Renderer::update_arrows(Particle* watchedParticle) {
-	float scalingFactor = 10;
+	float scalingFactor = 0.05;
 	int thickness = 5;
 
 	_arrowBodies.clear();
-	_arrowHeads.clear();
 
 	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_acceleration) * scalingFactor;
 	float sizePress = Functions::calculate_distance_norm(watchedParticle->_pressureAcc) * scalingFactor;
@@ -154,31 +210,34 @@ void Renderer::update_arrows(Particle* watchedParticle) {
 	else {
 		_arrowBodies.back().rotate(-anglePress);
 	}
-	// _arrowHeads.push_back(sf::CircleShape(size / 10, 3));
-	// _arrowHeads[0].setPosition((watchedParticle->_position + watchedParticle->_acceleration +
-	// 	sf::Vector2f(FluidParticle::_size + thickness / 4 / _zoomFactor, - FluidParticle::_size)) * _zoomFactor);
-	// _arrowHeads[0].setFillColor(sf::Color::Yellow);
-	// _arrowHeads[0].rotate(angle + 90);
-
 
 }
+
 
 
 // ___________________________________________________________
 void Renderer::draw(sf::RenderWindow* window) {
 
 	window->clear(sf::Color::Black);
-	int numShapes = _particleShapes.size();
 
-	window->draw(_searchRadiusShape);
-	for (int i = 0; i < numShapes; i++) {
-		window->draw(_particleShapes[i]);
+	for (int i = 0; i < _solidParticleShapes.size(); i++) {
+		window->draw(_solidParticleShapes[i]);
 	}
-	for (int i = 0; i < _arrowHeads.size(); i++) {
-		window->draw(_arrowHeads[i]);
+	for (int i = 0; i < _fluidParticleShapes.size(); i++) {
+		window->draw(_fluidParticleShapes[i]);
 	}
 	for (int i = 0; i < _arrowBodies.size(); i++) {
 		window->draw(_arrowBodies[i]);
 	}
+	window->draw(_watchedParticleShape);
+	// window->draw(_searchRadiusShape);
+	window->draw(_infoPanel);
+	window->draw(_graphBackground);
+	for (int i = 0; i < _graphShapes.size(); i++) {
+		window->draw(_graphShapes[i]);
+	}
+	window->draw(_description);
+	window->draw(_information);
+
 	window->display();
 }
