@@ -8,7 +8,7 @@
 
 int main()
 {
-    Simulation simulation = Simulation(ManyLayers);
+    Simulation simulation = Simulation(RotatedBox);
     simulation.run();
     return 0;
 }

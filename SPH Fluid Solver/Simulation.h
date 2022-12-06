@@ -79,4 +79,6 @@ class Simulation {
 	  void update_physics();
 
 	  void run();
+
+	  void render_from_file(std::string fileName);
 };

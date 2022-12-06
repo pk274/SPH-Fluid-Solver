@@ -5,6 +5,9 @@
 #include "./Functions.h"
 #include "./Parameters.h"
 
+constexpr float kernelCorrection = 0.99914073896;
+float a = 5 / (14 * M_PI * Parameters::H * Parameters::H);
+
 
 // __________________________________________________________________________________
 sf::Vector2f Functions::calculate_distance(sf::Vector2f pos1, sf::Vector2f pos2) {
@@ -22,17 +25,15 @@ double Functions::calculate_distance_norm(sf::Vector2f distance) {
 // _________________________________________________________________________________
 double Functions::kernel(double distance) {
 	double q = distance / Parameters::H;
-	double a = 5 / (14 * M_PI * Parameters::H * Parameters::H);
 	double t1 = std::max(1 - q, 0.);
 	double t2 = std::max(2 - q, 0.);
-	return a * (t2 * t2 * t2 - 4 * t1 * t1 * t1);
+	return a * kernelCorrection * (t2 * t2 * t2 - 4 * t1 * t1 * t1);
 }
 
 // _________________________________________________________________________________
 sf::Vector2f Functions::kernel_derivation(sf::Vector2f distance, float distanceNorm) {
 	if (distanceNorm == 0) { return sf::Vector2f(0, 0); }
 	float q = distanceNorm / Parameters::H;
-	float a = 5 / (14 * M_PI * Parameters::H * Parameters::H);
 	float t1 = std::max(1 - q, 0.f);
 	float t2 = std::max(2 - q, 0.f);
 	return a * distance / (distanceNorm * Parameters::H) * (-3 * t2 * t2 + 12 * t1 * t1);

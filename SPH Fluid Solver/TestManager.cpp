@@ -67,6 +67,7 @@ std::vector<int> TestManager::test_kernel(std::vector<Particle>* particles, int 
 			areaSum[1][0] += distance_ij.y * kernelDeriv.x;
 			areaSum[1][1] += distance_ij.y * kernelDeriv.y;
 		}
+		std::cout << kernelSum << std::endl;
 		sumZero = (abs(kernelDerivativeSum.x) < THRESHHOLD) && (abs(kernelDerivativeSum.y) < THRESHHOLD);
 		areaIsRight = true;
 		kernelSumIsRight = abs(kernelSum - 1.f) < THRESHHOLD;

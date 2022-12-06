@@ -137,9 +137,9 @@ void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, 
 
 
 // ___________________________________________________________
-void Renderer::update_information(sf::Time time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity, float maxStep, float watchedParticleDensity) {
+void Renderer::update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity, float maxStep, float watchedParticleDensity) {
 	// Information in the box
-	_timeInfo = std::to_string(time.asSeconds());
+	_timeInfo = std::to_string(time);
 	_numParticlesInfo = std::to_string(numParticles);
 	_numFluidsInfo = std::to_string(numFluidParticles);
 	_numUpdatesInfo = std::to_string(numUpdates);

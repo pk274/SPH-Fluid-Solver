@@ -96,6 +96,28 @@ std::vector<Particle> placeBox(sf::Vector2f pos, int size, int startId = 0) {
 	return box;
 }
 
+// _________________________________________________________________________________
+std::vector<Particle> placeTallBox(sf::Vector2f pos, int size, int minus = 0, int startId = 0) {
+	std::vector<Particle> box = std::vector<Particle>();
+	for (int i = 0; i < size; i++) {
+		box.push_back(SolidParticle(startId + box.size(), pos));
+		pos.y += SolidParticle::_size;
+	}
+	for (int i = 0; i < size / 2 - minus; i++) {
+		box.push_back(SolidParticle(startId + box.size(), pos));
+		pos.x += SolidParticle::_size;
+	}
+	for (int i = 0; i < size; i++) {
+		box.push_back(SolidParticle(startId + box.size(), pos));
+		pos.y -= SolidParticle::_size;
+	}
+	for (int i = 0; i < size / 2 - minus; i++) {
+		box.push_back(SolidParticle(startId + box.size(), pos));
+		pos.x -= SolidParticle::_size;
+	}
+	return box;
+}
+
 
 // _________________________________________________________________________________
 void Simulation::init_empty_simulation() {
@@ -252,7 +274,7 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 		_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < size / 3; i++) {
+	for (int i = 0; i < size / 1.5; i++) {
 		for (int j = 0; j < size / 3; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
@@ -275,18 +297,18 @@ void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
-	std::vector<Particle> box = placeBox(pos, size);
+	std::vector<Particle> box = placeTallBox(pos, size);
 	for (int i = 0; i < box.size(); i++) {
 		_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
-	box = placeBox(pos, size - 2, _particles.size());
+	box = placeTallBox(pos, size - 2, 1, _particles.size());
 	for (int i = 0; i < box.size(); i++) {
 		_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
 	for (int i = 0; i < layers; i++) {
-		for (int j = 0; j < size - 3; j++) {
+		for (int j = 0; j < size / 2 - 3; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
@@ -485,7 +507,7 @@ void Simulation::run() {
 				_testedParticlesId.clear();
 				_testedParticlesId = TestManager::test_kernel(&_particles, Parameters::H);
 			}
-			_renderer.update_information(elapsedTime, _particles.size(),
+			_renderer.update_information(elapsedTime.asSeconds(), _particles.size(),
 				_numFluidParticles, numUpdatesPerSec, _averageDensity, _maxTimeStep,
 				_watchedParticleDensity);
 
@@ -501,6 +523,7 @@ void Simulation::run() {
 	else {
 		if (!Parameters::JUST_RENDER) {
 			_renderFile.open("./renderFile", std::fstream::out | std::fstream::trunc);
+			_renderFile << Parameters::timeStepSize << std::endl;
 			for (int i = 0; i < _particles.size(); i++) {
 				if (_particles[i]._type == solid) {
 					_renderFile << "SolidParticle " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
@@ -553,6 +576,8 @@ void Simulation::run() {
 		float speed;
 		float density;
 		bool runSimulation = true;
+		float timeStepSize;
+		_renderFile >> timeStepSize;
 
 		for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH / Parameters::SPEEDUP; timeSteps++) {
 			elapsedTime = _clock.getElapsedTime();
@@ -607,7 +632,7 @@ void Simulation::run() {
 				_renderer._fluidParticleShapes.pop_back();
 			}
 			numShapes = numFluids + _renderer._solidParticleShapes.size();
- 			_renderer.update_information(elapsedTime, numShapes, numFluids, numUpdatesPerSec, _averageDensity);
+ 			_renderer.update_information(timeSteps * timeStepSize, numShapes, numFluids, numUpdatesPerSec, _averageDensity);
 			_renderer.draw(&_window);
 			if (!runSimulation) { break; }
 		}
@@ -617,4 +642,66 @@ void Simulation::run() {
 
 	// _avgDensityFile.close();
 	_renderFile.close();
+}
+
+
+
+// ________________________________________________________________________
+void Simulation::render_from_file(std::string fileName) {
+	_renderFile.open("./renderFile", std::fstream::in);
+	int timeStepSize;
+	_renderFile >> timeStepSize;
+	std::string type;
+	float x;
+	float y;
+	float color;
+	int numSolids = 0;
+	int numFluids = 0;
+
+	sf::Time elapsedTime;
+	float numUpdatesPerSec = 0;
+
+	// Add solid particles
+	while (true) {
+		_renderFile >> type;
+		if (type[0] != 'S') { break; }
+		_renderFile >> x >> y;
+		_particles.push_back(SolidParticle(numSolids, sf::Vector2f(x, y)));
+		numSolids++;
+	}
+
+	for (int i = 0; i < Parameters::SIMULATION_LENGTH; i++) {
+		elapsedTime = _clock.getElapsedTime();
+		numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
+		while (true) {
+			numFluids = 0;
+			_renderFile >> type;
+			if (type[0] == 'F') {
+				_renderFile >> x >> y >> color;
+				if (_particles.size() >= numSolids + numFluids) {
+					_particles.at(numSolids + numFluids)._position = sf::Vector2f(x, y);
+					numFluids++;
+					continue;
+				}
+				else {
+					_particles.push_back(FluidParticle(numFluids + numSolids, sf::Vector2f(x, y)));
+					numFluids++;
+					continue;
+				}
+			}
+			if (type[0] == 'D') {
+				_renderFile >> _averageDensity;
+				continue;
+			}
+			if (type[0] == 'E') {
+				break;
+			}
+		}
+		while (numSolids + numFluids < _particles.size()) {
+			_particles.pop_back();
+		}
+		_renderer.update_graphics(&_particles,numFluids, -1, _markedParticlesId, _testedParticlesId);
+		_renderer.update_information(i * timeStepSize, numSolids + numFluids, numFluids, numUpdatesPerSec, _averageDensity, -1, -1);
+		_renderer.draw(&_window);
+	}
 }
