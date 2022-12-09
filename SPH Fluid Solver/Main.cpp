@@ -8,8 +8,8 @@
 
 int main()
 {
-    Simulation simulation = Simulation(BreakingDam);
-    //simulation.run();
-    simulation.render_from_file("testrender");
+    Simulation simulation = Simulation(ManyLayers);
+    simulation.run();
+    // simulation.render_from_file("testrender");
     return 0;
 }

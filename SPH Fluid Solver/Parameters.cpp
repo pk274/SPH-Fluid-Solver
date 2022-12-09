@@ -15,7 +15,7 @@ const float Parameters::timeStepSize = 0.001;		// 0.000001
 const float Parameters::GRAPH_ZOOM = 6;
 const float Parameters::GRAPH_SPEED = 2;
 
-const bool Parameters::INTERACTIVE = 0;
+const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 1;
 const int Parameters::SIMULATION_LENGTH = 900;
 const int Parameters::SPEEDUP = 1;

@@ -137,7 +137,7 @@ void  Simulation::init_stuffed_box_simulation(int size, int zoom) {
 
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size * size / 2);
+	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles
 	// Add Particles for arena
@@ -180,7 +180,7 @@ void Simulation::init_single_particle_simulation(int size, int zoom) {
 
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size * size / 2);
+	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -231,7 +231,7 @@ void Simulation::init_random_particles_simulation(int size, int zoom, int numPar
 	
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size * size / 2);
+	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -263,7 +263,7 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 	
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size * size / 2);
+	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -297,7 +297,7 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size * size / 2);
+	_hashManager = HashManager(_neighborRadius, size / 4, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);

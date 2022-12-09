@@ -4,10 +4,10 @@
 #include "HashManager.h"
 
 // __________________________________________________________________________
-HashManager::HashManager(int radius, int hashtableSize) {
+HashManager::HashManager(int radius, int areaWidth, int areaHeight) {
 	_cellSize = radius;
-	_hastableSize = hashtableSize;
-	_sqrtHashtableSize = std::ceil(std::sqrt(hashtableSize));
+	_areaWidth = areaWidth;
+	_areaHeight = areaHeight;
 	_Buckets = std::map<std::pair<unsigned int, unsigned int>, std::vector<Particle*>>();
 	reset_buckets();
 }
@@ -23,8 +23,8 @@ void HashManager::insert_item(Particle* particle) {
 // __________________________________________________________________________
 void HashManager::reset_buckets() {
 	_Buckets.clear();
-	for (int i = 0; i < _sqrtHashtableSize; i++) {
-		for (int j = 0; j < _sqrtHashtableSize; j++) {
+	for (int i = 0; i < _areaWidth; i++) {
+		for (int j = 0; j < _areaHeight; j++) {
 			_Buckets.insert(std::pair(std::pair<int, int>(i, j), std::vector<Particle*>()));
 		}
 	}
@@ -33,8 +33,8 @@ void HashManager::reset_buckets() {
 // __________________________________________________________________________
 std::pair<unsigned int, unsigned int> HashManager::hash(sf::Vector2f pos) {
 
-	std::pair<unsigned int, unsigned int> hashvalue = std::pair(((unsigned int)(std::floor(pos.x / _cellSize)) % _sqrtHashtableSize),
-		((unsigned int)(std::floor(pos.y / _cellSize)) % _sqrtHashtableSize));
+	std::pair<unsigned int, unsigned int> hashvalue = std::pair(((unsigned int)(std::floor(pos.x / _cellSize)) % _areaWidth),
+		((unsigned int)(std::floor(pos.y / _cellSize)) % _areaHeight));
 
 	return hashvalue;
 }
