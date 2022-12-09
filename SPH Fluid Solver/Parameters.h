@@ -20,4 +20,5 @@ public:
 	static const bool JUST_RENDER;
 	static const bool INTERACTIVE;
 	static const int SPEEDUP;
+	static const int RENDER_SPEEDUP;
 };

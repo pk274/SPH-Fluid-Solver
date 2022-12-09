@@ -1,27 +1,35 @@
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\vc143.pdb
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\vc143.idb
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\testmanager.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\solidparticle.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\simulation.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\renderer.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\particle.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\main.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\hashmanager.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\functions.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\fluidparticle.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\parameters.obj
-c:\users\paulk\source\repos\sph fluid solver\x64\debug\sph fluid solver.exe
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\sph fluid solver.ilk
-c:\users\paulk\source\repos\sph fluid solver\x64\debug\sph fluid solver.pdb
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\quelle.obj
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\hashmanager.obj.enc
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\main.obj.enc
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\renderer.obj.enc
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\simulation.obj.enc
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\testmanager.obj.enc
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\sph fluid solver.tlog\cl.command.1.tlog
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\sph fluid solver.tlog\cl.read.1.tlog
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\sph fluid solver.tlog\cl.write.1.tlog
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\sph fluid solver.tlog\link.command.1.tlog
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\sph fluid solver.tlog\link.read.1.tlog
-c:\users\paulk\source\repos\sph fluid solver\sph fluid solver\x64\debug\sph fluid solver.tlog\link.write.1.tlog
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\vc143.pdb
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\vc143.idb
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\testmanager.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\solidparticle.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\renderer.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\parameters.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\particle.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\main.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\hashmanager.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\functions.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\fluidparticle.obj
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\simulation.obj
+c:\users\paul\source\repos\sph-fluid-solver\x64\debug\sph fluid solver.exe
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\sph fluid solver.ilk
+c:\users\paul\source\repos\sph-fluid-solver\x64\debug\sph fluid solver.pdb
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\hashmanager.obj.enc
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\simulation.obj.enc
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\testmanager.obj.enc
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\fluidparticle.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\functions.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\hashmanager.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\main.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\parameters.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\particle.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\renderer.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\simulation.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\solidparticle.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\testmanager.nativecodeanalysis.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\vc.nativecodeanalysis.all.xml
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\sph fluid solver.tlog\cl.command.1.tlog
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\sph fluid solver.tlog\cl.read.1.tlog
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\sph fluid solver.tlog\cl.write.1.tlog
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\sph fluid solver.tlog\link.command.1.tlog
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\sph fluid solver.tlog\link.read.1.tlog
+c:\users\paul\source\repos\sph-fluid-solver\sph fluid solver\x64\debug\sph fluid solver.tlog\link.write.1.tlog

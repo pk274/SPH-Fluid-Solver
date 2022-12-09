@@ -63,7 +63,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 	
 	_description.setPosition(sf::Vector2f(820, 10));
 	_description.setString(
-		"Current Time:\n\nNumber of particles:\n\n# moving Particles\n\nUpdates per second:\n\nAverage Fluid Density : \n\nMaximum Timestep : \n\n\n\nCurrent Particle:\n\nDensity: ");
+		"Current Time:\n\nNumber of particles:\n\n# moving Particles\n\nUpdates per second:\n\nAverage Fluid Density : \n\nMaximum Velocity : \n\n\n\nCurrent Particle:\n\nDensity: ");
 	_description.setCharacterSize(15);
 	_description.setFillColor(sf::Color::Black);
 	_description.setStyle(sf::Text::Underlined);
@@ -115,8 +115,7 @@ void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, 
 
 
 		int density = std::min((int)(particles->at(i)._density * 100), 255);
-		speed = std::min((int)(Functions::calculate_distance_norm(particles->at(i)._velocity) * 0.6), 255);
-		_fluidParticleShapes[fluidIndex].setFillColor(FluidParticle::_stasisColor + sf::Color::Color(density, speed, 0));
+		_fluidParticleShapes[fluidIndex].setFillColor(FluidParticle::_stasisColor + sf::Color::Color(density, particles->at(i)._colorFactor, 0));
 
 		int numTestedParticles = testedParticlesId.size();
 		for (int j = 0; j < numTestedParticles; j++) {
@@ -137,14 +136,14 @@ void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, 
 
 
 // ___________________________________________________________
-void Renderer::update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity, float maxStep, float watchedParticleDensity) {
+void Renderer::update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity, float maxVel, float watchedParticleDensity) {
 	// Information in the box
 	_timeInfo = std::to_string(time);
 	_numParticlesInfo = std::to_string(numParticles);
 	_numFluidsInfo = std::to_string(numFluidParticles);
 	_numUpdatesInfo = std::to_string(numUpdates);
 	_avgDensityInfo = std::to_string(avgDensity);
-	_maxStepInfo = std::to_string(maxStep);
+	_maxStepInfo = std::to_string(maxVel);
 	_watchedParticleDensity = std::to_string(watchedParticleDensity);
 
 	_timeInfo.resize(4, ' ');
@@ -230,7 +229,7 @@ void Renderer::draw(sf::RenderWindow* window) {
 		window->draw(_arrowBodies[i]);
 	}
 	window->draw(_watchedParticleShape);
-	// window->draw(_searchRadiusShape);
+	window->draw(_searchRadiusShape);
 	window->draw(_infoPanel);
 	window->draw(_graphBackground);
 	for (int i = 0; i < _graphShapes.size(); i++) {

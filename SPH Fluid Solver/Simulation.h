@@ -58,7 +58,6 @@ class Simulation {
 	  std::vector<int> _testedParticlesId;
 	  sf::Time _lastUpdate;
 	  float _averageDensity;
-	  float _maxTimeStep;
 	  float _maxVelocity;
 	  float _watchedParticleDensity;
 

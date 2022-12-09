@@ -8,7 +8,8 @@
 
 int main()
 {
-    Simulation simulation = Simulation(RotatedBox);
-    simulation.run();
+    Simulation simulation = Simulation(BreakingDam);
+    //simulation.run();
+    simulation.render_from_file("testrender");
     return 0;
 }

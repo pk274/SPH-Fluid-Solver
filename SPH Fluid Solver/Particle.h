@@ -23,6 +23,7 @@ class Particle {
 
 	  double _density;
 	  double _pressure;
+	  int _colorFactor;
 
 	  std::vector<Particle*> _neighbors;
 

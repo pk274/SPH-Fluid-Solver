@@ -17,6 +17,10 @@ class HashManager {
 	int _cellSize;
 	float _p1DIVcellSize;
 	float _p2DIVcellSize;
+	float _distanceNorm;
+	int _index;
+	std::pair<unsigned int, unsigned int> _particleCell;
+	sf::Vector2f _distance;
 	std::pair<unsigned int, unsigned int> _neighboringCells[9];
 
 	HashManager(int radius = 10, int size = 1);
