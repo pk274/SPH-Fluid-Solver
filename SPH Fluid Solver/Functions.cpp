@@ -49,3 +49,16 @@ float Functions::round(double number, int places) {
 	int factor = std::pow(10, places);
 	return std::round(factor * number) / factor;
 }
+
+
+// _________________________________________________________________________________
+std::vector<Particle*> Functions::n_square_neighborhood_search(std::vector<Particle>* particles, int index, float radius) {
+	std::vector<Particle*> neighbors = std::vector<Particle*>();
+	for (int i = 0; i < particles->size(); i++) {
+		if (calculate_distance_norm(calculate_distance
+		(particles->at(i)._position, particles->at(index)._position)) < radius) {
+			neighbors.push_back(&particles->at(i));
+		}
+	}
+	return neighbors;
+}

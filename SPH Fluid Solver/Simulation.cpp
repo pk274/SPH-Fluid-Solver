@@ -59,7 +59,10 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(27, 14, 10);
+		init_layer_simulation(50, 7, 10);
+		break;
+	case Cup:
+		init_cup_simulation(120, 3);	//3
 		break;
 	}
 
@@ -115,6 +118,57 @@ std::vector<Particle> placeTallBox(sf::Vector2f pos, int size, int minus = 0, in
 		pos.x -= SolidParticle::_size;
 	}
 	return box;
+}
+
+// _________________________________________________________________________________
+std::vector<Particle> placePool(sf::Vector2f pos, int size, int startId = 0) {
+	std::vector<Particle> box = std::vector<Particle>();
+	for (int i = 0; i < size / 2; i++) {
+		box.push_back(SolidParticle(startId + box.size(), pos));
+		pos.y += SolidParticle::_size;
+	}
+	for (int i = 0; i < size; i++) {
+		box.push_back(SolidParticle(startId + box.size(), pos));
+		pos.x += SolidParticle::_size;
+	}
+	for (int i = 0; i < size / 2; i++) {
+		box.push_back(SolidParticle(startId + box.size(), pos));
+		pos.y -= SolidParticle::_size;
+	}
+	return box;
+}
+
+// _________________________________________________________________________________
+std::vector<Particle> placeParticleLine(sf::Vector2f pos1, sf::Vector2f pos2, ParticleType type,
+	int startId = 0, bool placeFirst = 1, bool placeLast = 1) {
+
+	std::vector<Particle> line = std::vector<Particle>();
+	sf::Vector2f distance = Functions::calculate_distance(pos1, pos2);
+	float distanceNorm = Functions::calculate_distance_norm(distance);
+	float particlesNecessary = distanceNorm;
+	sf::Vector2f step;
+	if (type == solid) {
+		particlesNecessary = distanceNorm / SolidParticle::_size;
+		step = -distance * (SolidParticle::_size / distanceNorm);
+	}
+	else if (type == fluid) {
+		particlesNecessary = distanceNorm / FluidParticle::_size;
+		step = -distance * (FluidParticle::_size / distanceNorm);
+	}
+	sf::Vector2f pos = pos1;
+
+	for (int i = 0; i < particlesNecessary; i++) {
+		if (i == 0 && !placeFirst) { pos += step; continue; }
+		if (type == solid) {
+			line.push_back(SolidParticle(startId + line.size(), pos));
+		}
+		else if (type == fluid) {
+			line.push_back(FluidParticle(startId + line.size(), pos));
+		}
+		pos += step;
+	}
+	if (!placeLast) { line.pop_back(); }
+	return line;
 }
 
 
@@ -325,6 +379,59 @@ void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 	_printFPS = true;
 	_printParticleInfo = false;
 	_deleteParticles = false;
+}
+
+
+// _________________________________________________________________________________
+void Simulation::init_cup_simulation(int size, int zoom) {
+	_zoomFactor = zoom;
+	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
+	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+
+	int downshift = 130;
+	int sideshift = 12;
+
+	// Add Particles for arena
+	sf::Vector2f pos1 = sf::Vector2f(sideshift, downshift);
+	sf::Vector2f pos2 = sf::Vector2f(sideshift, downshift);
+	std::vector<Particle> box = placePool(pos1, size);
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos1 = sf::Vector2f(SolidParticle::_size + sideshift, downshift);
+	box = placePool(pos1, size - 2, _particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos1 = sf::Vector2f(50, 10);
+	std::vector<Particle> line1 = placeParticleLine(pos1, pos1 + sf::Vector2f(90, 50), solid, _particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_particles.push_back(line1[i]);
+	}
+	pos2 = pos1 + sf::Vector2f( -25, 45);
+	line1 = placeParticleLine(pos2, pos2 + sf::Vector2f(90, 50), solid, _particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_particles.push_back(line1[i]);
+	}
+
+	std::vector<Particle> line2;
+	line1 = placeParticleLine(pos2, pos1, solid, _particles.size(), 0, 1);
+	for (int i = 0; i < line1.size(); i++) {
+		_particles.push_back(line1[i]);
+	}
+	for (int i = 0; i < line1.size(); i++) {
+		line2 = placeParticleLine(line1[i]._position, line1[i]._position + sf::Vector2f(90, 50), fluid, _particles.size(), 0, 0);
+		for (int j = 0; j < line2.size(); j++) {
+			_particles.push_back(line2[j]);
+		}
+	}
+
+	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = true;
+	_printParticleInfo = false;
+	_deleteParticles = true;
 }
 
 
@@ -559,6 +666,12 @@ void Simulation::run() {
 		}
 		_avgDensityFile.close();
 
+
+		_renderFile.open("./renderFile", std::fstream::in);
+		_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
+		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
+		_window.create(_videoMode, "SPH Fluid Solver");
+
 		std::cout << "=======================================================" << std::endl;
 		std::cout << "COMPUTATIONS READY! Press Space to watch the Simulation" << std::endl;
 		std::cout << "=======================================================" << std::endl;
@@ -567,10 +680,6 @@ void Simulation::run() {
 			continue;
 		}
 
-		_renderFile.open("./renderFile", std::fstream::in);
-		// _avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
-		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
-		_window.create(_videoMode, "SPH Fluid Solver");
 		sf::Time elapsedTime;
 		int numUpdatesPerSec;
 		int numShapes = 0;
@@ -615,7 +724,7 @@ void Simulation::run() {
 				if (type[0] == 'D') {
 					_renderFile >> density;
 					_averageDensity = density;
-					// _avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
+					_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
 					continue;
 				}
 				_renderFile >> xValue >> yValue >> colorFactor;
@@ -656,7 +765,7 @@ void Simulation::run() {
 
 	}
 
-	// _avgDensityFile.close();
+	_avgDensityFile.close();
 	_renderFile.close();
 }
 

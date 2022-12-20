@@ -24,7 +24,8 @@ enum SimulationPreset {
 	FourLayers = 7,
 	ManyLayers = 8,
 	BreakingDam = 10,
-	BigBreakingDam = 11
+	BigBreakingDam = 11,
+	Cup = 20
 };
 
 
@@ -72,6 +73,7 @@ class Simulation {
 	  void init_random_particles_simulation(int size, int zoom, int numParticles);
 	  void init_breaking_dam_simulation(int size = 50, int zoom = 5);
 	  void init_layer_simulation(int size, int zoom, int layers);
+	  void init_cup_simulation(int size, int zoom);
 
 	  void update_hashTable();
 

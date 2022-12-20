@@ -2,6 +2,7 @@
 #pragma once
 
 #include<SFML/Graphics.hpp>
+#include "./Particle.h"
 
 
 class Functions {
@@ -12,4 +13,5 @@ class Functions {
 	static sf::Vector2f kernel_derivation(sf::Vector2f distance, float distanceNorm);
 	static double scalar_product2D(sf::Vector2f v1, sf::Vector2f v2);
 	static float round(double number, int places = 3);
+	static std::vector<Particle*> n_square_neighborhood_search(std::vector<Particle>* particles, int index, float radius);
 };
