@@ -64,6 +64,12 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 	case Cup:
 		init_cup_simulation(120, 3);	//3
 		break;
+	case Complex:
+		init_complex_simulation(120, 3);
+		break;
+	case Osmosis:
+		init_osmosis_simulation(100, 4);
+		break;
 	}
 
 	_clock = sf::Clock();
@@ -171,6 +177,27 @@ std::vector<Particle> placeParticleLine(sf::Vector2f pos1, sf::Vector2f pos2, Pa
 	return line;
 }
 
+// _________________________________________________________________________________
+std::vector<Particle> placeTriangle(sf::Vector2f pos1, sf::Vector2f pos2, sf::Vector2f pos3, ParticleType type,
+	int startId = 0, bool placeFirst = 1, bool placeLast = 1) {
+	std::vector<Particle> triangle = std::vector<Particle>();
+	std::vector<Particle> line;
+	if (type == solid) {
+		line = placeParticleLine(pos1, pos2, solid, startId + triangle.size(), 1, 1);
+		for (int i = 0; i < line.size(); i++) {
+			triangle.push_back(line[i]);
+		}
+		line = placeParticleLine(pos2, pos3, solid, startId + triangle.size(), 1, 1);
+		for (int i = 0; i < line.size(); i++) {
+			triangle.push_back(line[i]);
+		}
+		line = placeParticleLine(pos3, pos1, solid, startId + triangle.size(), 1, 1);
+		for (int i = 0; i < line.size(); i++) {
+			triangle.push_back(line[i]);
+		}
+	}
+	return triangle;
+}
 
 // _________________________________________________________________________________
 void Simulation::init_empty_simulation() {
@@ -434,7 +461,123 @@ void Simulation::init_cup_simulation(int size, int zoom) {
 	_deleteParticles = true;
 }
 
+// _________________________________________________________________________________
+void Simulation::init_complex_simulation(int size, int zoom) {
+	_zoomFactor = zoom;
+	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
+	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
+	// Add Particles for arena
+	sf::Vector2f pos1 = sf::Vector2f(0, 0);
+	sf::Vector2f pos2 = sf::Vector2f(0, 0);
+	sf::Vector2f pos3 = sf::Vector2f(0, 0);
+	std::vector<Particle> shape;
+	std::vector<Particle> box = placeBox(pos1, size);
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos1 = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	box = placeBox(pos1, size - 2, _particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+
+	pos1 = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * 2);
+	for (int i = 0; i < size / 3; i++) {
+		for (int j = 0; j < size / 3; j++) {
+			_particles.push_back(FluidParticle(_particles.size(), pos1));
+			pos1.x += FluidParticle::_size;
+		}
+		_particles.push_back(SolidParticle(_particles.size(), pos1));
+		pos3 = pos1;
+		pos1.x = SolidParticle::_size * 2;
+		pos1.y += FluidParticle::_size;
+	}
+	pos2 = pos1 + sf::Vector2f(SolidParticle::_size * size / 1.5, SolidParticle::_size * size / 4);
+	shape = placeParticleLine(pos1, pos2, solid, _particles.size());
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+	pos2 += sf::Vector2f(0, -SolidParticle::_size * 8);
+	shape = placeParticleLine(pos3, pos2, solid, _particles.size());
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+
+	pos1 = sf::Vector2f(SolidParticle::_size * (size - SolidParticle::_size * 5), SolidParticle::_size * size / 2);
+	pos2 = sf::Vector2f(SolidParticle::_size * (size - SolidParticle::_size * 5), SolidParticle::_size * size - 10);
+	pos3 = sf::Vector2f(SolidParticle::_size * (size - SolidParticle::_size * 10), SolidParticle::_size * size - 10);
+	shape = placeTriangle(pos1, pos2, pos3, solid, _particles.size());
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+
+	pos1 = sf::Vector2f(SolidParticle::_size * (size  / 6), SolidParticle::_size * size * 3 / 4);
+	pos2 = sf::Vector2f(SolidParticle::_size * (size / 6), SolidParticle::_size * size  - 10);
+	pos3 = sf::Vector2f(SolidParticle::_size * (size / 3), SolidParticle::_size * size - 10);
+	shape = placeTriangle(pos1, pos2, pos3, solid, _particles.size());
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+
+	pos1 = sf::Vector2f(SolidParticle::_size * (size / 2 + 10), SolidParticle::_size * size * 2 / 3);
+	pos2 = sf::Vector2f(SolidParticle::_size * (size / 2 - 10), SolidParticle::_size * size * 2 / 3);
+	pos3 = sf::Vector2f(SolidParticle::_size * (size / 2), SolidParticle::_size * size * 2 / 2.5);
+	shape = placeTriangle(pos1, pos2, pos3, solid, _particles.size());
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+
+
+	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = true;
+	_printParticleInfo = false;
+	_deleteParticles = true;
+}
+
+// _________________________________________________________________________________
+void Simulation::init_osmosis_simulation(int size, int zoom) {
+	_zoomFactor = zoom;
+	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
+	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+
+	// Add Particles for arena
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	std::vector<Particle> shape = placeBox(pos, size);
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	shape = placeBox(pos, size - 2, _particles.size());
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+
+	pos = sf::Vector2f(SolidParticle::_size * size / 2 + 1, SolidParticle::_size * (size - 5));
+	shape = placeParticleLine(pos, pos - sf::Vector2f(0, size * 2 - 6), solid, _particles.size());
+	for (int i = 0; i < shape.size(); i++) {
+		_particles.push_back(shape[i]);
+	}
+
+	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
+	for (int i = 0; i < size / 1.5; i++) {
+		for (int j = 0; j < size / 2 - 1; j++) {
+			_particles.push_back(FluidParticle(_particles.size(), pos));
+			pos.x += FluidParticle::_size;
+		}
+		pos.x = SolidParticle::_size * 2;
+		pos.y -= FluidParticle::_size;
+	}
+
+	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = true;
+	_printParticleInfo = false;
+	_deleteParticles = true;
+}
 
 // _________________________________________________________________________________
 void Simulation::update_hashTable() {

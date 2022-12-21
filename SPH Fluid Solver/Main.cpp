@@ -8,7 +8,7 @@
 
 int main()
 {
-    Simulation simulation = Simulation(ManyLayers);
+    Simulation simulation = Simulation(Osmosis);
     simulation.run();
     // simulation.render_from_file("testrender");
     return 0;

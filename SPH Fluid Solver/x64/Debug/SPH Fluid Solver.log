@@ -1,5 +1,5 @@
 ﻿  Parameters.cpp
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(14,46): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(14,45): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 LINK : warning LNK4075: /INCREMENTAL wird aufgrund der Angabe von /PROFILE ignoriert.
 FluidParticle.obj : warning LNK4075: /EDITANDCONTINUE wird aufgrund der Angabe von /OPT:REF ignoriert.
   SPH Fluid Solver.vcxproj -> C:\Users\paulk\source\repos\SPH Fluid Solver\x64\Debug\SPH Fluid Solver.exe

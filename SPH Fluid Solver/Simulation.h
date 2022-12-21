@@ -25,7 +25,9 @@ enum SimulationPreset {
 	ManyLayers = 8,
 	BreakingDam = 10,
 	BigBreakingDam = 11,
-	Cup = 20
+	Cup = 20,
+	Complex = 30,
+	Osmosis = 40,
 };
 
 
@@ -74,6 +76,8 @@ class Simulation {
 	  void init_breaking_dam_simulation(int size = 50, int zoom = 5);
 	  void init_layer_simulation(int size, int zoom, int layers);
 	  void init_cup_simulation(int size, int zoom);
+	  void init_complex_simulation(int size, int zoom);
+	  void init_osmosis_simulation(int size, int zoom);
 
 	  void update_hashTable();
 
