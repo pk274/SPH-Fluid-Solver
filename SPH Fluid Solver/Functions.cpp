@@ -5,7 +5,8 @@
 #include "./Functions.h"
 #include "./Parameters.h"
 
-constexpr float kernelCorrection = 0.99914073896;
+// constexpr float kernelCorrection = 0.99914073896;
+constexpr float kernelCorrection = 1;
 float a = 5 / (14 * M_PI * Parameters::H * Parameters::H);
 
 
@@ -17,9 +18,8 @@ sf::Vector2f Functions::calculate_distance(sf::Vector2f pos1, sf::Vector2f pos2)
 
 // __________________________________________________________________________________
 double Functions::calculate_distance_norm(sf::Vector2f distance) {
-	return std::sqrt(std::pow(distance.x, 2) + std::pow(distance.y, 2));
+	return std::sqrt(distance.x * distance.x + distance.y * distance.y);
 }
-
 
 
 // _________________________________________________________________________________

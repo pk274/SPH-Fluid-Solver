@@ -10,3 +10,89 @@ cup sim:
 STIFFNESS = 1000000
 VISCOSITY = 200
 timeStepSize = 0.000005
+
+neighborhood time:
+uniform grid:
+- 10 layers on 50 x 25: 10.8595	( 512 particles)
+- 20 layers on 50 x 25: 19.9138 ( 732 particles)
+- 40 layers on 50 x 25: 35.6074 ( 1174 particles)
+- bd 100 on 40 x 40: 7.046( 412 p)
+- bd 400 on 40 x 40: 19.093 ( 712 p)
+- bd 900 on 40 x 40: 38.142 (1212 p)
+
+-bd 100 on 80 x 80 : 14.693 (732 p)
+-bd 400 on 80 x 80 : 27.905 (1032 p)
+-bd 900 on 80 x 80: 48.593 (1532 p)
+-bd 1600 on 80 x 80: 78.599 (2232 p)
+
+compact hashing:
+- bd 100 on 40 x 40: 6.312( 412 p)
+- bd 400 on 40 x 40: 17.971 ( 712 p)
+- bd 900 on 40 x 40: 36.191 (1212 p)
+
+-bd 100 on 80 x 80 : 10.098 (732 p)
+-bd 400 on 80 x 80 : 22.679 (1032 p)
+-bd 900 on 80 x 80: 43.657 (1532 p)
+-bd 1600 on 80 x 80: 71.765 (2232 p)
+
+- 10 layers on 50 x 25: 10.617	( 512 particles)
+- 20 layers on 50 x 25: 18.951 ( 732 particles)
+- 40 layers on 50 x 25: 36.171 ( 1174 particles)
+
+-complex: 83.15
+
+n square:
+- 10 layers on 50 x 25: 9.933	( 512 particles)
+- 20 layers on 50 x 25: 22.011 ( 732 particles)
+- 40 layers on 50 x 25: 57.768 ( 1174 particles)
+
+- bd 100 on 40 x 40: 5.753( 412 p)
+- bd 400 on 40 x 40: 20.095 ( 712 p)
+- bd 900 on 40 x 40: 60.471 (1212 p)
+
+-bd 100 on 80 x 80 : 10.443 (732 p)
+-bd 400 on 80 x 80 : 28.623 (1032 p)
+-bd 900 on 80 x 80: 75.543 (1532 p)
+-bd 1600 on 80 x 80: 174.819 (2232 p)
+
+
+notation tensor, matrix, vector?
+"volume" correct for 3 AND 2 dimensions?	-sample size
+
+
+
+
+-ist schwierig einfügen in teilung von introduction + ziel + in gliederung in worten
+
+
+
+
+
+
+-gleichung 7
+-analyse 3teilung: was wll ich wissen, wie sieht es aus + daten, interpretation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-sph von monaghan
+-survey on fluid simulation
+-becker teschner 07 state equation
+-nachbarschaftssuche zitieren: spatial hashing thm03
+iatb11
+-ist bachelorprojekt, uni, datum, betreuer, bereich
+-prof dr ing

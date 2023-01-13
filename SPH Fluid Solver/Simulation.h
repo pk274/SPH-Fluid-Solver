@@ -10,6 +10,7 @@
 #include "./FluidParticle.h"
 #include "./HashManager.h"
 #include "./TestManager.h"
+#include "./CompactHashManager.h"
 
 #include "Renderer.h"
 
@@ -46,7 +47,8 @@ class Simulation {
 	  sf::RenderWindow _window;
 	  int _zoomFactor;
 
-	  HashManager _hashManager;
+	  CompactHashManager _hashManager;
+	  // HashManager _hashManager;
 
 	  bool _moveParticles;
 	  bool _testNeighbors;
@@ -63,6 +65,7 @@ class Simulation {
 	  float _averageDensity;
 	  float _maxVelocity;
 	  float _watchedParticleDensity;
+	  float _avgNeighborhoodTime;
 
 	  std::fstream _avgDensityFile;
 	  std::fstream _renderFile;
@@ -80,6 +83,7 @@ class Simulation {
 	  void init_osmosis_simulation(int size, int zoom);
 
 	  void update_hashTable();
+	  void update_hashTable_old();
 
 	  void update_physics();
 

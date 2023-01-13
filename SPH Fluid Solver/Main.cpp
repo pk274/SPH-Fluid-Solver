@@ -8,8 +8,9 @@
 
 int main()
 {
-    Simulation simulation = Simulation(Osmosis);
-    simulation.run();
+    //Simulation simulation = Simulation(SmallBox);
+    TestManager::test_kernel_integral();
+    //simulation.run();
     // simulation.render_from_file("testrender");
     return 0;
 }

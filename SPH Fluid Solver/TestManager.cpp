@@ -96,13 +96,11 @@ void TestManager::test_kernel_integral() {
 	double kernelSum = 0;
 	for (float i = -areaSize; i <= areaSize; i += stepSize) {
 		for (float j = -areaSize; j <= areaSize; j += stepSize) {
-			if (i == 0 && j == 0) { continue; }
+			// if (i == 0 && j == 0) { continue; }
 			kernelIntegral += stepSize * stepSize * Functions::kernel(
 				Functions::calculate_distance_norm(sf::Vector2f(i, j)));
 			kernelSum += Functions::kernel(
 				Functions::calculate_distance_norm(sf::Vector2f(i, j)));
-			std::cout << 4 * Functions::kernel(
-				Functions::calculate_distance_norm(sf::Vector2f(i, j))) << std::endl;
 		}
 	}
 	std::cout << "\n" << kernelIntegral << std::endl;

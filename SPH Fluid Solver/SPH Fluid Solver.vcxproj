@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CompactHashManager.cpp" />
     <ClCompile Include="FluidParticle.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="HashManager.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="TestManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CompactHashManager.h" />
     <ClInclude Include="FluidParticle.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="HashManager.h" />

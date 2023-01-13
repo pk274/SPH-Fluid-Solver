@@ -47,10 +47,10 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_random_particles_simulation(35, 10, 10);
 		break;
 	case BreakingDam:
-		init_breaking_dam_simulation(39, 10);
+		init_breaking_dam_simulation(80, 4);
 		break;
 	case BigBreakingDam:
-		init_breaking_dam_simulation(76, 5);
+		init_breaking_dam_simulation(150, 2);
 		break;
 	case GiantFuckingBox:
 		init_stuffed_box_simulation(300, 1);
@@ -59,7 +59,7 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(50, 7, 10);
+		init_layer_simulation(50, 7, 40);
 		break;
 	case Cup:
 		init_cup_simulation(120, 3);	//3
@@ -68,7 +68,7 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_complex_simulation(120, 3);
 		break;
 	case Osmosis:
-		init_osmosis_simulation(100, 4);
+		init_osmosis_simulation(40, 8);
 		break;
 	}
 
@@ -218,7 +218,8 @@ void  Simulation::init_stuffed_box_simulation(int size, int zoom) {
 
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles
 	// Add Particles for arena
@@ -261,7 +262,8 @@ void Simulation::init_single_particle_simulation(int size, int zoom) {
 
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -312,7 +314,8 @@ void Simulation::init_random_particles_simulation(int size, int zoom, int numPar
 	
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -344,7 +347,8 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 	
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -358,8 +362,8 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 		_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < size / 1.5; i++) {
-		for (int j = 0; j < size / 3; j++) {
+	for (int i = 0; i < 70; i++) {
+		for (int j = 0; j < 70; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
@@ -378,7 +382,8 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 4, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 4, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 4, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -413,7 +418,8 @@ void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 void Simulation::init_cup_simulation(int size, int zoom) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	int downshift = 130;
 	int sideshift = 12;
@@ -465,7 +471,8 @@ void Simulation::init_cup_simulation(int size, int zoom) {
 void Simulation::init_complex_simulation(int size, int zoom) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos1 = sf::Vector2f(0, 0);
@@ -541,7 +548,8 @@ void Simulation::init_complex_simulation(int size, int zoom) {
 void Simulation::init_osmosis_simulation(int size, int zoom) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
-	_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -581,10 +589,22 @@ void Simulation::init_osmosis_simulation(int size, int zoom) {
 
 // _________________________________________________________________________________
 void Simulation::update_hashTable() {
+	sf::Time before = _clock.getElapsedTime();
+	_hashManager.update(_particles.size());
+	for (int i = 0; i < _particles.size(); i++) {
+		_hashManager.insert_item(&_particles[i]);
+	}
+	_avgNeighborhoodTime += _clock.getElapsedTime().asMilliseconds() - before.asMilliseconds();
+}
+
+// _________________________________________________________________________________
+void Simulation::update_hashTable_old() {
+	sf::Time before = _clock.getElapsedTime();
 	_hashManager.reset_buckets();
 	for (int i = 0; i < _particles.size(); i++) {
 		_hashManager.insert_item(&_particles[i]);
 	}
+	_avgNeighborhoodTime += _clock.getElapsedTime().asMilliseconds() - before.asMilliseconds();
 }
 
 
@@ -612,12 +632,14 @@ void Simulation::update_physics() {
 	// Find Neighbors
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
+		sf::Time before = _clock.getElapsedTime();
 		_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
-		// if (_particles[i]._id == _watchedParticleId) {
-		// 	for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
-		// 		_markedParticlesId.push_back(_particles[i]._neighbors[j]->_id);
-		// 	}
-		// }
+		_avgNeighborhoodTime += _clock.getElapsedTime().asMilliseconds() - before.asMilliseconds();
+		if (_particles[i]._id == _watchedParticleId) {
+			for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+				_markedParticlesId.push_back(_particles[i]._neighbors[j]->_id);
+			}
+		}
 	}
 
 	// Update Density and Pressure
@@ -728,7 +750,7 @@ void Simulation::run() {
 			elapsedTime = _clock.getElapsedTime();
 			numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
 
-			_lastUpdate = elapsedTime;
+			_lastUpdate = _clock.getElapsedTime();
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 				// Pause
@@ -751,7 +773,8 @@ void Simulation::run() {
 				//}
 			}
 
-			update_hashTable();
+			//update_hashTable_old();
+			// update_hashTable();
 			update_physics();
 
 			if (_testNeighbors) {
@@ -772,6 +795,7 @@ void Simulation::run() {
 			_avgDensityFile << numIterations * Parameters::timeStepSize << " " << _averageDensity << "\n";
 			numIterations++;
 		}
+		std::cout << _avgNeighborhoodTime / numIterations << std::endl;
 
 	}
 
@@ -791,6 +815,7 @@ void Simulation::run() {
 					std::cout << "Calculating step " << timeSteps << " / " << Parameters::SIMULATION_LENGTH << "\r";
 				}
 				update_hashTable();
+				//update_hashTable_old();
 				update_physics();
 				int numParticles = _particles.size();
 				if (timeSteps % Parameters::SPEEDUP == 0) {
@@ -803,11 +828,13 @@ void Simulation::run() {
 					_renderFile << "Density " << _averageDensity << "\n";
 					_renderFile << "END_OF_UPDATE" << std::endl;
 				}
+	
 				_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
 			}
 			_renderFile.close();
 		}
 		_avgDensityFile.close();
+		std::cout << _avgNeighborhoodTime / Parameters::SIMULATION_LENGTH << std::endl;
 
 
 		_renderFile.open("./renderFile", std::fstream::in);
