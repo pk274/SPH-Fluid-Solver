@@ -47,10 +47,10 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_random_particles_simulation(35, 10, 10);
 		break;
 	case BreakingDam:
-		init_breaking_dam_simulation(80, 4);
+		init_breaking_dam_simulation(80, 5);
 		break;
 	case BigBreakingDam:
-		init_breaking_dam_simulation(150, 2);
+		init_breaking_dam_simulation(130, 3);
 		break;
 	case GiantFuckingBox:
 		init_stuffed_box_simulation(300, 1);
@@ -59,7 +59,7 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(50, 7, 40);
+		init_layer_simulation(100, 4, 10);
 		break;
 	case Cup:
 		init_cup_simulation(120, 3);	//3
@@ -68,7 +68,7 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_complex_simulation(120, 3);
 		break;
 	case Osmosis:
-		init_osmosis_simulation(40, 8);
+		init_osmosis_simulation(100, 4);
 		break;
 	}
 
@@ -219,7 +219,7 @@ void  Simulation::init_stuffed_box_simulation(int size, int zoom) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
-	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles
 	// Add Particles for arena
@@ -263,7 +263,7 @@ void Simulation::init_single_particle_simulation(int size, int zoom) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
-	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -315,7 +315,7 @@ void Simulation::init_random_particles_simulation(int size, int zoom, int numPar
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
-	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -348,7 +348,7 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
-	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -362,8 +362,8 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 		_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 70; i++) {
-		for (int j = 0; j < 70; j++) {
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 50; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
@@ -383,7 +383,7 @@ void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 	_hashManager = CompactHashManager(_neighborRadius, size / 4, size / 2);
-	//_hashManager = HashManager(_neighborRadius, size / 4, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 4, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -549,7 +549,7 @@ void Simulation::init_osmosis_simulation(int size, int zoom) {
 	_zoomFactor = zoom;
 	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
 	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
-	//_hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 2, size / 2);
 
 	// Add Particles for arena
 	sf::Vector2f pos = sf::Vector2f(0, 0);
@@ -633,6 +633,7 @@ void Simulation::update_physics() {
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
 		sf::Time before = _clock.getElapsedTime();
+		// _particles[i]._neighbors = Functions::n_square_neighborhood_search(&_particles, i, _neighborRadius);
 		_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
 		_avgNeighborhoodTime += _clock.getElapsedTime().asMilliseconds() - before.asMilliseconds();
 		if (_particles[i]._id == _watchedParticleId) {
@@ -774,7 +775,7 @@ void Simulation::run() {
 			}
 
 			//update_hashTable_old();
-			// update_hashTable();
+			update_hashTable();
 			update_physics();
 
 			if (_testNeighbors) {
@@ -802,6 +803,7 @@ void Simulation::run() {
 	else {
 		if (!Parameters::JUST_RENDER) {
 			_renderFile.open("./renderFile", std::fstream::out | std::fstream::trunc);
+			_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
 			_renderFile << Parameters::timeStepSize << std::endl;
 			for (int i = 0; i < _particles.size(); i++) {
 				if (_particles[i]._type == solid) {
@@ -836,9 +838,8 @@ void Simulation::run() {
 		_avgDensityFile.close();
 		std::cout << _avgNeighborhoodTime / Parameters::SIMULATION_LENGTH << std::endl;
 
-
-		_renderFile.open("./renderFile", std::fstream::in);
 		_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
+		_renderFile.open("./renderFile", std::fstream::in);
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_window.create(_videoMode, "SPH Fluid Solver");
 
@@ -894,7 +895,7 @@ void Simulation::run() {
 				if (type[0] == 'D') {
 					_renderFile >> density;
 					_averageDensity = density;
-					_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
+					_avgDensityFile << c * Parameters::timeStepSize << " " << _averageDensity << "\n";
 					continue;
 				}
 				_renderFile >> xValue >> yValue >> colorFactor;
@@ -935,7 +936,6 @@ void Simulation::run() {
 
 	}
 
-	_avgDensityFile.close();
 	_renderFile.close();
 }
 

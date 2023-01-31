@@ -62,15 +62,16 @@ notation tensor, matrix, vector?
 
 
 
--ist schwierig einfügen in teilung von introduction + ziel + in gliederung in worten
+
+
+-abgabe per mail. bericht und code
+- kernel evtl kennzeichnen
+-monhagan 77 zitieren
+- zitat am ende des satzes, "eg [4], [5]..."
+- geschweifte klammern um bibtex für formatierung übernehmen
 
 
 
-
-
-
--gleichung 7
--analyse 3teilung: was wll ich wissen, wie sieht es aus + daten, interpretation
 
 
 

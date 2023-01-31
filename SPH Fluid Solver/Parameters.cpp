@@ -7,8 +7,8 @@ const int Parameters::WINDOW_HEIGHT = 800;
 const double Parameters::NEIGHBORHOOD_RADIUS = 4;
 const int Parameters::NUM_SUPPOSED_NEIGHBORS = 9;
 const double Parameters::GRAVITY = 981;
-const double Parameters::STIFFNESS = 1300000;	// 1000000
-const double Parameters::VISCOSITY = 300;	// 35er
+const double Parameters::STIFFNESS = 1000000;	// 1000000
+const double Parameters::VISCOSITY = 45;	// 35er
 
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
 const float Parameters::timeStepSize = 0.0001;		// 0.000001
@@ -16,8 +16,8 @@ const float Parameters::timeStepSize = 0.0001;		// 0.000001
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
-const bool Parameters::INTERACTIVE = 1;
+const bool Parameters::INTERACTIVE = 0;
 const bool Parameters::JUST_RENDER = 1;
-const int Parameters::SIMULATION_LENGTH = 200000;
+const int Parameters::SIMULATION_LENGTH = 30000;
 const int Parameters::SPEEDUP = 10;
 const int Parameters::RENDER_SPEEDUP = 1;
