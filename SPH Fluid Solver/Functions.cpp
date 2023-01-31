@@ -5,8 +5,8 @@
 #include "./Functions.h"
 #include "./Parameters.h"
 
-// constexpr float kernelCorrection = 0.99914073896;
-constexpr float kernelCorrection = 1;
+constexpr float kernelCorrection = 0.99914073896;
+// constexpr float kernelCorrection = 1;
 float a = 5 / (14 * M_PI * Parameters::H * Parameters::H);
 
 

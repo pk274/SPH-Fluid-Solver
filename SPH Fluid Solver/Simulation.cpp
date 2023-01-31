@@ -47,7 +47,7 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_random_particles_simulation(35, 10, 10);
 		break;
 	case BreakingDam:
-		init_breaking_dam_simulation(80, 4);
+		init_breaking_dam_simulation(40, 8);
 		break;
 	case BigBreakingDam:
 		init_breaking_dam_simulation(150, 2);
@@ -59,7 +59,7 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(50, 7, 40);
+		init_layer_simulation(80, 5, 40);
 		break;
 	case Cup:
 		init_cup_simulation(120, 3);	//3
@@ -362,8 +362,8 @@ void  Simulation::init_breaking_dam_simulation(int size, int zoom) {
 		_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 70; i++) {
-		for (int j = 0; j < 70; j++) {
+	for (int i = 0; i < 27; i++) {
+		for (int j = 0; j < 27; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
@@ -774,7 +774,7 @@ void Simulation::run() {
 			}
 
 			//update_hashTable_old();
-			// update_hashTable();
+			update_hashTable();
 			update_physics();
 
 			if (_testNeighbors) {
