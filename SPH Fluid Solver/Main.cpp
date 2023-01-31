@@ -8,8 +8,8 @@
 
 int main()
 {
-    Simulation simulation = Simulation(BreakingDam);
-    //TestManager::test_kernel_integral();
+    Simulation simulation = Simulation(ManyLayers);
+    // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");
     return 0;
