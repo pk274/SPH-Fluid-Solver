@@ -347,8 +347,8 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 		_sim->_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 50; i++) {
-		for (int j = 0; j < 50; j++) {
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 30; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
@@ -361,6 +361,7 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = true;
+
 }
 
 // _________________________________________________________________________________

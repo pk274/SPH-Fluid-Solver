@@ -186,13 +186,15 @@ void Simulation::run() {
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_window.create(_videoMode, "SPH Fluid Solver");
 		bool runSimulation = true;
-		sf::Time elapsedTime;
+		sf::Time newTime;
+		float elapsedTime;
 		float numUpdatesPerSec = 0;
 		int numIterations = 0;
 		while (runSimulation) {
 			// Update Clock
-			elapsedTime = _clock.getElapsedTime();
-			numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
+			newTime = _clock.getElapsedTime();
+			elapsedTime = newTime.asSeconds() - _lastUpdate.asSeconds();
+			numUpdatesPerSec = 1 / elapsedTime;
 
 			_lastUpdate = _clock.getElapsedTime();
 
@@ -218,8 +220,8 @@ void Simulation::run() {
 			}
 
 			//update_hashTable_old();
-			update_hashTable();
-			update_physics();
+			//update_hashTable();
+			//update_physics();
 
 			if (_testNeighbors) {
 				_testedParticlesId.clear();
@@ -229,7 +231,7 @@ void Simulation::run() {
 				_testedParticlesId.clear();
 				_testedParticlesId = TestManager::test_kernel(&_particles, Parameters::H);
 			}
-			_renderer.update_information(elapsedTime.asSeconds(), _particles.size(),
+			_renderer.update_information(newTime.asSeconds(), _particles.size(),
 				_numFluidParticles, numUpdatesPerSec, _averageDensity, _maxVelocity,
 				_watchedParticleDensity);
 
