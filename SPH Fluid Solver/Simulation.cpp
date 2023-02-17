@@ -462,7 +462,7 @@ void Simulation::init_cup_simulation(int size, int zoom) {
 	_moveParticles = true;
 	_testNeighbors = false;
 	_testKernel = false;
-	_printFPS = true;
+	_printFPS = false;
 	_printParticleInfo = false;
 	_deleteParticles = true;
 }
