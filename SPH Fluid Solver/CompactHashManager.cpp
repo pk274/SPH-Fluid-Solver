@@ -16,8 +16,6 @@ CompactHashManager::CompactHashManager(int radius, int areaWidth, int areaHeight
 		}
 	}
 	_buckets = std::vector<std::vector<Particle*>>();
-	reset_map();
-	reset_buckets();
 }
 
 
@@ -99,9 +97,7 @@ std::vector<Particle*> CompactHashManager::return_neighbors(Particle* particle, 
 
 // __________________________________________________________________________
 void CompactHashManager::update(int numParticles) {
-	if (numParticles != _numParticles) {
-		_numParticles = numParticles;
-	}
+	_numParticles = numParticles;
 	_bucketCounter = 0;
 	reset_buckets();
 	reset_map();

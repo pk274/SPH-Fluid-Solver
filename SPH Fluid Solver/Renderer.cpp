@@ -19,7 +19,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 	_watchedParticleShape = sf::CircleShape();
 	_arrowBodies = std::vector<sf::RectangleShape>();
 	_arrowHeads = std::vector<sf::CircleShape>();
-	_infoPanel = sf::RectangleShape(sf::Vector2f(300, 800));
+	_infoPanel = sf::RectangleShape(sf::Vector2f(300, Parameters::WINDOW_HEIGHT));
 	_graphBackground = sf::RectangleShape(sf::Vector2f(250, 100));
 	_graphShapes = std::vector<sf::CircleShape>();
 	_fluidParticleShapes.clear();
@@ -44,7 +44,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 
 	_infoPanel.setPosition(sf::Vector2f(Parameters::WINDOW_WIDTH - 300, 0));
 	_infoPanel.setFillColor(sf::Color::Color(200, 200, 200));
-	_graphBackground.setPosition(sf::Vector2f(825, 650));
+	_graphBackground.setPosition(sf::Vector2f(Parameters::WINDOW_WIDTH - 275, 650));
 	_graphBackground.setFillColor(sf::Color::Color(250, 250, 250));
 	_graphBackground.setOutlineColor(sf::Color::Black);
 	_graphBackground.setOutlineThickness(1);
@@ -61,7 +61,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 	_information = sf::Text();
 	_information.setFont(font);
 	
-	_description.setPosition(sf::Vector2f(820, 10));
+	_description.setPosition(sf::Vector2f(Parameters::WINDOW_WIDTH - 280, 10));
 	_description.setString(
 		"Current Time:\n\nNumber of particles:\n\n# moving Particles\n\nUpdates per second:\n\nAverage Fluid Density : \n\nMaximum Velocity : \n\n\n\nCurrent Particle:\n\nDensity: ");
 	_description.setCharacterSize(15);
@@ -70,12 +70,13 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 
 	_information.setCharacterSize(15);
 	_information.setFillColor(sf::Color::Black);
-	_information.setPosition(sf::Vector2f(1000, 10));
+	_information.setPosition(sf::Vector2f(Parameters::WINDOW_WIDTH - 100, 10));
 }
 
 
 // ___________________________________________________________
-void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, int watchedParticleId, std::vector<int> markedParticlesId, std::vector<int> testedParticlesId) {
+void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, int watchedParticleId,
+	std::vector<int> markedParticlesId, std::vector<int> testedParticlesId, bool updateArrows) {
 
 
 	// Check whether or not we have the correct amount of shapes
@@ -107,7 +108,9 @@ void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, 
 		if (particles->at(i)._id == watchedParticleId) {
 			_watchedParticleShape.setPosition(particles->at(i)._position * _zoomFactor);
 			_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
-			update_arrows(&particles->at(i));
+			if (updateArrows) {
+				update_arrows(&particles->at(i));
+			}
 		}
 		if (particles->at(i)._type == solid) { continue; }
 
@@ -136,7 +139,8 @@ void Renderer::update_graphics(std::vector<Particle>* particles, int numFluids, 
 
 
 // ___________________________________________________________
-void Renderer::update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity, float maxVel, float watchedParticleDensity) {
+void Renderer::update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity,
+	float maxVel, float watchedParticleDensity, bool updateGraph) {
 	// Information in the box
 	_timeInfo = std::to_string(time);
 	_numParticlesInfo = std::to_string(numParticles);
@@ -155,19 +159,20 @@ void Renderer::update_information(float time, int numParticles, int numFluidPart
 	_information.setString(_timeInfo + "\n\n" + _numParticlesInfo + "\n\n" + _numFluidsInfo + "\n\n" + _numUpdatesInfo + "\n\n"
 		+ _avgDensityInfo + "\n\n" + _maxStepInfo + "\n\n\n\n\n\n" + _watchedParticleDensity);
 
-
-	// Take care of the Graph
-	for (int i = 0; i < _graphShapes.size(); i++) {
-		_graphShapes[i].move(-Parameters::GRAPH_SPEED, 0);
-		if (_graphShapes[i].getPosition().x < _graphBackground.getPosition().x) {
-			_graphShapes[i].setPosition(sf::Vector2f(1000, 750 - 50 * std::pow(avgDensity, Parameters::GRAPH_ZOOM)));
-			_graphShapesFull = true;
+	if (updateGraph) {
+		// Take care of the Graph
+		for (int i = 0; i < _graphShapes.size(); i++) {
+			_graphShapes[i].move(-Parameters::GRAPH_SPEED, 0);
+			if (_graphShapes[i].getPosition().x < _graphBackground.getPosition().x) {
+				_graphShapes[i].setPosition(sf::Vector2f(1000, 750 - 50 * std::pow(avgDensity, Parameters::GRAPH_ZOOM)));
+				_graphShapesFull = true;
+			}
 		}
-	}
-	if (!_graphShapesFull) {
-		_graphShapes.push_back(sf::CircleShape(2));
-		_graphShapes.back().setFillColor(sf::Color::Blue);
-		_graphShapes.back().setPosition(sf::Vector2f(1000, 750 - 50 * std::pow(avgDensity, Parameters::GRAPH_ZOOM)));
+		if (!_graphShapesFull) {
+			_graphShapes.push_back(sf::CircleShape(2));
+			_graphShapes.back().setFillColor(sf::Color::Blue);
+			_graphShapes.back().setPosition(sf::Vector2f(1000, 750 - 50 * std::pow(avgDensity, Parameters::GRAPH_ZOOM)));
+		}
 	}
 }
 
@@ -215,7 +220,7 @@ void Renderer::update_arrows(Particle* watchedParticle) {
 
 
 // ___________________________________________________________
-void Renderer::draw(sf::RenderWindow* window) {
+void Renderer::draw(sf::RenderWindow* window, bool drawGraph, bool drawArrows) {
 
 	window->clear(sf::Color::Black);
 
@@ -225,15 +230,19 @@ void Renderer::draw(sf::RenderWindow* window) {
 	for (int i = 0; i < _fluidParticleShapes.size(); i++) {
 		window->draw(_fluidParticleShapes[i]);
 	}
-	for (int i = 0; i < _arrowBodies.size(); i++) {
-		window->draw(_arrowBodies[i]);
+	if (drawArrows) {
+		for (int i = 0; i < _arrowBodies.size(); i++) {
+			window->draw(_arrowBodies[i]);
+		}
 	}
 	window->draw(_watchedParticleShape);
 	window->draw(_searchRadiusShape);
 	window->draw(_infoPanel);
-	window->draw(_graphBackground);
-	for (int i = 0; i < _graphShapes.size(); i++) {
-		window->draw(_graphShapes[i]);
+	if (drawGraph) {
+		window->draw(_graphBackground);
+		for (int i = 0; i < _graphShapes.size(); i++) {
+			window->draw(_graphShapes[i]);
+		}
 	}
 	window->draw(_description);
 	window->draw(_information);

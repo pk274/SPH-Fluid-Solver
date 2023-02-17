@@ -37,3 +37,6 @@
 # Die pdb weil groß
 *.pdb
 SPH Fluid Solver.pdb
+
+# Die averageDensity und render files
+*.dat
