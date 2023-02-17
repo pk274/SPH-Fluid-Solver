@@ -42,7 +42,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 	_searchRadiusOffset.x = (- searchRadius + FluidParticle::_size / 2) * _zoomFactor;
 	_searchRadiusOffset.y = (- searchRadius + FluidParticle::_size / 2) * _zoomFactor;
 
-	_infoPanel.setPosition(sf::Vector2f(800, 0));
+	_infoPanel.setPosition(sf::Vector2f(Parameters::WINDOW_WIDTH - 300, 0));
 	_infoPanel.setFillColor(sf::Color::Color(200, 200, 200));
 	_graphBackground.setPosition(sf::Vector2f(825, 650));
 	_graphBackground.setFillColor(sf::Color::Color(250, 250, 250));

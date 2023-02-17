@@ -2,8 +2,8 @@
 
 #include "./Parameters.h"
 
-const int Parameters::WINDOW_WIDTH = 1100;
-const int Parameters::WINDOW_HEIGHT = 800;
+const int Parameters::WINDOW_WIDTH = 1920;
+const int Parameters::WINDOW_HEIGHT = 1080;
 const double Parameters::NEIGHBORHOOD_RADIUS = 4;
 const int Parameters::NUM_SUPPOSED_NEIGHBORS = 9;
 const double Parameters::GRAVITY = 981;
@@ -16,7 +16,7 @@ const float Parameters::timeStepSize = 0.0007;
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
-const bool Parameters::INTERACTIVE = 0;
+const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 1;
 const int Parameters::SIMULATION_LENGTH = 600000;
 const int Parameters::SPEEDUP = 10;

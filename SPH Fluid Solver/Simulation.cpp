@@ -843,12 +843,12 @@ void Simulation::run() {
 
 	else {
 		if (!Parameters::JUST_RENDER) {
-			_renderFile.open("./renderFile", std::fstream::out | std::fstream::trunc);
-			_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
+			_renderFile.open("./renderFile.dat", std::fstream::out | std::fstream::trunc);
+			_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
 			_renderFile << Parameters::timeStepSize << std::endl;
 			for (int i = 0; i < _particles.size(); i++) {
 				if (_particles[i]._type == solid) {
-					_renderFile << "SolidParticle " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
+					_renderFile << "SP " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
 						0 << std::endl;
 				}
 			}
@@ -864,12 +864,12 @@ void Simulation::run() {
 				if (timeSteps % Parameters::SPEEDUP == 0) {
 					for (int i = 0; i < numParticles; i++) {
 						if (_particles[i]._type == fluid) {
-							_renderFile << "FLuidParticle " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
+							_renderFile << "FP " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
 								_particles[i]._colorFactor << std::endl;
 						}
 					}
-					_renderFile << "Density " << _averageDensity << "\n";
-					_renderFile << "END_OF_UPDATE" << std::endl;
+					_renderFile << "D " << _averageDensity << "\n";
+					_renderFile << "EOU" << std::endl;
 				}
 	
 				_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
@@ -879,8 +879,8 @@ void Simulation::run() {
 		_avgDensityFile.close();
 		std::cout << _avgNeighborhoodTime / Parameters::SIMULATION_LENGTH << std::endl;
 
-		_avgDensityFile.open("./avgDensityFile", std::fstream::out | std::fstream::trunc);
-		_renderFile.open("./renderFile", std::fstream::in);
+		_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
+		_renderFile.open("./renderFile.dat", std::fstream::in);
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_window.create(_videoMode, "SPH Fluid Solver");
 
@@ -984,7 +984,7 @@ void Simulation::run() {
 
 // ________________________________________________________________________
 void Simulation::render_from_file(std::string fileName) {
-	_renderFile.open("./simulationen/" + fileName, std::fstream::in);
+	_renderFile.open("./simulationen/" + fileName + ".dat", std::fstream::in);
 	int timeStepSize;
 	_renderFile >> timeStepSize;
 	std::string type;
@@ -1060,5 +1060,6 @@ void Simulation::render_from_file(std::string fileName) {
 		_renderer.draw(&_window);
 		c++;
 	}
+	_renderFile.close();
 	_window.close();
 }
