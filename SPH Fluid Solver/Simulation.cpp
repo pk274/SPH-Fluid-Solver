@@ -52,20 +52,23 @@ Simulation::Simulation(SimulationPreset preset = SmallBox, int framelimit) {
 	case BigBreakingDam:
 		init_breaking_dam_simulation(130, 3);
 		break;
-	case GiantFuckingBox:
+	case GiantBox:
 		init_stuffed_box_simulation(300, 1);
 		break;
 	case FourLayers:
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(100, 4, 10);
+		init_layer_simulation(60, 7, 10);
+		break;
+	case WideLayers:
+		init_wide_layer_simulation(150, 2, 10);
 		break;
 	case Cup:
 		init_cup_simulation(120, 3);	//3
 		break;
 	case Complex:
-		init_complex_simulation(120, 3);
+		init_complex_simulation(200, 2);
 		break;
 	case Osmosis:
 		init_osmosis_simulation(100, 4);
@@ -399,6 +402,44 @@ void Simulation::init_layer_simulation(int size, int zoom, int layers) {
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
 	for (int i = 0; i < layers; i++) {
 		for (int j = 0; j < size / 2 - 3; j++) {
+			_particles.push_back(FluidParticle(_particles.size(), pos));
+			pos.x += FluidParticle::_size;
+		}
+		pos.x = SolidParticle::_size * 2;
+		pos.y -= FluidParticle::_size;
+	}
+	_moveParticles = true;
+	_testNeighbors = false;
+	_testKernel = false;
+	_printFPS = true;
+	_printParticleInfo = false;
+	_deleteParticles = false;
+}
+
+
+
+
+// _________________________________________________________________________________
+void Simulation::init_wide_layer_simulation(int size, int zoom, int layers) {
+	_zoomFactor = zoom;
+	_renderer = Renderer(_zoomFactor, FluidParticle::_size, SolidParticle::_size, _neighborRadius);
+	_hashManager = CompactHashManager(_neighborRadius, size / 2, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+
+	// Add Particles for arena
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	std::vector<Particle> box = placeBox(pos, size);
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	box = placeBox(pos, size - 2, 1);
+	for (int i = 0; i < box.size(); i++) {
+		_particles.push_back(box[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
+	for (int i = 0; i < layers; i++) {
+		for (int j = 0; j < size - 3; j++) {
 			_particles.push_back(FluidParticle(_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}

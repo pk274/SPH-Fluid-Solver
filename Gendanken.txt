@@ -15,28 +15,35 @@ neighborhood time:
 uniform grid:
 - 10 layers on 50 x 25: 10.8595	( 512 particles)
 - 20 layers on 50 x 25: 19.9138 ( 732 particles)
+- 30 layers on 50 x 25: 27.4366 (952p)
 - 40 layers on 50 x 25: 35.6074 ( 1174 particles)
+
 - bd 100 on 40 x 40: 7.046( 412 p)
 - bd 400 on 40 x 40: 19.093 ( 712 p)
+- bd 729 on x 40: 30.697 (1041p)
 - bd 900 on 40 x 40: 38.142 (1212 p)
 
 -bd 100 on 80 x 80 : 14.693 (732 p)
 -bd 400 on 80 x 80 : 27.905 (1032 p)
 -bd 900 on 80 x 80: 48.593 (1532 p)
 -bd 1600 on 80 x 80: 78.599 (2232 p)
+-bd 2500 on 80 x 80: 118.5342 (3132 p)
 
 compact hashing:
 - bd 100 on 40 x 40: 6.312( 412 p)
 - bd 400 on 40 x 40: 17.971 ( 712 p)
+- bd 729 on x 40: 29.1528 (1041 p)
 - bd 900 on 40 x 40: 36.191 (1212 p)
 
 -bd 100 on 80 x 80 : 10.098 (732 p)
 -bd 400 on 80 x 80 : 22.679 (1032 p)
 -bd 900 on 80 x 80: 43.657 (1532 p)
 -bd 1600 on 80 x 80: 71.765 (2232 p)
-
+-bd 2500 on 80 x 80: 108.999 (3132 p)
+ 
 - 10 layers on 50 x 25: 10.617	( 512 particles)
 - 20 layers on 50 x 25: 18.951 ( 732 particles)
+- 30 layers on 50 x 25: 28.5852 (952p)
 - 40 layers on 50 x 25: 36.171 ( 1174 particles)
 
 -complex: 83.15
@@ -44,20 +51,26 @@ compact hashing:
 n square:
 - 10 layers on 50 x 25: 9.933	( 512 particles)
 - 20 layers on 50 x 25: 22.011 ( 732 particles)
+- 30 layers on 50 x 25: 31.7204 (952p)
 - 40 layers on 50 x 25: 57.768 ( 1174 particles)
 
 - bd 100 on 40 x 40: 5.753( 412 p)
 - bd 400 on 40 x 40: 20.095 ( 712 p)
+- bd 729 on x 40: 37.3574 (1041 p)
 - bd 900 on 40 x 40: 60.471 (1212 p)
 
 -bd 100 on 80 x 80 : 10.443 (732 p)
 -bd 400 on 80 x 80 : 28.623 (1032 p)
 -bd 900 on 80 x 80: 75.543 (1532 p)
 -bd 1600 on 80 x 80: 174.819 (2232 p)
+    
+#########################################################
+
+-very big bd 1600, 400 x 400, uniform grid: 350.566 (4792 p)
+-very big bd 1600, 400 x 400, improved grid: 172.974 (4792 p)
 
 
-notation tensor, matrix, vector?
-"volume" correct for 3 AND 2 dimensions?	-sample size
+reversed kernel + why derivate with respect to x_j?
 
 
 
