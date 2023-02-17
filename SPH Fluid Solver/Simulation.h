@@ -21,9 +21,10 @@ enum SimulationPreset {
 	SingleParticle = 3,
 	RotatedBox = 4,
 	FewParticles = 5,
-	GiantFuckingBox = 6,
+	GiantBox = 6,
 	FourLayers = 7,
 	ManyLayers = 8,
+	WideLayers = 9,
 	BreakingDam = 10,
 	BigBreakingDam = 11,
 	Cup = 20,
@@ -78,6 +79,7 @@ class Simulation {
 	  void init_random_particles_simulation(int size, int zoom, int numParticles);
 	  void init_breaking_dam_simulation(int size = 50, int zoom = 5);
 	  void init_layer_simulation(int size, int zoom, int layers);
+	  void init_wide_layer_simulation(int size, int zoom, int layers);
 	  void init_cup_simulation(int size, int zoom);
 	  void init_complex_simulation(int size, int zoom);
 	  void init_osmosis_simulation(int size, int zoom);

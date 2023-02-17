@@ -8,7 +8,7 @@
 
 int main()
 {
-    Simulation simulation = Simulation(ManyLayers);
+    Simulation simulation = Simulation(Complex);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

@@ -21,7 +21,8 @@ double Functions::calculate_distance_norm(sf::Vector2f distance) {
 	return std::sqrt(distance.x * distance.x + distance.y * distance.y);
 }
 
-
+// This implementation is largely taken from the slides of the course on fluid simulation
+// by the computer graphics department of the university of Freiburg.
 // _________________________________________________________________________________
 double Functions::kernel(double distance) {
 	double q = distance / Parameters::H;
@@ -30,6 +31,8 @@ double Functions::kernel(double distance) {
 	return a * kernelCorrection * (t2 * t2 * t2 - 4 * t1 * t1 * t1);
 }
 
+// This implementation is largely taken from the slides of the course on fluid simulation
+// by the computer graphics department of the university of Freiburg.
 // _________________________________________________________________________________
 sf::Vector2f Functions::kernel_derivation(sf::Vector2f distance, float distanceNorm) {
 	if (distanceNorm == 0) { return sf::Vector2f(0, 0); }
