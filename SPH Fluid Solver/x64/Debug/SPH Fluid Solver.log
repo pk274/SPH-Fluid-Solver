@@ -1,52 +1,5 @@
-﻿  Renderer.cpp
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(22,64): warning C4244: "Argument": Konvertierung von "const int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(28,46): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(29,46): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(32,34): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(45,63): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(47,69): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(64,65): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(73,65): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(87,52): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(92,52): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(102,38): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(123,52): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(130,52): warning C4267: "Initialisierung": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(181,28): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(186,18): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(187,18): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(190,19): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(192,19): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(198,68): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Renderer.cpp(208,68): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
+﻿  Parameters.cpp
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Parameters.cpp(14,45): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 LINK : warning LNK4075: /INCREMENTAL wird aufgrund der Angabe von /PROFILE ignoriert.
 CompactHashManager.obj : warning LNK4075: /EDITANDCONTINUE wird aufgrund der Angabe von /OPT:REF ignoriert.
   SPH Fluid Solver.vcxproj -> C:\Users\Paul\source\repos\SPH-Fluid-Solver\x64\Debug\SPH Fluid Solver.exe

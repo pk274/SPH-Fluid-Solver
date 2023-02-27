@@ -220,8 +220,8 @@ void Simulation::run() {
 			}
 
 			//update_hashTable_old();
-			//update_hashTable();
-			//update_physics();
+			update_hashTable();
+			update_physics();
 
 			if (_testNeighbors) {
 				_testedParticlesId.clear();
@@ -235,8 +235,7 @@ void Simulation::run() {
 				_numFluidParticles, numUpdatesPerSec, _averageDensity, _maxVelocity,
 				_watchedParticleDensity);
 
-			_renderer.update_graphics(&_particles, _numFluidParticles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
-			_renderer.draw(&_window);
+			_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
 
 			numIterations++;
 		}
@@ -323,6 +322,8 @@ void Simulation::run() {
 			numFluids = 0;
 			numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
 			_lastUpdate = elapsedTime;
+			_window.clear();
+			
 
 			while (true) {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -343,35 +344,32 @@ void Simulation::run() {
 				}
 				_renderFile >> xValue >> yValue >> colorFactor;
 			
-				if (_renderer._fluidParticleShapes.size() + _renderer._solidParticleShapes.size() <= numShapes) {
-					if (type[0] == 'S') {
-						_renderer._solidParticleShapes.push_back(sf::CircleShape(_renderer._solidShapeRadius));
-						_renderer._solidParticleShapes.back().setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
-						_renderer._solidParticleShapes.back().setFillColor(sf::Color::White);
-					}
-					else if (type[0] == 'F') {
-						_renderer._fluidParticleShapes.push_back(sf::CircleShape(_renderer._fluidShapeRadius));
-						_renderer._fluidParticleShapes.back().setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
-						_renderer._fluidParticleShapes.back().setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
-						numFluids++;
-					}
+				
+				if (type[0] == 'S') {
+					_renderer._particleShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
+					_renderer._particleShape.setFillColor(sf::Color::White);
+					_window.draw(_renderer._particleShape);
 				}
-				else {
-					if (type[0] == 'F') {
-						_renderer._fluidParticleShapes.at(numFluids).setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
-						_renderer._fluidParticleShapes.at(numFluids).setFillColor(FluidParticle::_stasisColor + sf::Color::Color(0, colorFactor, 0));
-						numFluids++;
-					}
+				else if (type[0] == 'F') {
+					_renderer._particleShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
+					_renderer._particleShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
+					numFluids++;
+					_window.draw(_renderer._particleShape);
 				}
+
 				numShapes++;
 				_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			}
-			while (numFluids < _renderer._fluidParticleShapes.size()) {
-				_renderer._fluidParticleShapes.pop_back();
-			}
-			numShapes = numFluids + _renderer._solidParticleShapes.size();
+
  			_renderer.update_information(timeSteps * timeStepSize, numShapes, numFluids, numUpdatesPerSec, _averageDensity, _maxVelocity);
-			_renderer.draw(&_window);
+			_window.draw(_renderer._infoPanel);
+			_window.draw(_renderer._graphBackground);
+			for (int i = 0; i < _renderer._graphShapes.size(); i++) {
+				_window.draw(_renderer._graphShapes[i]);
+			}
+			_window.draw(_renderer._description);
+			_window.draw(_renderer._information);
+			_window.display();
 			c++;
 			if (!runSimulation) { break; }
 		}
@@ -387,19 +385,6 @@ void Simulation::run() {
 // ________________________________________________________________________
 void Simulation::render_from_file(std::string fileName) {
 	_renderFile.open("./simulationen/" + fileName + ".dat", std::fstream::in);
-	int timeStepSize;
-	_renderFile >> timeStepSize;
-	std::string type;
-	float x;
-	float y;
-	float colorFactor;
-	int numSolids = 0;
-	int numFluids = 0;
-	int c = 0;
-
-	sf::Time elapsedTime;
-	float numUpdatesPerSec = 0;
-
 
 	std::cout << "=======================================================" << std::endl;
 	std::cout << "COMPUTATIONS READY! Press Space to watch the Simulation" << std::endl;
@@ -411,7 +396,21 @@ void Simulation::render_from_file(std::string fileName) {
 	_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 	_window.create(_videoMode, "SPH Fluid Solver");
 
-	for (int i = 0; i < Parameters::SIMULATION_LENGTH; i++) {
+	sf::Time elapsedTime;
+	int numUpdatesPerSec;
+	int numShapes = 0;
+	int numFluids = 0;
+	std::string type;
+	float xValue;
+	float yValue;
+	float colorFactor;
+	float density;
+	bool runSimulation = true;
+	float timeStepSize;
+	int c = 0;
+	_renderFile >> timeStepSize;
+
+	for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH / Parameters::SPEEDUP; timeSteps++) {
 		if (c % Parameters::RENDER_SPEEDUP != 0) {
 			while (true) {
 				_renderFile >> type;
@@ -422,46 +421,62 @@ void Simulation::render_from_file(std::string fileName) {
 			continue;
 		}
 		elapsedTime = _clock.getElapsedTime();
-		numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
+		numShapes = 0;
 		numFluids = 0;
+		numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
+		_lastUpdate = elapsedTime;
+		_window.clear();
+
+
 		while (true) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				// Close application
+				runSimulation = false;
+				break;
+			}
+
 			_renderFile >> type;
-			if (type[0] == 'F') {
-				_renderFile >> x >> y >> colorFactor;
-				if (_particles.size() >= numSolids + numFluids) {
-					_particles.at(numSolids + numFluids)._position = sf::Vector2f(x, y);
-					_particles.at(numSolids + numFluids)._colorFactor = colorFactor;
-					numFluids++;
-					continue;
-				}
-				else {
-					_particles.push_back(FluidParticle(numFluids + numSolids, sf::Vector2f(x, y)));
-					_particles.back()._colorFactor = colorFactor;
-					numFluids++;
-					continue;
-				}
-			}
-			else if (type[0] == 'S') {
-				_renderFile >> x >> y;
-				_particles.push_back(SolidParticle(numSolids, sf::Vector2f(x, y)));
-				numSolids++;
-			}
-			if (type[0] == 'D') {
-				_renderFile >> _averageDensity;
-				continue;
-			}
 			if (type[0] == 'E') {
 				break;
 			}
+			if (type[0] == 'D') {
+				_renderFile >> density;
+				_averageDensity = density;
+				_avgDensityFile << c * Parameters::timeStepSize << " " << _averageDensity << "\n";
+				continue;
+			}
+			_renderFile >> xValue >> yValue >> colorFactor;
+
+
+			if (type[0] == 'S') {
+				_renderer._particleShape.setPosition(sf::Vector2f(xValue * _zoomFactor, yValue * _zoomFactor));
+				_renderer._particleShape.setFillColor(sf::Color::White);
+				_window.draw(_renderer._particleShape);
+			}
+			else if (type[0] == 'F') {
+				_renderer._particleShape.setPosition(sf::Vector2f(xValue * _zoomFactor, yValue * _zoomFactor));
+				_renderer._particleShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
+				numFluids++;
+				_window.draw(_renderer._particleShape);
+			}
+
+			numShapes++;
+			_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		}
-		while (numSolids + numFluids < _particles.size()) {
-			_particles.pop_back();
+
+		_renderer.update_information(timeSteps * timeStepSize, numShapes, numFluids, numUpdatesPerSec, _averageDensity, _maxVelocity);
+		_window.draw(_renderer._infoPanel);
+		_window.draw(_renderer._graphBackground);
+		for (int i = 0; i < _renderer._graphShapes.size(); i++) {
+			_window.draw(_renderer._graphShapes[i]);
 		}
-		_renderer.update_graphics(&_particles,numFluids, -1, _markedParticlesId, _testedParticlesId);
-		_renderer.update_information(i * timeStepSize, numSolids + numFluids, numFluids, numUpdatesPerSec, _averageDensity, _maxVelocity, -1);
-		_renderer.draw(&_window);
+		_window.draw(_renderer._description);
+		_window.draw(_renderer._information);
+		_window.display();
 		c++;
+		if (!runSimulation) { break; }
 	}
-	_renderFile.close();
 	_window.close();
+	_renderFile.close();
+
 }
