@@ -8,8 +8,7 @@
 
 class Renderer {
   public:
-	std::vector<sf::CircleShape> _fluidParticleShapes;
-	std::vector<sf::CircleShape> _solidParticleShapes;
+	sf::CircleShape _particleShape;
 	sf::CircleShape _watchedParticleShape;
 	std::vector<sf::RectangleShape>_arrowBodies;
 	std::vector<sf::CircleShape> _arrowHeads;
@@ -37,8 +36,9 @@ class Renderer {
 	int _solidShapeRadius;
 
 	Renderer(float zoomFactor = 1, float fluidSize = 1, float solidSize = 1, float searchRadius = 3);
-	void update_graphics(std::vector<Particle>* particles, int numFluids, int watchedParticleId, std::vector<int> markedParticlesId, std::vector<int> testedParticlesId);
-	void update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity = -1, float maxVel = -1, float watchedParticleDensity = -1);
+	void update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity = -1, float maxVel = -1, float watchedParticleDensity = -1, bool drawGraph = false);
 	void update_arrows(Particle* watchedPartile);
-	void draw(sf::RenderWindow* window);
+	void draw(sf::RenderWindow* window, std::vector<Particle>* particles,
+		int watchedParticleId, std::vector<int> markedParticlesId,
+		std::vector<int> testedParticlesId, bool updateArrows = true, bool drawGraph = false, bool drawArrows = false);
 };

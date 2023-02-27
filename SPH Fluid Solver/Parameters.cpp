@@ -17,7 +17,7 @@ const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
 const bool Parameters::INTERACTIVE = 1;
-const bool Parameters::JUST_RENDER = 1;
-const int Parameters::SIMULATION_LENGTH = 600000;
+const bool Parameters::JUST_RENDER = 0;
+const int Parameters::SIMULATION_LENGTH = 6000;
 const int Parameters::SPEEDUP = 10;
 const int Parameters::RENDER_SPEEDUP = 3;

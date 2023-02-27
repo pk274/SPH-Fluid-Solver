@@ -29,4 +29,7 @@ class Particle {
 
 	  sf::Time _lastUpdated;
 
+	  // Rendering Information
+	  sf::Color _stasisColor;
+
 };

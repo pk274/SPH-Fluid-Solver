@@ -150,6 +150,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Parameters.cpp" />
+    <ClCompile Include="InitManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="SolidParticle.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="FluidParticle.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="HashManager.h" />
+    <ClInclude Include="InitManager.h" />
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Simulation.h" />
