@@ -70,7 +70,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 
 	_information.setCharacterSize(15);
 	_information.setFillColor(sf::Color::Black);
-	_information.setPosition(sf::Vector2f(1000, 10));
+	_information.setPosition(sf::Vector2f(Parameters::WINDOW_WIDTH - 300, 10));
 }
 
 
