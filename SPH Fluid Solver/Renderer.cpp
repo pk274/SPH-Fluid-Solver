@@ -160,24 +160,25 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 	window->clear(sf::Color::Black);
 
 	int numParticles = particles->size();
+	_particleShape.setRadius(_fluidShapeRadius);
 
 	// Update each fluid shapes position
 	for (int i = 0; i < numParticles; i++) {
 
 		_particleShape.setPosition(particles->at(i)._position * _zoomFactor);
 		_particleShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
-		if (particles->at(i)._type == fluid) {
-			_particleShape.setRadius(_fluidShapeRadius);
-		}
-		else if (particles->at(i)._type == solid) {
-			_particleShape.setRadius(_solidShapeRadius);
-		}
-		if (particles->at(i)._id == watchedParticleId) {
-			_particleShape.setFillColor(sf::Color::Color::Red);
-			if (updateArrows) {
-				update_arrows(&particles->at(i));
-			}
-		}
+		//if (particles->at(i)._type == fluid) {
+		//	_particleShape.setRadius(_fluidShapeRadius);
+		//}
+		//else if (particles->at(i)._type == solid) {
+		//	_particleShape.setRadius(_solidShapeRadius);
+		//}
+		//if (particles->at(i)._id == watchedParticleId) {
+		//	_particleShape.setFillColor(sf::Color::Color::Red);
+		//	if (updateArrows) {
+		//		update_arrows(&particles->at(i));
+		//	}
+		//}
 		window->draw(_particleShape);
 	}
 
