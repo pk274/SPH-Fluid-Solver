@@ -223,8 +223,8 @@ void Simulation::run() {
 			}
 
 			//update_hashTable_old();
-			//update_hashTable();
-			//update_physics();
+			update_hashTable();
+			update_physics();
 
 			if (_testNeighbors) {
 				_testedParticlesId.clear();
