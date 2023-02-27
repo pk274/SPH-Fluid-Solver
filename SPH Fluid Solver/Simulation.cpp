@@ -187,6 +187,8 @@ void Simulation::run() {
 		_window.create(_videoMode, "SPH Fluid Solver");
 		bool runSimulation = true;
 		sf::Time newTime;
+		sf::Time renderTime;
+		sf::Time currentTime;
 		float elapsedTime;
 		float numUpdatesPerSec = 0;
 		int numIterations = 0;
@@ -232,14 +234,19 @@ void Simulation::run() {
 				_testedParticlesId.clear();
 				_testedParticlesId = TestManager::test_kernel(&_particles, Parameters::H);
 			}
+			currentTime = _clock.getElapsedTime();
+
 			_renderer.update_information(newTime.asSeconds(), _particles.size(),
 				_numFluidParticles, numUpdatesPerSec, _averageDensity, _maxVelocity,
 				_watchedParticleDensity);
 
 			_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
 
+			renderTime += _clock.getElapsedTime() - currentTime;
+
 			numIterations++;
 		}
+		std::cout << renderTime.asSeconds() / numIterations << std::endl;
 
 	}
 
