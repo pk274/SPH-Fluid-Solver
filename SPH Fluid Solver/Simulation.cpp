@@ -190,6 +190,7 @@ void Simulation::run() {
 		float elapsedTime;
 		float numUpdatesPerSec = 0;
 		int numIterations = 0;
+		_renderer.init_solids(&_particles);
 		while (runSimulation) {
 			// Update Clock
 			newTime = _clock.getElapsedTime();
@@ -346,15 +347,15 @@ void Simulation::run() {
 			
 				
 				if (type[0] == 'S') {
-					_renderer._particleShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
-					_renderer._particleShape.setFillColor(sf::Color::White);
-					_window.draw(_renderer._particleShape);
+					_renderer._fluidShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
+					_renderer._fluidShape.setFillColor(sf::Color::White);
+					_window.draw(_renderer._fluidShape);
 				}
 				else if (type[0] == 'F') {
-					_renderer._particleShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
-					_renderer._particleShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
+					_renderer._fluidShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
+					_renderer._fluidShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
 					numFluids++;
-					_window.draw(_renderer._particleShape);
+					_window.draw(_renderer._fluidShape);
 				}
 
 				numShapes++;
@@ -449,15 +450,15 @@ void Simulation::render_from_file(std::string fileName) {
 
 
 			if (type[0] == 'S') {
-				_renderer._particleShape.setPosition(sf::Vector2f(xValue * _zoomFactor, yValue * _zoomFactor));
-				_renderer._particleShape.setFillColor(sf::Color::White);
-				_window.draw(_renderer._particleShape);
+				_renderer._fluidShape.setPosition(sf::Vector2f(xValue * _zoomFactor, yValue * _zoomFactor));
+				_renderer._fluidShape.setFillColor(sf::Color::White);
+				_window.draw(_renderer._fluidShape);
 			}
 			else if (type[0] == 'F') {
-				_renderer._particleShape.setPosition(sf::Vector2f(xValue * _zoomFactor, yValue * _zoomFactor));
-				_renderer._particleShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
+				_renderer._fluidShape.setPosition(sf::Vector2f(xValue * _zoomFactor, yValue * _zoomFactor));
+				_renderer._fluidShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
 				numFluids++;
-				_window.draw(_renderer._particleShape);
+				_window.draw(_renderer._fluidShape);
 			}
 
 			numShapes++;

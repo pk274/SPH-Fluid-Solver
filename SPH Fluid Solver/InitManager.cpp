@@ -159,7 +159,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_breaking_dam_simulation(150, 3);
 		break;
 	case GiantBox:
-		init_stuffed_box_simulation(100, 3);
+		init_stuffed_box_simulation(200, 2);
 		break;
 	case FourLayers:
 		init_layer_simulation(39, 10, 4);

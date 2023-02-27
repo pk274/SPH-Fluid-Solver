@@ -8,7 +8,8 @@
 
 class Renderer {
   public:
-	sf::CircleShape _particleShape;
+	std::vector<sf::CircleShape> _solidShapes;
+	sf::CircleShape _fluidShape;
 	sf::CircleShape _watchedParticleShape;
 	std::vector<sf::RectangleShape>_arrowBodies;
 	std::vector<sf::CircleShape> _arrowHeads;
@@ -36,6 +37,7 @@ class Renderer {
 	int _solidShapeRadius;
 
 	Renderer(float zoomFactor = 1, float fluidSize = 1, float solidSize = 1, float searchRadius = 3);
+	void init_solids(std::vector<Particle>* particles);
 	void update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity = -1, float maxVel = -1, float watchedParticleDensity = -1, bool drawGraph = false);
 	void update_arrows(Particle* watchedPartile);
 	void draw(sf::RenderWindow* window, std::vector<Particle>* particles,
