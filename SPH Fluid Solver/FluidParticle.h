@@ -11,6 +11,7 @@ class FluidParticle : public Particle {
 	static const float _size;
 	static const float _mass;
 	static const float _restDensity;
+	static const float _materialParameter;
 
 	FluidParticle(int id, sf::Vector2f pos);
 };

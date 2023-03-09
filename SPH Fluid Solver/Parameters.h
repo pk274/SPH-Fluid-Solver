@@ -5,12 +5,14 @@ class Parameters {
 public:
 	static const int WINDOW_WIDTH;
 	static const int WINDOW_HEIGHT;
-	static const double NEIGHBORHOOD_RADIUS;
+	static const float NEIGHBORHOOD_RADIUS;
 	static const int NUM_SUPPOSED_NEIGHBORS;
-	static const double GRAVITY;
-	static const double STIFFNESS;
-	static const double VISCOSITY;
+	static const float GRAVITY;
+	static const float STIFFNESS;
+	static const float VISCOSITY;
 	static const float H;
+	static const float MAX_DENSITY_ERROR;
+	static const int MAX_SOLVER_ITERATIONS;
 	static const float timeStepSize;
 
 	static const float GRAPH_ZOOM;

@@ -17,17 +17,17 @@ sf::Vector2f Functions::calculate_distance(sf::Vector2f pos1, sf::Vector2f pos2)
 
 
 // __________________________________________________________________________________
-double Functions::calculate_distance_norm(sf::Vector2f distance) {
+float Functions::calculate_distance_norm(sf::Vector2f distance) {
 	return std::sqrt(distance.x * distance.x + distance.y * distance.y);
 }
 
 // This implementation is largely taken from the slides of the course on fluid simulation
 // by the computer graphics department of the university of Freiburg.
 // _________________________________________________________________________________
-double Functions::kernel(double distance) {
-	double q = distance / Parameters::H;
-	double t1 = std::max(1 - q, 0.);
-	double t2 = std::max(2 - q, 0.);
+float Functions::kernel(double distance) {
+	float q = distance / Parameters::H;
+	float t1 = std::max(1 - q, 0.);
+	float t2 = std::max(2 - q, 0.);
 	return a * kernelCorrection * (t2 * t2 * t2 - 4 * t1 * t1 * t1);
 }
 
@@ -43,7 +43,7 @@ sf::Vector2f Functions::kernel_derivation(sf::Vector2f distance, float distanceN
 }
 
 // _________________________________________________________________________________
-double Functions::scalar_product2D(sf::Vector2f v1, sf::Vector2f v2) {
+float Functions::scalar_product2D(sf::Vector2f v1, sf::Vector2f v2) {
 	return v1.x * v2.x + v1.y * v2.y;
 }
 
