@@ -264,7 +264,7 @@ void InitManager::init_single_particle_simulation(int size, int zoom) {
 
 
 	pos.x = 16;
-	pos.y = 35;
+	pos.y = size - 3.0;
 	_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 
 	_sim->_moveParticles = true;
@@ -317,6 +317,9 @@ void InitManager::init_random_particles_simulation(int size, int zoom, int numPa
 		float x = (std::rand() % (size - 10)) + SolidParticle::_size * 5;
 		float y = (std::rand() % (size - 10)) + SolidParticle::_size * 5;
 		_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), sf::Vector2f(x, y)));
+		_sim->_particles.at(_sim->_particles.size() - 1)._velocity.x = 10.f;
+		_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), sf::Vector2f(x + 3, y)));
+		_sim->_particles.at(_sim->_particles.size() - 1)._velocity.x = -10.f;
 	}
 	_sim->_moveParticles = true;
 	_sim->_testNeighbors = false;

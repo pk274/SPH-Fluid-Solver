@@ -20,7 +20,11 @@ FluidParticle::FluidParticle(int id, sf::Vector2f pos) {
 	_velocity.x = 0;
 	_velocity.x = 0;
 
+	_density = 1;
+	_pressure = 0;
+
 	_v_adv = sf::Vector2f();
+	_pressureAcc = sf::Vector2f();
 
 
 	// Init Rendering Information

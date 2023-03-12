@@ -24,10 +24,10 @@ float Functions::calculate_distance_norm(sf::Vector2f distance) {
 // This implementation is largely taken from the slides of the course on fluid simulation
 // by the computer graphics department of the university of Freiburg.
 // _________________________________________________________________________________
-float Functions::kernel(double distance) {
+float Functions::kernel(float distance) {
 	float q = distance / Parameters::H;
-	float t1 = std::max(1 - q, 0.);
-	float t2 = std::max(2 - q, 0.);
+	float t1 = std::max(1 - q, 0.f);
+	float t2 = std::max(2 - q, 0.f);
 	return a * kernelCorrection * (t2 * t2 * t2 - 4 * t1 * t1 * t1);
 }
 
@@ -48,7 +48,7 @@ float Functions::scalar_product2D(sf::Vector2f v1, sf::Vector2f v2) {
 }
 
 // _________________________________________________________________________________
-float Functions::round(double number, int places) {
+float Functions::round(float number, int places) {
 	int factor = std::pow(10, places);
 	return std::round(factor * number) / factor;
 }

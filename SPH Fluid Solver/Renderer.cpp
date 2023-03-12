@@ -127,12 +127,12 @@ void Renderer::update_arrows(Particle* watchedParticle) {
 
 	_arrowBodies.clear();
 
-	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_acceleration) * scalingFactor;
+	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_pressureAcc) * scalingFactor;
 	float sizePress = Functions::calculate_distance_norm(watchedParticle->_pressureAcc) * scalingFactor;
 
 	// Calculate angle difference to vector (1, 0)
-	float angleAccel = std::acos(watchedParticle->_acceleration.x /
-		Functions::calculate_distance_norm(watchedParticle->_acceleration)) * 180 / M_PI;
+	float angleAccel = std::acos(watchedParticle->_pressureAcc.x /
+		Functions::calculate_distance_norm(watchedParticle->_pressureAcc)) * 180 / M_PI;
 	float anglePress = std::acos(watchedParticle->_pressureAcc.x /
 		Functions::calculate_distance_norm(watchedParticle->_pressureAcc)) * 180 / M_PI;;
 
@@ -142,7 +142,7 @@ void Renderer::update_arrows(Particle* watchedParticle) {
 	_arrowBodies.push_back(sf::RectangleShape(sf::Vector2f(sizeAccel, thickness)));
 	_arrowBodies.back().setFillColor(sf::Color::Yellow);
 	_arrowBodies.back().setPosition((watchedParticle->_position + particleSizeOffsetAccel) * _zoomFactor);
-	if (watchedParticle->_acceleration.y > 0) {
+	if (watchedParticle->_pressureAcc.y > 0) {
 		_arrowBodies.back().rotate(angleAccel);
 	}
 	else {
@@ -184,11 +184,11 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		//else if (particles->at(i)._type == solid) {
 		//	_particleShape.setRadius(_solidShapeRadius);
 		//}
-		//if (particles->at(i)._id == watchedParticleId) {
-		//	_particleShape.setFillColor(sf::Color::Color::Red);
+		if (particles->at(i)._id == watchedParticleId) {
+			_fluidShape.setFillColor(sf::Color::Red);
 		//	if (updateArrows) {
 		//		update_arrows(&particles->at(i));
-		//	}
+			}
 		//}
 		window->draw(_fluidShape);
 	}

@@ -12,6 +12,7 @@ public:
 	static const float VISCOSITY;
 	static const float H;
 	static const float MAX_DENSITY_ERROR;
+	static const float OMEGA;
 	static const int MAX_SOLVER_ITERATIONS;
 	static const float timeStepSize;
 
