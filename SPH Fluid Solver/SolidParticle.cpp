@@ -4,7 +4,7 @@
 
 
 const float SolidParticle::_size = 2.f;
-const float SolidParticle::_mass = 4.f;
+const float SolidParticle::_mass = 8.f;
 
 
 // _________________________________________________________________
@@ -17,11 +17,17 @@ SolidParticle::SolidParticle(int id, sf::Vector2f pos) {
 	_position.x = pos.x;
 	_position.y = pos.y;
 
-	_velocity.x = 0;
-	_velocity.x = 0;
+	_velocity = sf::Vector2f(0, 0);
 
 	_density = 1;
 	_pressure = 0;
+
+	_v_adv = sf::Vector2f(0, 0);
+	_pressureAcc = sf::Vector2f(0, 0);
+	c_f = sf::Vector2f(0, 0);
+
+	_a_ii = 0;
+	_s_i = 0;
 
 	_colorFactor = 0;
 

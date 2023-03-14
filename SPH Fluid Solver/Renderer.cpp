@@ -122,17 +122,16 @@ void Renderer::update_information(float time, int numParticles, int numFluidPart
 
 // ___________________________________________________________
 void Renderer::update_arrows(Particle* watchedParticle) {
-	float scalingFactor = 0.05;
-	int thickness = 5;
+	float scalingFactor = 0.00005;
+	int thickness = 7;
 
-	_arrowBodies.clear();
 
-	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_pressureAcc) * scalingFactor;
+	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_v_adv) * scalingFactor;
 	float sizePress = Functions::calculate_distance_norm(watchedParticle->_pressureAcc) * scalingFactor;
 
 	// Calculate angle difference to vector (1, 0)
-	float angleAccel = std::acos(watchedParticle->_pressureAcc.x /
-		Functions::calculate_distance_norm(watchedParticle->_pressureAcc)) * 180 / M_PI;
+	float angleAccel = - std::acos(watchedParticle->_v_adv.x /
+		Functions::calculate_distance_norm(watchedParticle->_v_adv)) * 180 / M_PI;
 	float anglePress = std::acos(watchedParticle->_pressureAcc.x /
 		Functions::calculate_distance_norm(watchedParticle->_pressureAcc)) * 180 / M_PI;;
 
@@ -178,18 +177,15 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 
 		_fluidShape.setPosition(particles->at(i)._position * _zoomFactor);
 		_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
-		//if (particles->at(i)._type == fluid) {
-		//	_particleShape.setRadius(_fluidShapeRadius);
-		//}
-		//else if (particles->at(i)._type == solid) {
-		//	_particleShape.setRadius(_solidShapeRadius);
-		//}
+
 		if (particles->at(i)._id == watchedParticleId) {
 			_fluidShape.setFillColor(sf::Color::Red);
-		//	if (updateArrows) {
-		//		update_arrows(&particles->at(i));
-			}
-		//}
+			//std::cout << "x pressure: " << particles->at(i)._pressureAcc.x << std::endl;
+			//std::cout << "y pressure: " << particles->at(i)._pressureAcc.y << std::endl;
+		}
+		if (updateArrows) {
+		    update_arrows(&particles->at(i));
+		}
 		window->draw(_fluidShape);
 	}
 
@@ -201,6 +197,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		for (int i = 0; i < _arrowBodies.size(); i++) {
 			window->draw(_arrowBodies[i]);
 		}
+		_arrowBodies.clear();
 	}
 	window->draw(_searchRadiusShape);
 	window->draw(_infoPanel);

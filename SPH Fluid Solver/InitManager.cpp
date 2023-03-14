@@ -153,7 +153,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_random_particles_simulation(35, 10, 10);
 		break;
 	case BreakingDam:
-		init_breaking_dam_simulation(80, 5);
+		init_breaking_dam_simulation(50, 9);
 		break;
 	case BigBreakingDam:
 		init_breaking_dam_simulation(150, 3);
@@ -235,10 +235,10 @@ void  InitManager::init_stuffed_box_simulation(int size, int zoom) {
 		pos.x += FluidParticle::_size;
 	}
 	_sim->_moveParticles = false;
-	_sim->_testNeighbors = true;
+	_sim->_testNeighbors = false;
 	_sim->_testKernel = false;
 	_sim->_printFPS = true;
-	_sim->_printParticleInfo = false;
+	_sim->_printParticleInfo = true;
 	_sim->_deleteParticles = false;
 }
 
@@ -318,8 +318,8 @@ void InitManager::init_random_particles_simulation(int size, int zoom, int numPa
 		float y = (std::rand() % (size - 10)) + SolidParticle::_size * 5;
 		_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), sf::Vector2f(x, y)));
 		_sim->_particles.at(_sim->_particles.size() - 1)._velocity.x = 10.f;
-		_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), sf::Vector2f(x + 3, y)));
-		_sim->_particles.at(_sim->_particles.size() - 1)._velocity.x = -10.f;
+		//_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), sf::Vector2f(x + 3, y)));
+		//_sim->_particles.at(_sim->_particles.size() - 1)._velocity.x = -10.f;
 	}
 	_sim->_moveParticles = true;
 	_sim->_testNeighbors = false;
@@ -350,8 +350,8 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 		_sim->_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 30; i++) {
-		for (int j = 0; j < 30; j++) {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}

@@ -103,7 +103,8 @@ void Simulation::update_physics() {
 				density += SolidParticle::_mass * Functions::kernel(distanceNorm);
 			}
 		}
-		// Sum up viscosity and displacement
+		// Sum up viscosity and displacement and factor c
+		// Viscosity need density of neighbors. Problem!
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
 			v_ij = _particles[i]._velocity - _particles[i]._neighbors[j]->_velocity;
@@ -128,9 +129,10 @@ void Simulation::update_physics() {
 		_particles[i]._density = density;
 		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
 		_averageDensity += std::max(density, FluidParticle::_restDensity);
-		_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity
-			+ Parameters::timeStepSize * FluidParticle::_materialParameter * 2 *
-			(2 + distanceNorm) * viscosity;
+		//_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity
+		//	+ Parameters::timeStepSize * FluidParticle::_materialParameter * 2 *
+		//	(2 + distanceNorm) * viscosity;
+		_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity;
 		_particles[i].c_f = c_f;
 	}
 	_averageDensity = _averageDensity / _numFluidParticles;
@@ -140,7 +142,6 @@ void Simulation::update_physics() {
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
 		p_adv = 0;
-		p_0 = 0;
 		a_ii = 0;
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
@@ -153,9 +154,9 @@ void Simulation::update_physics() {
 					* Functions::scalar_product2D(v_adv_ij, kernelDeriv);
 				a_ii += FluidParticle::_mass *
 					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
-				a_ii += - FluidParticle::_mass * Functions::scalar_product2D(
+				a_ii += + FluidParticle::_mass * Functions::scalar_product2D(
 					FluidParticle::_mass / (_particles[i]._density
-						* _particles[i]._density) * kernelDeriv, kernelDeriv);
+						* _particles[i]._density) * - kernelDeriv, kernelDeriv);
 			}
 			else {
 				p_adv += SolidParticle::_mass
@@ -165,9 +166,10 @@ void Simulation::update_physics() {
 			}
 		}
 		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - Parameters::timeStepSize * p_adv;
+		std::cout << _particles[i]._s_i << std::endl;
 		_particles[i]._a_ii = Parameters::timeStepSize * Parameters::timeStepSize * a_ii;
-		//_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
-		_particles[i]._pressure = 0;
+		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
+		//_particles[i]._pressure = 0;
 	}
 
 	// ========================= Solve Pressure ============================
@@ -182,7 +184,7 @@ void Simulation::update_physics() {
 				kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
 
 				if (_particles[i]._neighbors[j]->_type == fluid) {
-					_particles[i]._pressureAcc -= FluidParticle::_mass * (_particles[i]._pressure
+					_particles[i]._pressureAcc += - FluidParticle::_mass * (_particles[i]._pressure
 						/ (_particles[i]._density * _particles[i]._density)
 						+ _particles[i]._neighbors[j]->_pressure
 						/ (_particles[i]._neighbors[j]->_density
@@ -190,7 +192,8 @@ void Simulation::update_physics() {
 						* kernelDeriv;
 				}
 				else {
-					_particles[i]._pressureAcc -= FluidParticle::_mass * (_particles[i]._pressure
+					_particles[i]._pressureAcc += - Parameters::STIFFNESS * SolidParticle::_mass
+						* (_particles[i]._pressure
 						/ (_particles[i]._density * _particles[i]._density)) * 2
 						* kernelDeriv;
 				}
@@ -199,29 +202,38 @@ void Simulation::update_physics() {
 		densityError = 0;
 		for (int i = 0; i < numParticles; i++) {
 			if (_particles[i]._type == solid) { continue; }
-			if (_particles[i]._a_ii != 0) {
-				Ap = 0;
-				for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
-					x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
-					distanceNorm = Functions::calculate_distance_norm(x_ij);
-					kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
-					if (_particles[i]._neighbors[j]->_type == fluid) {
-						Ap += FluidParticle::_mass
-							* Functions::scalar_product2D(_particles[i]._pressureAcc
-								- _particles[i]._neighbors[j]->_pressureAcc, kernelDeriv);
-					}
-					else {
-						Ap += SolidParticle::_mass
-							* Functions::scalar_product2D(_particles[i]._pressureAcc, kernelDeriv);
-					}
+			Ap = 0;
+			for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+				x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
+				distanceNorm = Functions::calculate_distance_norm(x_ij);
+				kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
+				if (_particles[i]._neighbors[j]->_type == fluid) {
+					Ap += FluidParticle::_mass
+						* Functions::scalar_product2D(_particles[i]._pressureAcc
+							- _particles[i]._neighbors[j]->_pressureAcc, kernelDeriv);
 				}
-				Ap = Ap * Parameters::timeStepSize * Parameters::timeStepSize;
+				else {
+					Ap += SolidParticle::_mass
+						* Functions::scalar_product2D(_particles[i]._pressureAcc, kernelDeriv);
+				}
+			}
+			Ap = Ap * Parameters::timeStepSize * Parameters::timeStepSize;
+			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
-				densityError += Ap - _particles[i]._s_i;
 			}
+			densityError += Ap - _particles[i]._s_i;
+			
 		}
-		densityError = densityError / _numFluidParticles;
+		if (_numFluidParticles > 0) {
+			densityError = densityError / _numFluidParticles;
+		}
+		else {
+			densityError = 0;
+		}
+		// Increment Solver iteration
+		l++;
+		// Exit Condition
 		if (densityError < Parameters::MAX_DENSITY_ERROR
 			|| l >= Parameters::MAX_SOLVER_ITERATIONS) {
 			break;
@@ -300,10 +312,10 @@ void Simulation::run() {
 				// Switch observed particle randomly
 				int randomValue = std::rand() % _particles.size();
 				_watchedParticleId = randomValue;
-				//while (_particles[_watchedParticleId]._type != fluid) {
-				//	int randomValue = std::rand() % _particles.size();
-				//	_watchedParticleId = randomValue;
-				//}
+				while (_particles[_watchedParticleId]._type != fluid) {
+					int randomValue = std::rand() % _particles.size();
+					_watchedParticleId = randomValue;
+				}
 			}
 
 			//update_hashTable_old();
@@ -351,7 +363,6 @@ void Simulation::run() {
 					std::cout << "Calculating step " << timeSteps << " / " << Parameters::SIMULATION_LENGTH << "\r";
 				}
 				update_hashTable();
-				//update_hashTable_old();
 				update_physics();
 				int numParticles = _particles.size();
 				if (timeSteps % Parameters::SPEEDUP == 0) {
