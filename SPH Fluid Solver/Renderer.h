@@ -42,5 +42,5 @@ class Renderer {
 	void update_arrows(Particle* watchedPartile);
 	void draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		int watchedParticleId, std::vector<int> markedParticlesId,
-		std::vector<int> testedParticlesId, bool updateArrows = true, bool drawGraph = false, bool drawArrows = true);
+		std::vector<int> testedParticlesId, bool updateArrows = false, bool drawGraph = false, bool drawArrows = false);
 };

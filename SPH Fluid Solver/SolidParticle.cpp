@@ -4,7 +4,7 @@
 
 
 const float SolidParticle::_size = 2.f;
-const float SolidParticle::_mass = 8.f;
+const float SolidParticle::_mass = 4.f;
 
 
 // _________________________________________________________________

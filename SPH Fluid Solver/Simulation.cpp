@@ -87,12 +87,14 @@ void Simulation::update_physics() {
 
 	// =========== PREDICT ADVECTION ================
 
-	// Compute density, v_adv and d_ii
+	// Compute density, v_adv and c_i
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
 		density = 0;
 		viscosity.x = 0;
 		viscosity.y = 0;
+		c_f.x = 0;
+		c_f.y = 0;
 		// Sum up density
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 			distanceNorm = Functions::calculate_distance_norm(Functions::calculate_distance(
@@ -104,7 +106,7 @@ void Simulation::update_physics() {
 				density += SolidParticle::_mass * Functions::kernel(distanceNorm);
 			}
 		}
-		// Sum up viscosity and displacement and factor c
+		// Sum up viscosity and factor c
 		// Viscosity need density of neighbors. Problem!
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
@@ -112,18 +114,18 @@ void Simulation::update_physics() {
 			distanceNorm = Functions::calculate_distance_norm(x_ij);
 			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
 			if (_particles[i]._neighbors[j]->_type == fluid) {
-				viscosity += (FluidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
-					/ (_particles[i]._neighbors[j]->_density * Parameters::H * 0.01f
-						+ Functions::scalar_product2D(x_ij, x_ij)
-						* Parameters::H) * kernelDeriv;
+				//viscosity += (FluidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
+				//	/ (_particles[i]._neighbors[j]->_density * Parameters::H * 0.01f
+				//		+ Functions::scalar_product2D(x_ij, x_ij)
+				//		* Parameters::H) * kernelDeriv;
 				c_f += - (FluidParticle::_mass / (density * density)) * kernelDeriv;
 			}
 			else {
 				// Uses rest density instead of boundary density atm. add factor gamma maybe?
-				viscosity += (SolidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
-					/ (FluidParticle::_restDensity * Parameters::H * 0.01f
-						+ Functions::scalar_product2D(x_ij, x_ij)
-						* Parameters::H) * Functions::kernel_derivation(distance, distanceNorm);
+				//viscosity += (SolidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
+				//	/ (FluidParticle::_restDensity * Parameters::H * 0.01f
+				//		+ Functions::scalar_product2D(x_ij, x_ij)
+				//		* Parameters::H) * Functions::kernel_derivation(distance, distanceNorm);
 				c_f += - 2 * Parameters::STIFFNESS * (SolidParticle::_mass / (density * density)) * kernelDeriv;
 			}
 		}
@@ -140,7 +142,7 @@ void Simulation::update_physics() {
 	// Division by _numFluidParticles not a problem, as function would have terminated if _nFP == 0
 	_averageDensity = _averageDensity / _numFluidParticles;
 
-	// Calculate predicted density, initial density and coefficients
+	// Calculate predicted density, initial density and diagonal element a_ii
 	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
 		p_adv = 0;
@@ -168,10 +170,9 @@ void Simulation::update_physics() {
 			}
 		}
 		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - Parameters::timeStepSize * p_adv;
-		std::cout << _particles[i]._s_i << std::endl;
 		_particles[i]._a_ii = Parameters::timeStepSize * Parameters::timeStepSize * a_ii;
 		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
-		//_particles[i]._pressure = 0;
+		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
 	}
 
 	// ========================= Solve Pressure ============================
@@ -229,7 +230,7 @@ void Simulation::update_physics() {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
-			densityError += Ap - _particles[i]._s_i;
+			densityError += std::abs(Ap - _particles[i]._s_i);
 			
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
@@ -239,8 +240,7 @@ void Simulation::update_physics() {
 		l++;
 
 		// Exit Condition
-		if (densityError < Parameters::MAX_DENSITY_ERROR
-			|| l >= Parameters::MAX_SOLVER_ITERATIONS) {
+		if (densityError < Parameters::MAX_DENSITY_ERROR) {
 			break;
 		}
 	}

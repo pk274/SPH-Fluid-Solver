@@ -6,7 +6,7 @@
 const float FluidParticle::_size = 2.f;	// cm Durchmesser
 const float FluidParticle::_mass = 4.f;		// g
 const float FluidParticle::_restDensity = 1.f;
-const float FluidParticle::_materialParameter = 1.f;
+const float FluidParticle::_materialParameter = 10.f;
 
 // _________________________________________________________________
 FluidParticle::FluidParticle(int id, sf::Vector2f pos) {

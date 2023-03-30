@@ -156,7 +156,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_breaking_dam_simulation(50, 9);
 		break;
 	case BigBreakingDam:
-		init_breaking_dam_simulation(150, 3);
+		init_breaking_dam_simulation(130, 4);
 		break;
 	case GiantBox:
 		init_stuffed_box_simulation(50, 4);
@@ -165,7 +165,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(60, 7, 10);
+		init_layer_simulation(60, 7, 30);
 		break;
 	case WideLayers:
 		init_wide_layer_simulation(150, 2, 10);
@@ -229,10 +229,10 @@ void  InitManager::init_stuffed_box_simulation(int size, int zoom) {
 	for (int i = 0; i < size - 5; i++) {
 		for (int ii = 0; ii < size - 5; ii++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
-			pos.y += FluidParticle::_size;
+			pos.x += FluidParticle::_size;
 		}
-		pos.y = SolidParticle::_size * 3;
-		pos.x += FluidParticle::_size;
+		pos.x = SolidParticle::_size * 3;
+		pos.y += FluidParticle::_size;
 	}
 	_sim->_moveParticles = false;
 	_sim->_testNeighbors = false;
@@ -350,8 +350,8 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 		_sim->_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
+	for (int i = 0; i < 40; i++) {
+		for (int j = 0; j < 40; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}

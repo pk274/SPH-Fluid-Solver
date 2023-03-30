@@ -180,8 +180,6 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 
 		if (particles->at(i)._id == watchedParticleId) {
 			_fluidShape.setFillColor(sf::Color::Red);
-			//std::cout << "x pressure: " << particles->at(i)._pressureAcc.x << std::endl;
-			//std::cout << "y pressure: " << particles->at(i)._pressureAcc.y << std::endl;
 		}
 		if (updateArrows) {
 		    update_arrows(&particles->at(i));
