@@ -29,5 +29,6 @@ FluidParticle::FluidParticle(int id, sf::Vector2f pos) {
 
 	// Init Rendering Information
 	_stasisColor = sf::Color::Blue;
+	_colorFactor = 0;
 
 }
