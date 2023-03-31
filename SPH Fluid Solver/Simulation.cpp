@@ -363,6 +363,8 @@ void Simulation::run() {
 				}
 			}
 
+			_renderFile << "EOS" << std::endl;
+
 			for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH; timeSteps++) {
 				if (timeSteps % 10 == 0) {
 					std::cout << "Calculating step " << timeSteps << " / " << Parameters::SIMULATION_LENGTH << "\r";
@@ -405,6 +407,7 @@ void Simulation::run() {
 		int numUpdatesPerSec;
 		int numShapes = 0;
 		int numFluids = 0;
+		int numSolids = 0;
 		std::string type;
 		float xValue;
 		float yValue;
@@ -414,6 +417,20 @@ void Simulation::run() {
 		float timeStepSize;
 		int c = 0;
 		_renderFile >> timeStepSize;
+
+		std::vector<sf::CircleShape> solidShapes = std::vector<sf::CircleShape>();
+
+		while (true) {
+			_renderFile >> type;
+			if (type[0] == 'E') { break; }
+			_renderFile >> xValue >> yValue >> colorFactor;
+			sf::CircleShape newShape = sf::CircleShape();
+			newShape.setFillColor(sf::Color::Color::White);
+			newShape.setRadius(SolidParticle::_size * _zoomFactor);
+			newShape.setPosition(xValue * _zoomFactor, yValue * _zoomFactor);
+			solidShapes.push_back(newShape);
+			numSolids++;
+		}
 
 		for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH / Parameters::SPEEDUP; timeSteps++) {
 			if (c % Parameters::RENDER_SPEEDUP != 0) {
@@ -451,14 +468,8 @@ void Simulation::run() {
 					continue;
 				}
 				_renderFile >> xValue >> yValue >> colorFactor;
-			
-				
-				if (type[0] == 'S') {
-					_renderer._fluidShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
-					_renderer._fluidShape.setFillColor(sf::Color::White);
-					_window.draw(_renderer._fluidShape);
-				}
-				else if (type[0] == 'F') {
+
+				if (type[0] == 'F') {
 					_renderer._fluidShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
 					_renderer._fluidShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
 					numFluids++;
@@ -467,6 +478,10 @@ void Simulation::run() {
 
 				numShapes++;
 				_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
+
+			for (int i = 0; i < numSolids; i++) {
+				_window.draw(solidShapes[i]);
 			}
 
  			_renderer.update_information(timeSteps * timeStepSize, numShapes, numFluids, numUpdatesPerSec, _averageDensity, _maxVelocity);
