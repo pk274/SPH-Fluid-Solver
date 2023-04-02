@@ -13,8 +13,8 @@ const float Parameters::VISCOSITY = 45;
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
 const float Parameters::MAX_DENSITY_ERROR = 0.01;
 const float Parameters::OMEGA = 0.5;
-const int Parameters::MAX_SOLVER_ITERATIONS = 20;
-const float Parameters::timeStepSize = 0.001;
+const int Parameters::MAX_SOLVER_ITERATIONS = 10;
+const float Parameters::timeStepSize = 0.005;
 
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
@@ -24,3 +24,6 @@ const bool Parameters::JUST_RENDER = 1;
 const int Parameters::SIMULATION_LENGTH = 5000;
 const int Parameters::SPEEDUP = 10;
 const int Parameters::RENDER_SPEEDUP = 1;
+
+const bool Parameters::COLOR_CODE_SPEED = 0;
+const bool Parameters::COLOR_CODE_PRESSURE = 1;

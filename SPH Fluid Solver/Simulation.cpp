@@ -229,6 +229,9 @@ void Simulation::update_physics() {
 			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
+				if (Parameters::COLOR_CODE_PRESSURE) {
+					_particles[i]._colorFactor = std::min((int)(_particles[i]._pressure * 0.005), 255);
+				}
 			}
 			densityError += std::abs(Ap - _particles[i]._s_i);
 			
@@ -257,7 +260,9 @@ void Simulation::update_physics() {
 		_particles[i]._position += Parameters::timeStepSize * _particles[i]._velocity;
 
 		velocityNorm = Functions::calculate_distance_norm(_particles[i]._velocity);
-		_particles[i]._colorFactor = std::min((int)(velocityNorm * 0.6), 255);
+		if (Parameters::COLOR_CODE_SPEED) {
+			_particles[i]._colorFactor = std::min((int)(velocityNorm * 0.6), 255);
+		}
 		if (velocityNorm > _maxVelocity) {
 			_maxVelocity = Functions::calculate_distance_norm(_particles[i]._velocity);
 		}

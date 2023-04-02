@@ -24,4 +24,7 @@ public:
 	static const bool INTERACTIVE;
 	static const int SPEEDUP;
 	static const int RENDER_SPEEDUP;
+
+	static const bool COLOR_CODE_SPEED;
+	static const bool COLOR_CODE_PRESSURE;
 };
