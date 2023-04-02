@@ -298,7 +298,7 @@ void Simulation::run() {
 		float numUpdatesPerSec = 0;
 		int numIterations = 0;
 		_renderer.init_solids(&_particles);
-		_watchedParticleId = (int)(_particles.size() - 7);
+		_watchedParticleId = (int)(_particles.size() / 2);
 		while (runSimulation) {
 			// Update Clock
 			newTime = _clock.getElapsedTime();

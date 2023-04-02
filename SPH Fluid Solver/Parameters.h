@@ -27,4 +27,6 @@ public:
 
 	static const bool COLOR_CODE_SPEED;
 	static const bool COLOR_CODE_PRESSURE;
+
+	static const float PRESSURE_CODE_ROUGHNESS;
 };

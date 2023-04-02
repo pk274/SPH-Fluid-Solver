@@ -168,7 +168,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(60, 7, 30);
 		break;
 	case WideLayers:
-		init_wide_layer_simulation(150, 2, 10);
+		init_wide_layer_simulation(150, 2, 50);
 		break;
 	case Cup:
 		init_cup_simulation(120, 4);	//3
@@ -340,8 +340,8 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 		_sim->_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 120; i++) {
-		for (int j = 0; j < 120; j++) {
+	for (int i = 0; i < 40; i++) {
+		for (int j = 0; j < 40; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
