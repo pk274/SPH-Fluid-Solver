@@ -3,7 +3,7 @@
 import matplotlib.pyplot as plt 
 import numpy as np
 
-avgDensityData = np.loadtxt("./avgDensityFile", dtype=float)
+avgDensityData = np.loadtxt("./avgDensityFile.dat", dtype=float)
 sum = 0
 for i in range(len(avgDensityData)):
     sum += avgDensityData[i][1]
