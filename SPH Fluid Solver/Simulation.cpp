@@ -20,7 +20,7 @@ Simulation::Simulation(int framelimit) {
 	_testedParticlesId = std::vector<int>();
 
 	_neighborRadius = Parameters::NEIGHBORHOOD_RADIUS;
-	_stiffness = Parameters::STIFFNESS;
+	_stiffness = Parameters::GAMMA;
 	_gravity.x = 0;
 	_gravity.y = Parameters::GRAVITY;
 	_viscosity = Parameters::VISCOSITY;
@@ -126,7 +126,7 @@ void Simulation::update_physics() {
 				//	/ (FluidParticle::_restDensity * Parameters::H * 0.01f
 				//		+ Functions::scalar_product2D(x_ij, x_ij)
 				//		* Parameters::H) * Functions::kernel_derivation(distance, distanceNorm);
-				c_f += - 2 * Parameters::STIFFNESS * (SolidParticle::_mass / (density * density)) * kernelDeriv;
+				c_f += - 2 * Parameters::GAMMA * (SolidParticle::_mass / (density * density)) * kernelDeriv;
 			}
 		}
 		_particles[i]._density = density;
@@ -200,7 +200,7 @@ void Simulation::update_physics() {
 						* kernelDeriv;
 				}
 				else {
-					_particles[i]._pressureAcc += - Parameters::STIFFNESS * SolidParticle::_mass
+					_particles[i]._pressureAcc += - Parameters::GAMMA * SolidParticle::_mass
 						* (_particles[i]._pressure
 						/ (_particles[i]._density * _particles[i]._density)) * 2
 						* kernelDeriv;
@@ -293,7 +293,7 @@ void Simulation::run() {
 		float numUpdatesPerSec = 0;
 		int numIterations = 0;
 		_renderer.init_solids(&_particles);
-		_watchedParticleId = _particles.size() - 1;
+		_watchedParticleId = (int)(_particles.size() - 7);
 		while (runSimulation) {
 			// Update Clock
 			newTime = _clock.getElapsedTime();

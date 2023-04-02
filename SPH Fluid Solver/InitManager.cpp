@@ -156,7 +156,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_breaking_dam_simulation(50, 9);
 		break;
 	case BigBreakingDam:
-		init_breaking_dam_simulation(130, 4);
+		init_breaking_dam_simulation(250, 2);
 		break;
 	case GiantBox:
 		init_stuffed_box_simulation(50, 4);
@@ -208,18 +208,8 @@ void  InitManager::init_stuffed_box_simulation(int size, int zoom) {
 
 	// Add Particles
 	// Add Particles for arena
-	sf::Vector2f pos = sf::Vector2f(0, 0);
-	std::vector<Particle> box = placeBox(pos, size);
-	for (int i = 0; i < box.size(); i++) {
-		_sim->_particles.push_back(box[i]);
-	}
-	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
-	box = placeBox(pos, size - 2, _sim->_particles.size());
-	for (int i = 0; i < box.size(); i++) {
-		_sim->_particles.push_back(box[i]);
-	}
-	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * 2);
-	box = placeBox(pos, size - 4, _sim->_particles.size());
+	sf::Vector2f pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * 2);
+	std::vector<Particle> box = placeBox(pos, size - 4, _sim->_particles.size());
 	for (int i = 0; i < box.size(); i++) {
 		_sim->_particles.push_back(box[i]);
 	}
@@ -350,8 +340,8 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 		_sim->_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 40; i++) {
-		for (int j = 0; j < 40; j++) {
+	for (int i = 0; i < 120; i++) {
+		for (int j = 0; j < 120; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}

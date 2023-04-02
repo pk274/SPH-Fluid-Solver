@@ -1,10 +1,5 @@
 Todo:
 
-3. randbedingungen
+- VD+ID Implementierung
 
-4. Interaktives Infopanel
-
-6. Incompressibility sicherstellen
-
-7. viscosity verbessern?
-
+- Moving Least Squares Boundaries?

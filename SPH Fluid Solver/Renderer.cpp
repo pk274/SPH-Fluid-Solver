@@ -179,6 +179,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
 
 		if (particles->at(i)._id == watchedParticleId) {
+			_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
 			_fluidShape.setFillColor(sf::Color::Red);
 		}
 		if (updateArrows) {
