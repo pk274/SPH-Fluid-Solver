@@ -179,6 +179,15 @@ void InitManager::init_simulation(SimulationPreset preset) {
 	case Osmosis:
 		init_osmosis_simulation(100, 4);
 		break;
+	case SideSpawn:
+		init_side_spawn_simulation(100, 4);
+		break;
+	case Rain:
+		init_rain_simulation(70, 5);
+		break;
+	case Rain2:
+		init_rain2_simulation(70, 5);
+		break;
 	}
 }
 
@@ -195,6 +204,7 @@ void InitManager::init_empty_simulation() {
 	sf::Vector2f pos = sf::Vector2f(5, 5);
 	_sim->_particles.push_back(Particle(fluid, 0, pos));
 	_sim->_moveParticles = false;
+	_sim->_spawnParticles = false;
 }
 
 
@@ -230,6 +240,7 @@ void  InitManager::init_stuffed_box_simulation(int size, int zoom) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = true;
 	_sim->_deleteParticles = false;
+	_sim->_spawnParticles = false;
 }
 
 // ______________________________________________________________________________________________________
@@ -263,6 +274,7 @@ void InitManager::init_single_particle_simulation(int size, int zoom) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = true;
 	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
 }
 
 // _________________________________________________________________________________
@@ -282,6 +294,7 @@ void InitManager::init_rotated_box_simulation(int size, int zoom, int rotation) 
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = false;
+	_sim->_spawnParticles = false;
 }
 
 // _________________________________________________________________________________
@@ -317,6 +330,7 @@ void InitManager::init_random_particles_simulation(int size, int zoom, int numPa
 	_sim->_printFPS = false;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
 }
 
 
@@ -354,6 +368,7 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
 
 }
 
@@ -390,6 +405,7 @@ void InitManager::init_layer_simulation(int size, int zoom, int layers) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = false;
+	_sim->_spawnParticles = false;
 }
 
 
@@ -428,6 +444,7 @@ void InitManager::init_wide_layer_simulation(int size, int zoom, int layers) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = false;
+	_sim->_spawnParticles = false;
 }
 
 
@@ -482,6 +499,7 @@ void InitManager::init_cup_simulation(int size, int zoom) {
 	_sim->_printFPS = false;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
 }
 
 // _________________________________________________________________________________
@@ -559,6 +577,7 @@ void InitManager::init_complex_simulation(int size, int zoom) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
 }
 
 // _________________________________________________________________________________
@@ -602,4 +621,191 @@ void InitManager::init_osmosis_simulation(int size, int zoom) {
 	_sim->_printFPS = true;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
+}
+
+
+// _________________________________________________________________________________
+void InitManager::init_side_spawn_simulation(int size, int zoom) {
+
+	_sim->_zoomFactor = zoom;
+	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
+	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 2);
+
+	// Add Particles for arena
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	std::vector<Particle> box = placeBox(pos, size);
+	for (int i = 0; i < box.size(); i++) {
+		_sim->_particles.push_back(box[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	box = placeBox(pos, size - 2, _sim->_particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_sim->_particles.push_back(box[i]);
+	}
+
+	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 5));
+	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 7));
+	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 9));
+
+	_sim->_spawnVelocities.push_back(sf::Vector2f(400, 0));
+	_sim->_spawnVelocities.push_back(sf::Vector2f(400, 0));
+	_sim->_spawnVelocities.push_back(sf::Vector2f(400, 0));
+	
+	_sim->_moveParticles = true;
+	_sim->_testNeighbors = false;
+	_sim->_testKernel = false;
+	_sim->_printFPS = false;
+	_sim->_printParticleInfo = false;
+	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = true;
+
+	_sim->_spawnDelay = 0.005;
+	_sim->maxNumParticles = 10000;
+}
+
+
+// _________________________________________________________________________________
+void InitManager::init_rain_simulation(int size, int zoom) {
+
+	_sim->_zoomFactor = zoom;
+	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
+	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 3);
+
+	// Add boundaries to the side
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	std::vector<Particle> line1 = placeParticleLine(pos, pos + sf::Vector2f(0, size * 2 + 6), solid, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size * 2, 0);
+	line1 = placeParticleLine(pos, pos + sf::Vector2f(0, size * 2 + 6), solid, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+
+	
+	// Add Box in the middle
+	pos = sf::Vector2f(size - 10, SolidParticle::_size * 40);
+	line1 = placeBox(pos, 10, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size - 8, SolidParticle::_size * 41);
+	line1 = placeBox(pos, 8, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size - 6, SolidParticle::_size * 42);
+	line1 = placeBox(pos, 6, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size - 4, SolidParticle::_size * 43);
+	line1 = placeBox(pos, 4, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size - 2, SolidParticle::_size * 44);
+	line1 = placeBox(pos, 2, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+
+	pos = sf::Vector2f(0, 0);
+	for (int i = 2; i < size - 1; i++) {
+		_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * i, 0));
+		_sim->_spawnVelocities.push_back(sf::Vector2f(0, 400));
+	}
+
+	_sim->_moveParticles = true;
+	_sim->_testNeighbors = false;
+	_sim->_testKernel = false;
+	_sim->_printFPS = false;
+	_sim->_printParticleInfo = false;
+	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = true;
+
+	_sim->_spawnDelay = 0.0037;
+	_sim->maxNumParticles = 10000;
+}
+
+// _________________________________________________________________________________
+void InitManager::init_rain2_simulation(int size, int zoom) {
+
+	_sim->_zoomFactor = zoom;
+	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
+	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 3);
+
+	// Add boundaries to the side
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	std::vector<Particle> line1 = placeParticleLine(pos, pos + sf::Vector2f(0, size * 2 + 6), solid, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size * 2, 0);
+	line1 = placeParticleLine(pos, pos + sf::Vector2f(0, size * 2 + 6), solid, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+
+
+	// Add first box on the left
+	pos = sf::Vector2f(size - 22, SolidParticle::_size * 50);
+	line1 = placeBox(pos, 10, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size - 20, SolidParticle::_size * 51);
+	line1 = placeBox(pos, 8, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	// Add second Box on the right
+	pos = sf::Vector2f(size, SolidParticle::_size * 50);
+	line1 = placeBox(pos, 10, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size + 2, SolidParticle::_size * 51);
+	line1 = placeBox(pos, 8, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+
+	// Add third Box in the middle
+	pos = sf::Vector2f(size - 22, SolidParticle::_size * 40);
+	line1 = placeBox(pos, 10, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+	pos = sf::Vector2f(size - 20, SolidParticle::_size * 41);
+	line1 = placeBox(pos, 8, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+
+	// Add triangle in the middle
+	pos = sf::Vector2f(size - 22, SolidParticle::_size * 39);
+	line1 = placeTriangle(pos, pos + sf::Vector2f(20, 0), pos + sf::Vector2f(10, -40), solid, _sim->_particles.size());
+	for (int i = 0; i < line1.size(); i++) {
+		_sim->_particles.push_back(line1[i]);
+	}
+
+	pos = sf::Vector2f(0, 0);
+	for (int i = 2; i < size - 1; i++) {
+		_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * i, 0));
+		_sim->_spawnVelocities.push_back(sf::Vector2f(0, 400));
+	}
+
+	_sim->_moveParticles = true;
+	_sim->_testNeighbors = false;
+	_sim->_testKernel = false;
+	_sim->_printFPS = false;
+	_sim->_printParticleInfo = false;
+	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = true;
+
+	_sim->_spawnDelay = 0.0037;
+	_sim->maxNumParticles = 10000;
 }

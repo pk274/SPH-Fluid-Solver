@@ -31,6 +31,9 @@ enum SimulationPreset {
 	Cup = 20,
 	Complex = 30,
 	Osmosis = 40,
+	SideSpawn = 50,
+	Rain = 51,
+	Rain2 = 52,
 };
 
 
@@ -55,4 +58,7 @@ public:
 	void init_cup_simulation(int size, int zoom);
 	void init_complex_simulation(int size, int zoom);
 	void init_osmosis_simulation(int size, int zoom);
+	void init_side_spawn_simulation(int size, int zoom);
+	void init_rain_simulation(int size, int zoom);
+	void init_rain2_simulation(int size, int zoom);
 };

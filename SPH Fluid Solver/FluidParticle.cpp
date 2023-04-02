@@ -9,7 +9,7 @@ const float FluidParticle::_restDensity = 1.f;
 const float FluidParticle::_materialParameter = 10.f;
 
 // _________________________________________________________________
-FluidParticle::FluidParticle(int id, sf::Vector2f pos) {
+FluidParticle::FluidParticle(int id, sf::Vector2f pos, sf::Vector2f vel) {
 	// Initialize Type
 	_type = fluid;
 	_id = id;
@@ -17,8 +17,8 @@ FluidParticle::FluidParticle(int id, sf::Vector2f pos) {
 	// Initialize Position
 	_position.x = pos.x;
 	_position.y = pos.y;
-	_velocity.x = 0;
-	_velocity.x = 0;
+	_velocity.x = vel.x;
+	_velocity.y = vel.y;
 
 	_density = 1;
 	_pressure = 0;

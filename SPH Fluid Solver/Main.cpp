@@ -18,7 +18,7 @@ int main()
 {
     Simulation simulation = Simulation();
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(WideLayers);
+    initManager.init_simulation(Rain2);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

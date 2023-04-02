@@ -18,6 +18,8 @@
 
 class Simulation {
   public:
+	  int _numIterations;
+
 	  std::vector<Particle> _particles;
 	  float _neighborRadius;
 	  double _stiffness;
@@ -39,8 +41,16 @@ class Simulation {
 	  bool _printFPS;
 	  bool _printParticleInfo;
 	  bool _deleteParticles;
+	  bool _spawnParticles;
+
+	  float _spawnDelay;
+	  float _lastSpawnTime;
+	  int maxNumParticles;
+
 
 	  sf::Clock _clock;
+	  sf::Time _currentTime;
+	  float _numUpdatesPerSec;
 	  int _watchedParticleId;
 	  std::vector<int> _markedParticlesId;
 	  std::vector<int> _testedParticlesId;
@@ -50,6 +60,9 @@ class Simulation {
 	  float _watchedParticleDensity;
 	  float _avgNeighborhoodTime;
 
+	  std::vector<sf::Vector2f> _spawnLocations;
+	  std::vector<sf::Vector2f> _spawnVelocities;
+
 	  std::fstream _avgDensityFile;
 	  std::fstream _renderFile;
 
@@ -57,6 +70,8 @@ class Simulation {
 
 	  void update_hashTable();
 	  void update_hashTable_old();
+
+	  void spawn_particles();
 
 	  void update_physics();
 

@@ -25,6 +25,9 @@ Simulation::Simulation(int framelimit) {
 	_gravity.y = Parameters::GRAVITY;
 	_viscosity = Parameters::VISCOSITY;
 
+	_spawnLocations = std::vector<sf::Vector2f>();
+	_spawnVelocities = std::vector<sf::Vector2f>();
+
 
 	_clock = sf::Clock();
 	_lastUpdate = _clock.getElapsedTime();
@@ -282,6 +285,15 @@ void Simulation::update_physics() {
 	}
 }
 
+// _________________________________________________________________________________
+void Simulation::spawn_particles() {
+	if (_numIterations * Parameters::timeStepSize - _lastSpawnTime < _spawnDelay || _numFluidParticles >= maxNumParticles) { return; }
+	for (int i = 0; i < _spawnLocations.size(); i++) {
+		_particles.push_back(FluidParticle(_particles.size(), _spawnLocations[i], _spawnVelocities[i]));
+	}
+	_lastSpawnTime = _numIterations * Parameters::timeStepSize;
+}
+
 
 
 // _________________________________________________________________________________
@@ -293,17 +305,17 @@ void Simulation::run() {
 		bool runSimulation = true;
 		sf::Time newTime;
 		sf::Time renderTime;
-		sf::Time currentTime;
 		float elapsedTime;
-		float numUpdatesPerSec = 0;
-		int numIterations = 0;
+		_numUpdatesPerSec = 0;
+		_numIterations = 0;
+		_lastSpawnTime = 0.4;
 		_renderer.init_solids(&_particles);
 		_watchedParticleId = (int)(_particles.size() / 2);
 		while (runSimulation) {
 			// Update Clock
 			newTime = _clock.getElapsedTime();
 			elapsedTime = newTime.asSeconds() - _lastUpdate.asSeconds();
-			numUpdatesPerSec = 1 / elapsedTime;
+			_numUpdatesPerSec = 1 / elapsedTime;
 
 			_lastUpdate = _clock.getElapsedTime();
 
@@ -328,7 +340,10 @@ void Simulation::run() {
 				}
 			}
 
-			//update_hashTable_old();
+			if (_spawnParticles) {
+				spawn_particles();
+			}
+
 			update_hashTable();
 			update_physics();
 
@@ -340,25 +355,27 @@ void Simulation::run() {
 				_testedParticlesId.clear();
 				_testedParticlesId = TestManager::test_kernel(&_particles, Parameters::H);
 			}
-			currentTime = _clock.getElapsedTime();
+			_currentTime = _clock.getElapsedTime();
 
-			_renderer.update_information(currentTime.asSeconds(),
-				numIterations * Parameters::timeStepSize, _particles.size(),
-				_numFluidParticles, numUpdatesPerSec, _averageDensity, _maxVelocity,
+			_renderer.update_information(_currentTime.asSeconds(),
+				_numIterations * Parameters::timeStepSize, _particles.size(),
+				_numFluidParticles, _numUpdatesPerSec, _averageDensity, _maxVelocity,
 				_watchedParticleDensity);
 
 			_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
 
-			renderTime += _clock.getElapsedTime() - currentTime;
+			renderTime += _clock.getElapsedTime() - _currentTime;
 
-			numIterations++;
+			_numIterations++;
 		}
-		std::cout << renderTime.asSeconds() / numIterations << std::endl;
+		std::cout << renderTime.asSeconds() / _numIterations << std::endl;
 
 	}
 
 	else {
 		if (!Parameters::JUST_RENDER) {
+			_numIterations = 0;
+			_lastSpawnTime = 0;
 			_renderFile.open("./renderFile.dat", std::fstream::out | std::fstream::trunc);
 			_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
 			_renderFile << Parameters::timeStepSize << std::endl;
@@ -375,8 +392,13 @@ void Simulation::run() {
 				if (timeSteps % 10 == 0) {
 					std::cout << "Calculating step " << timeSteps << " / " << Parameters::SIMULATION_LENGTH << "\r";
 				}
+
+				if (_spawnParticles) {
+					spawn_particles();
+				}
 				update_hashTable();
 				update_physics();
+
 				int numParticles = _particles.size();
 				if (timeSteps % Parameters::SPEEDUP == 0) {
 					for (int i = 0; i < numParticles; i++) {
@@ -390,6 +412,7 @@ void Simulation::run() {
 				}
 	
 				_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
+				_numIterations++;
 			}
 			_renderFile.close();
 		}
