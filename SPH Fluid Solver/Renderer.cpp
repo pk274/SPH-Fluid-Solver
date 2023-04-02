@@ -58,7 +58,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 	
 	_description.setPosition(sf::Vector2f(Parameters::WINDOW_WIDTH - 280, 10));
 	_description.setString(
-		"Current Time:\n\nNumber of particles:\n\n# moving Particles\n\nUpdates per second:\n\nAverage Fluid Density : \n\nMaximum Velocity : \n\n\n\nCurrent Particle:\n\nDensity: ");
+		"Application Time:\n\nSimulated Time:\n\nNumber of particles:\n\n# moving Particles\n\nUpdates per second:\n\nAverage Fluid Density : \n\nMaximum Velocity : \n\n\n\nCurrent Particle:\n\nDensity: ");
 	_description.setCharacterSize(15);
 	_description.setFillColor(sf::Color::Black);
 	_description.setStyle(sf::Text::Underlined);
@@ -83,10 +83,11 @@ void Renderer::init_solids(std::vector<Particle>* particles) {
 
 
 // ___________________________________________________________
-void Renderer::update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity,
+void Renderer::update_information(float time, float simTime, int numParticles, int numFluidParticles, float numUpdates, float avgDensity,
 	float maxVel, float watchedParticleDensity, bool updateGraph) {
 	// Information in the box
-	_timeInfo = std::to_string(time);
+	_applicationTimeInfo = std::to_string(time);
+	_simulatedTimeInfo = std::to_string(simTime);
 	_numParticlesInfo = std::to_string(numParticles);
 	_numFluidsInfo = std::to_string(numFluidParticles);
 	_numUpdatesInfo = std::to_string(numUpdates);
@@ -94,13 +95,14 @@ void Renderer::update_information(float time, int numParticles, int numFluidPart
 	_maxStepInfo = std::to_string(maxVel);
 	_watchedParticleDensity = std::to_string(watchedParticleDensity);
 
-	_timeInfo.resize(4, ' ');
+	_applicationTimeInfo.resize(4, ' ');
+	_simulatedTimeInfo.resize(4, ' ');
 	_numUpdatesInfo.resize(3, ' ');
 	_avgDensityInfo.resize(6, ' ');
 	_maxStepInfo.resize(6, ' ');
 	_watchedParticleDensity.resize(4, ' ');
 
-	_information.setString(_timeInfo + "\n\n" + _numParticlesInfo + "\n\n" + _numFluidsInfo + "\n\n" + _numUpdatesInfo + "\n\n"
+	_information.setString(_applicationTimeInfo + "\n\n" + _simulatedTimeInfo + "\n\n" + _numParticlesInfo + "\n\n" + _numFluidsInfo + "\n\n" + _numUpdatesInfo + "\n\n"
 		+ _avgDensityInfo + "\n\n" + _maxStepInfo + "\n\n\n\n\n\n" + _watchedParticleDensity);
 
 	if (updateGraph) {
@@ -179,7 +181,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
 
 		if (particles->at(i)._id == watchedParticleId) {
-			_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
+			//_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
 			_fluidShape.setFillColor(sf::Color::Red);
 		}
 		if (updateArrows) {
@@ -198,7 +200,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		}
 		_arrowBodies.clear();
 	}
-	window->draw(_searchRadiusShape);
+	//window->draw(_searchRadiusShape);
 	window->draw(_infoPanel);
 	if (drawGraph) {
 		window->draw(_graphBackground);

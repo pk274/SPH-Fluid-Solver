@@ -337,7 +337,8 @@ void Simulation::run() {
 			}
 			currentTime = _clock.getElapsedTime();
 
-			_renderer.update_information(newTime.asSeconds(), _particles.size(),
+			_renderer.update_information(currentTime.asSeconds(),
+				numIterations * Parameters::timeStepSize, _particles.size(),
 				_numFluidParticles, numUpdatesPerSec, _averageDensity, _maxVelocity,
 				_watchedParticleDensity);
 
@@ -417,6 +418,7 @@ void Simulation::run() {
 		float timeStepSize;
 		int c = 0;
 		_renderFile >> timeStepSize;
+		_clock.restart();
 
 		std::vector<sf::CircleShape> solidShapes = std::vector<sf::CircleShape>();
 
@@ -484,7 +486,7 @@ void Simulation::run() {
 				_window.draw(solidShapes[i]);
 			}
 
- 			_renderer.update_information(timeSteps * timeStepSize, numShapes, numFluids, numUpdatesPerSec, _averageDensity, _maxVelocity);
+ 			_renderer.update_information(elapsedTime.asSeconds(), timeSteps* timeStepSize, numShapes, numFluids, numUpdatesPerSec, _averageDensity, _maxVelocity);
 			_window.draw(_renderer._infoPanel);
 			_window.draw(_renderer._graphBackground);
 			for (int i = 0; i < _renderer._graphShapes.size(); i++) {

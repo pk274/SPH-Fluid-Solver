@@ -21,7 +21,8 @@ class Renderer {
 	sf::Text _description;
 	sf::Text _information;
 
-	std::string _timeInfo;
+	std::string _applicationTimeInfo;
+	std::string _simulatedTimeInfo;
 	std::string _numParticlesInfo;
 	std::string _numFluidsInfo;
 	std::string _numUpdatesInfo;
@@ -38,7 +39,7 @@ class Renderer {
 
 	Renderer(float zoomFactor = 1, float fluidSize = 1, float solidSize = 1, float searchRadius = 3);
 	void init_solids(std::vector<Particle>* particles);
-	void update_information(float time, int numParticles, int numFluidParticles, float numUpdates, float avgDensity = -1, float maxVel = -1, float watchedParticleDensity = -1, bool drawGraph = false);
+	void update_information(float time, float simTime, int numParticles, int numFluidParticles, float numUpdates, float avgDensity = -1, float maxVel = -1, float watchedParticleDensity = -1, bool drawGraph = false);
 	void update_arrows(Particle* watchedPartile);
 	void draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		int watchedParticleId, std::vector<int> markedParticlesId,

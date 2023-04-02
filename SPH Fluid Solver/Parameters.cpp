@@ -19,7 +19,7 @@ const float Parameters::timeStepSize = 0.001;
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
-const bool Parameters::INTERACTIVE = 0;
+const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 1;
 const int Parameters::SIMULATION_LENGTH = 5000;
 const int Parameters::SPEEDUP = 10;
