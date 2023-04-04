@@ -25,6 +25,7 @@ class Simulation {
 	  double _stiffness;
 	  sf::Vector2f _gravity;
 	  double _viscosity;
+	  int _numParticles;
 	  int _numFluidParticles;
 
 	  Renderer _renderer;
@@ -59,6 +60,7 @@ class Simulation {
 	  float _maxVelocity;
 	  float _watchedParticleDensity;
 	  float _avgNeighborhoodTime;
+	  int _totalNumSolverIterations;
 
 	  std::vector<sf::Vector2f> _spawnLocations;
 	  std::vector<sf::Vector2f> _spawnVelocities;
@@ -71,7 +73,11 @@ class Simulation {
 	  void update_hashTable();
 	  void update_hashTable_old();
 
+
+	  void jacobi_solve();
+	  void update_x_and_v();
 	  void spawn_particles();
+	  void delete_particles();
 
 	  void update_physics();
 

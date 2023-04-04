@@ -153,7 +153,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_random_particles_simulation(35, 10, 10);
 		break;
 	case BreakingDam:
-		init_breaking_dam_simulation(50, 9);
+		init_breaking_dam_simulation(100, 5);
 		break;
 	case BigBreakingDam:
 		init_breaking_dam_simulation(250, 2);

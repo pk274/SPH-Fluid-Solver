@@ -9,7 +9,7 @@ public:
 	static const int NUM_SUPPOSED_NEIGHBORS;
 	static const float GRAVITY;
 	static const float GAMMA;
-	static const float VISCOSITY;
+	static const float BOUNDARY_VISCOSITY;
 	static const float H;
 	static const float MAX_DENSITY_ERROR;
 	static const float OMEGA;
