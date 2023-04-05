@@ -24,6 +24,7 @@ FluidParticle::FluidParticle(int id, sf::Vector2f pos, sf::Vector2f vel) {
 	_pressure = 0;
 
 	_v_adv = sf::Vector2f();
+	_x_adv = sf::Vector2f();
 	_pressureAcc = sf::Vector2f();
 
 

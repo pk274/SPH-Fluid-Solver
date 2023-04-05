@@ -14,7 +14,7 @@ const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H
 const float Parameters::MAX_DENSITY_ERROR = 0.01;
 const float Parameters::OMEGA = 0.5;
 const int Parameters::MAX_SOLVER_ITERATIONS = 100;
-const float Parameters::timeStepSize = 0.003;
+const float Parameters::timeStepSize = 0.005;
 
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;

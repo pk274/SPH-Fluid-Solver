@@ -56,7 +56,220 @@ void Simulation::update_hashTable_old() {
 }
 
 // _________________________________________________________________________________
-void Simulation::jacobi_solve() {
+void Simulation::calculate_s_vd() {
+	float density;
+	sf::Vector2f v_ij;
+	sf::Vector2f x_ij;
+	sf::Vector2f distance;
+	sf::Vector2f viscosity = sf::Vector2f();
+	sf::Vector2f c_f = sf::Vector2f();
+	sf::Vector2f d_ij = sf::Vector2f();
+	sf::Vector2f v_adv_ij;
+	float distanceNorm = 1;
+	sf::Vector2f kernelDeriv;
+	float p_adv = 0;
+	float p_0 = 0;
+	float a_ii = 0;
+
+
+	// =========== PREDICT ADVECTION ================
+
+	// Compute density, v_adv and c_i
+	for (int i = 0; i < _numParticles; i++) {
+		if (_particles[i]._type == solid) { continue; }
+		density = 0;
+		viscosity.x = 0;
+		viscosity.y = 0;
+		c_f.x = 0;
+		c_f.y = 0;
+		// Sum up density
+		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			distanceNorm = Functions::calculate_distance_norm(Functions::calculate_distance(
+				_particles[i]._position, _particles[i]._neighbors[j]->_position));
+			if (_particles[i]._neighbors[j]->_type == fluid) {
+				density += FluidParticle::_mass * Functions::kernel(distanceNorm);
+			}
+			else if (_particles[i]._neighbors[j]->_type == solid) {
+				density += SolidParticle::_mass * Functions::kernel(distanceNorm);
+			}
+		}
+		// Sum up viscosity and factor c
+		// Viscosity need density of neighbors. Problem!
+		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
+			v_ij = _particles[i]._velocity - _particles[i]._neighbors[j]->_velocity;
+			distanceNorm = Functions::calculate_distance_norm(x_ij);
+			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
+			if (_particles[i]._neighbors[j]->_type == fluid) {
+				viscosity += (FluidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
+					/ (_particles[i]._neighbors[j]->_density * Parameters::H * 0.01f
+						+ Functions::scalar_product2D(x_ij, x_ij)
+						* Parameters::H) * kernelDeriv;
+				c_f += -(FluidParticle::_mass / (density * density)) * kernelDeriv;
+			}
+			else {
+				// Uses rest density instead of boundary density atm. add factor gamma maybe?
+				viscosity += (SolidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
+					/ (density * Parameters::H * 0.01f
+						+ Functions::scalar_product2D(x_ij, x_ij)
+						* Parameters::H) * Parameters::BOUNDARY_VISCOSITY * kernelDeriv;
+				c_f += -2 * Parameters::GAMMA * (SolidParticle::_mass / (density * density)) * kernelDeriv;
+			}
+		}
+		_particles[i]._density = density;
+		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
+		_averageDensity += std::max(density, FluidParticle::_restDensity);
+		// Let's ignore viscosity for the time being
+		_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * (_gravity
+			+ FluidParticle::_materialParameter * 8 * viscosity);
+		//_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity;
+		_particles[i].c_f = c_f;
+	}
+	// Division by _numFluidParticles not a problem, as function would have terminated if _nFP == 0
+	_averageDensity = _averageDensity / _numFluidParticles;
+
+	// Calculate source term and diagonal element a_ii
+	for (int i = 0; i < _numParticles; i++) {
+		if (_particles[i]._type == solid) { continue; }
+		p_adv = 0;
+		a_ii = 0;
+		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
+			distanceNorm = Functions::calculate_distance_norm(x_ij);
+			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
+
+			if (_particles[i]._neighbors[j]->_type == fluid) {
+				v_adv_ij = _particles[i]._v_adv - _particles[i]._neighbors[j]->_v_adv;
+				p_adv += FluidParticle::_mass
+					* Functions::scalar_product2D(v_adv_ij, kernelDeriv);
+				a_ii += FluidParticle::_mass *
+					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
+				a_ii += FluidParticle::_mass * Functions::scalar_product2D(
+					(FluidParticle::_mass / (_particles[i]._density
+						* _particles[i]._density)) * -kernelDeriv, kernelDeriv);
+			}
+			else if (_particles[i]._neighbors[j]->_type == solid) {
+				p_adv += SolidParticle::_mass
+					* Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
+				a_ii += SolidParticle::_mass *
+					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
+			}
+		}
+		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - Parameters::timeStepSize * p_adv;
+		_particles[i]._a_ii = Parameters::timeStepSize * Parameters::timeStepSize * a_ii;
+		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
+		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
+	}
+}
+
+
+// _________________________________________________________________________________
+void Simulation::calculate_s_di() {
+	float density;
+	sf::Vector2f v_ij;
+	sf::Vector2f x_ij;
+	sf::Vector2f distance;
+	sf::Vector2f viscosity = sf::Vector2f();
+	sf::Vector2f c_f = sf::Vector2f();
+	sf::Vector2f d_ij = sf::Vector2f();
+	sf::Vector2f x_adv_ij;
+	float distanceNorm = 1;
+	sf::Vector2f kernelDeriv;
+	float kernel;
+	float rho_adv = 0;
+	float p_0 = 0;
+	float a_ii = 0;
+
+
+	// =========== PREDICT ADVECTION ================
+
+	// Compute density, v_adv and c_i
+	for (int i = 0; i < _numParticles; i++) {
+		if (_particles[i]._type == solid) { continue; }
+		density = 0;
+		viscosity.x = 0;
+		viscosity.y = 0;
+		c_f.x = 0;
+		c_f.y = 0;
+		// Sum up density
+		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			distanceNorm = Functions::calculate_distance_norm(Functions::calculate_distance(
+				_particles[i]._position, _particles[i]._neighbors[j]->_position));
+			if (_particles[i]._neighbors[j]->_type == fluid) {
+				density += FluidParticle::_mass * Functions::kernel(distanceNorm);
+			}
+			else if (_particles[i]._neighbors[j]->_type == solid) {
+				density += SolidParticle::_mass * Functions::kernel(distanceNorm);
+			}
+		}
+		// Sum up viscosity and factor c
+		// Viscosity need density of neighbors. Problem!
+		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
+			v_ij = _particles[i]._velocity - _particles[i]._neighbors[j]->_velocity;
+			distanceNorm = Functions::calculate_distance_norm(x_ij);
+			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
+			if (_particles[i]._neighbors[j]->_type == fluid) {
+				viscosity += (FluidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
+					/ (_particles[i]._neighbors[j]->_density * Parameters::H * 0.01f
+						+ Functions::scalar_product2D(x_ij, x_ij)
+						* Parameters::H) * kernelDeriv;
+				c_f += -(FluidParticle::_mass / (density * density)) * kernelDeriv;
+			}
+			else {
+				// Uses rest density instead of boundary density atm. add factor gamma maybe?
+				viscosity += (SolidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
+					/ (density * Parameters::H * 0.01f
+						+ Functions::scalar_product2D(x_ij, x_ij)
+						* Parameters::H) * Parameters::BOUNDARY_VISCOSITY * kernelDeriv;
+				c_f += -2 * Parameters::GAMMA * (SolidParticle::_mass / (density * density)) * kernelDeriv;
+			}
+		}
+		_particles[i]._density = density;
+		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
+		_averageDensity += std::max(density, FluidParticle::_restDensity);
+		// Let's ignore viscosity for the time being
+		_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * (_gravity
+			+ FluidParticle::_materialParameter * 8 * viscosity);
+		//_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity;
+		_particles[i]._x_adv = _particles[i]._position + Parameters::timeStepSize * _particles[i]._v_adv;
+		_particles[i].c_f = c_f;
+	}
+	// Division by _numFluidParticles not a problem, as function would have terminated if _nFP == 0
+	_averageDensity = _averageDensity / _numFluidParticles;
+
+	// Calculate source term and diagonal element a_ii
+	for (int i = 0; i < _numParticles; i++) {
+		if (_particles[i]._type == solid) { continue; }
+		rho_adv = 0;
+		a_ii = 0;
+		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			x_adv_ij = _particles[i]._x_adv - _particles[i]._neighbors[j]->_x_adv;
+			distanceNorm = Functions::calculate_distance_norm(x_adv_ij);
+			kernel = Functions::kernel(distanceNorm);
+			if (_particles[i]._neighbors[j]->_type == fluid) {
+				rho_adv += FluidParticle::_mass * kernel;
+				a_ii += FluidParticle::_mass *
+					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
+				a_ii += +FluidParticle::_mass * Functions::scalar_product2D(
+					(FluidParticle::_mass / (_particles[i]._density
+						* _particles[i]._density)) * -kernelDeriv, kernelDeriv);
+			}
+			else if (_particles[i]._neighbors[j]->_type == solid) {
+				rho_adv += SolidParticle::_mass * kernel;
+				a_ii += SolidParticle::_mass *
+					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
+			}
+		}
+		_particles[i]._s_i = FluidParticle::_restDensity - rho_adv;
+		_particles[i]._a_ii = Parameters::timeStepSize * Parameters::timeStepSize * a_ii;
+		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
+		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
+	}
+}
+
+// _________________________________________________________________________________
+void Simulation::jacobi_solve_vd() {
 
 	int l = 0;
 	float Ap = 0;
@@ -118,9 +331,92 @@ void Simulation::jacobi_solve() {
 			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
-				if (Parameters::COLOR_CODE_PRESSURE) {
-					_particles[i]._colorFactor = std::min((int)(_particles[i]._pressure * 0.005), 255);
+			}
+			densityError += std::abs(Ap - _particles[i]._s_i);		//abs??
+
+		}
+		// This is alright, _numFluidParticles is sure to be unequal to 0
+		densityError = densityError / _numFluidParticles;
+
+		// Increment Solver iteration
+		l++;
+		_totalNumSolverIterations++;
+
+		// Exit Condition
+		if (densityError < Parameters::MAX_DENSITY_ERROR) {
+			break;
+		}
+	}
+}
+
+// _________________________________________________________________________________
+void Simulation::jacobi_solve_di() {
+
+	int l = 0;
+	float Ap = 0;
+	float densityError;
+	sf::Vector2f x_ij;
+	sf::Vector2f v_adv_ij;
+	float distanceNorm;
+	sf::Vector2f kernelDeriv;
+	float kernel;
+
+	while (true) {
+		// Exit Condition
+		if (l >= Parameters::MAX_SOLVER_ITERATIONS) {
+			break;
+		}
+
+		for (int i = 0; i < _numParticles; i++) {
+			if (_particles[i]._type == solid) { continue; }
+			_particles[i]._pressureAcc.x = 0;
+			_particles[i]._pressureAcc.y = 0;
+			for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+				x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
+				distanceNorm = Functions::calculate_distance_norm(x_ij);
+				kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
+
+				if (_particles[i]._neighbors[j]->_type == fluid) {
+					_particles[i]._pressureAcc += -FluidParticle::_mass * (_particles[i]._pressure
+						/ (_particles[i]._density * _particles[i]._density)
+						+ _particles[i]._neighbors[j]->_pressure
+						/ (_particles[i]._neighbors[j]->_density
+							* _particles[i]._neighbors[j]->_density))
+						* kernelDeriv;
 				}
+				else {
+					_particles[i]._pressureAcc += -Parameters::GAMMA * SolidParticle::_mass
+						* (_particles[i]._pressure
+							/ (_particles[i]._density * _particles[i]._density)) * 2
+						* kernelDeriv;
+				}
+			}
+			_particles[i]._v_adv += Parameters::timeStepSize * _particles[i]._pressureAcc;
+		}
+		densityError = 0;
+		for (int i = 0; i < _numParticles; i++) {
+			if (_particles[i]._type == solid) { continue; }
+			Ap = 0;
+			for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+				x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
+				distanceNorm = Functions::calculate_distance_norm(x_ij);
+				kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
+
+				if (_particles[i]._neighbors[j]->_type == fluid) {
+					v_adv_ij = _particles[i]._v_adv - _particles[i]._neighbors[j]->_v_adv;
+					Ap += FluidParticle::_mass
+						* Functions::scalar_product2D(v_adv_ij, kernelDeriv);
+				}
+				else {
+					Ap += SolidParticle::_mass *
+						Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
+				}
+			}
+			Ap = FluidParticle::_restDensity - _particles[i]._density - Parameters::timeStepSize * Ap;
+
+			if (_particles[i]._a_ii != 0) {
+				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
+					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
 			densityError += std::abs(Ap - _particles[i]._s_i);
 
@@ -137,7 +433,10 @@ void Simulation::jacobi_solve() {
 			break;
 		}
 	}
+	std::cout << densityError << "\n" << std::endl;
 }
+
+
 
 // _________________________________________________________________________________
 void Simulation::update_x_and_v() {
@@ -159,6 +458,15 @@ void Simulation::update_x_and_v() {
 }
 
 // _________________________________________________________________________________
+void Simulation::spawn_particles() {
+	if (_numIterations * Parameters::timeStepSize - _lastSpawnTime < _spawnDelay || _numFluidParticles >= maxNumParticles) { return; }
+	for (int i = 0; i < _spawnLocations.size(); i++) {
+		_particles.push_back(FluidParticle(_particles.size(), _spawnLocations[i], _spawnVelocities[i]));
+	}
+	_lastSpawnTime = _numIterations * Parameters::timeStepSize;
+}
+
+// _________________________________________________________________________________
 void Simulation::delete_particles() {
 	for (int i = 0; i < _particles.size(); i++) {
 		if (_particles[i]._type == solid) { continue; }
@@ -176,138 +484,18 @@ void Simulation::delete_particles() {
 // _________________________________________________________________________________
 void Simulation::update_physics() {
 	_averageDensity = 0;
-	float density;
-	sf::Vector2f v_ij;
-	sf::Vector2f x_ij;
-	sf::Vector2f distance;
-	sf::Vector2f viscosity = sf::Vector2f();
-	sf::Vector2f c_f = sf::Vector2f();
-	sf::Vector2f d_ij = sf::Vector2f();
-	sf::Vector2f v_adv_ij;
-	float distanceNorm = 1;
-	sf::Vector2f kernelDeriv;
-	float p_adv = 0;
-	float p_0 = 0;
-	float a_ii = 0;
+	
+	// Calculate source term
+	calculate_s_vd();
 
-	_numParticles = _particles.size();
-	_numFluidParticles = 0;
-
-	// Find Neighbors and count fluid particles
-	for (int i = 0; i < _numParticles; i++) {
-		if (_particles[i]._type == solid) { continue; }
-		_numFluidParticles++;
-		_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
-	}
-	if (_numFluidParticles == 0) { return; }
-
-	// =========== PREDICT ADVECTION ================
-
-	// Compute density, v_adv and c_i
-	for (int i = 0; i < _numParticles; i++) {
-		if (_particles[i]._type == solid) { continue; }
-		density = 0;
-		viscosity.x = 0;
-		viscosity.y = 0;
-		c_f.x = 0;
-		c_f.y = 0;
-		// Sum up density
-		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
-			distanceNorm = Functions::calculate_distance_norm(Functions::calculate_distance(
-				_particles[i]._position, _particles[i]._neighbors[j]->_position));
-			if (_particles[i]._neighbors[j]->_type == fluid) {
-				density += FluidParticle::_mass * Functions::kernel(distanceNorm);
-			}
-			else if(_particles[i]._neighbors[j]->_type == solid) {
-				density += SolidParticle::_mass * Functions::kernel(distanceNorm);
-			}
-		}
-		// Sum up viscosity and factor c
-		// Viscosity need density of neighbors. Problem!
-		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
-			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
-			v_ij = _particles[i]._velocity - _particles[i]._neighbors[j]->_velocity;
-			distanceNorm = Functions::calculate_distance_norm(x_ij);
-			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
-			if (_particles[i]._neighbors[j]->_type == fluid) {
-				viscosity += (FluidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
-					/ (_particles[i]._neighbors[j]->_density * Parameters::H * 0.01f
-						+ Functions::scalar_product2D(x_ij, x_ij)
-						* Parameters::H) * kernelDeriv;
-				c_f += - (FluidParticle::_mass / (density * density)) * kernelDeriv;
-			}
-			else {
-				// Uses rest density instead of boundary density atm. add factor gamma maybe?
-				viscosity += (SolidParticle::_mass * Functions::scalar_product2D(v_ij, x_ij))
-					/ (density * Parameters::H * 0.01f
-						+ Functions::scalar_product2D(x_ij, x_ij)
-						* Parameters::H) * Parameters::BOUNDARY_VISCOSITY * kernelDeriv;
-				c_f += - 2 * Parameters::GAMMA * (SolidParticle::_mass / (density * density)) * kernelDeriv;
-			}
-		}
-		_particles[i]._density = density;
-		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
-		_averageDensity += std::max(density, FluidParticle::_restDensity);
-		// Let's ignore viscosity for the time being
-		_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * (_gravity
-			+ FluidParticle::_materialParameter * 8 * viscosity);
-		//_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity;
-		_particles[i].c_f = c_f;
-	}
-	// Division by _numFluidParticles not a problem, as function would have terminated if _nFP == 0
-	_averageDensity = _averageDensity / _numFluidParticles;
-
-	// Calculate source term and diagonal element a_ii
-	for (int i = 0; i < _numParticles; i++) {
-		if (_particles[i]._type == solid) { continue; }
-		p_adv = 0;
-		a_ii = 0;
-		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
-			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
-			v_adv_ij = _particles[i]._v_adv - _particles[i]._neighbors[j]->_v_adv;
-			distanceNorm = Functions::calculate_distance_norm(x_ij);
-			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
-
-			if (_particles[i]._neighbors[j]->_type == fluid) {
-				p_adv += FluidParticle::_mass
-					* Functions::scalar_product2D(v_adv_ij, kernelDeriv);
-				a_ii += FluidParticle::_mass *
-					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
-				a_ii += + FluidParticle::_mass * Functions::scalar_product2D(
-					(FluidParticle::_mass / (_particles[i]._density
-						* _particles[i]._density)) * - kernelDeriv, kernelDeriv);
-			}
-			else if (_particles[i]._neighbors[j]->_type == solid) {
-				p_adv += SolidParticle::_mass
-					* Functions::scalar_product2D(v_adv_ij, kernelDeriv);
-				a_ii += SolidParticle::_mass *
-					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
-			}
-		}
-		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - Parameters::timeStepSize * p_adv;
-		_particles[i]._a_ii = Parameters::timeStepSize * Parameters::timeStepSize * a_ii;
-		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
-		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
-	}
-
-	// Solve Pressure
-	jacobi_solve();
-
+	// Solve pressure
+	jacobi_solve_vd();
 
 	// Update Position and Velocity
 	if (_moveParticles) { update_x_and_v(); }
 
 	// Delete stray particles
 	if (_deleteParticles) { delete_particles(); }
-}
-
-// _________________________________________________________________________________
-void Simulation::spawn_particles() {
-	if (_numIterations * Parameters::timeStepSize - _lastSpawnTime < _spawnDelay || _numFluidParticles >= maxNumParticles) { return; }
-	for (int i = 0; i < _spawnLocations.size(); i++) {
-		_particles.push_back(FluidParticle(_particles.size(), _spawnLocations[i], _spawnVelocities[i]));
-	}
-	_lastSpawnTime = _numIterations * Parameters::timeStepSize;
 }
 
 
@@ -362,7 +550,17 @@ void Simulation::run() {
 			}
 
 			update_hashTable();
-			update_physics();
+			_numFluidParticles = 0;
+			_numParticles = _particles.size();
+
+			// Find Neighbors and count fluid particles
+			for (int i = 0; i < _numParticles; i++) {
+				if (_particles[i]._type == solid) { continue; }
+				_numFluidParticles++;
+				_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
+			}
+
+			if (_numFluidParticles > 0) { update_physics(); }
 
 			if (_testNeighbors) {
 				_testedParticlesId.clear();
@@ -413,7 +611,18 @@ void Simulation::run() {
 				if (_spawnParticles) {
 					spawn_particles();
 				}
+
 				update_hashTable();
+				_numFluidParticles = 0;
+				_numParticles = _particles.size();
+
+				// Find Neighbors and count fluid particles
+				for (int i = 0; i < _numParticles; i++) {
+					if (_particles[i]._type == solid) { continue; }
+					_numFluidParticles++;
+					_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
+				}
+
 				update_physics();
 
 				int numParticles = _particles.size();

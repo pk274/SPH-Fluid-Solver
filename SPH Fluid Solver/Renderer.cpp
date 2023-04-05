@@ -232,7 +232,6 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 		if (particles->at(i)._id == watchedParticleId) {
 			//_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
 			_fluidShape.setFillColor(sf::Color::Red);
-			std::cout << particles->at(i)._pressure << std::endl;
 		}
 		if (updateArrows) {
 		    update_arrows(&particles->at(i));

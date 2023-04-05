@@ -21,6 +21,7 @@ class Particle {
 	  sf::Vector2f _pressureAcc;
 
 	  sf::Vector2f _v_adv;
+	  sf::Vector2f _x_adv;
 	  sf::Vector2f c_f;
 
 	  float _density;
