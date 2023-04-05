@@ -14,7 +14,7 @@ public:
 	static const float MAX_DENSITY_ERROR;
 	static const float OMEGA;
 	static const int MAX_SOLVER_ITERATIONS;
-	static const float timeStepSize;
+	static const float TIME_STEP;
 
 	static const float GRAPH_ZOOM;
 	static const float GRAPH_SPEED;
@@ -22,11 +22,13 @@ public:
 	static const int SIMULATION_LENGTH;
 	static const bool JUST_RENDER;
 	static const bool INTERACTIVE;
-	static const int SPEEDUP;
-	static const int RENDER_SPEEDUP;
 
 	static const bool COLOR_CODE_SPEED;
 	static const bool COLOR_CODE_PRESSURE;
+	static const bool ADAPTIVE_TIME_STEP;
+	static const float MAX_TIME_STEP;
+	static const float CFL_NUMBER;
+	static const double TIME_OFFSET;
 
 	static const float PRESSURE_CODE_ROUGHNESS;
 };

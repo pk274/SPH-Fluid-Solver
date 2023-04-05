@@ -21,6 +21,7 @@ class Simulation {
 	  int _numIterations;
 
 	  std::vector<Particle> _particles;
+	  float _timeStepSize;
 	  float _neighborRadius;
 	  double _stiffness;
 	  sf::Vector2f _gravity;
@@ -48,6 +49,9 @@ class Simulation {
 	  float _lastSpawnTime;
 	  int maxNumParticles;
 
+	  bool _pauseSimulation;
+	  bool _endSimulation;
+
 
 	  sf::Clock _clock;
 	  sf::Time _currentTime;
@@ -61,6 +65,10 @@ class Simulation {
 	  float _watchedParticleDensity;
 	  float _avgNeighborhoodTime;
 	  int _totalNumSolverIterations;
+	  double _simulatedTime;
+	  double _cflNumber;
+	  double _nextFrame;
+	  double _frameDistance;
 
 	  std::vector<sf::Vector2f> _spawnLocations;
 	  std::vector<sf::Vector2f> _spawnVelocities;
@@ -69,6 +77,9 @@ class Simulation {
 	  std::fstream _renderFile;
 
 	  Simulation(int framelimit = 30);
+
+	  void check_input();
+	  void run_tests();
 
 	  void update_hashTable();
 	  void update_hashTable_old();

@@ -14,10 +14,13 @@
 
 
 // _________________________________________________________________________________
-Simulation::Simulation(int framelimit) {
+Simulation::Simulation(int framesPerSec) {
 
 	_particles = std::vector<Particle>();
 	_testedParticlesId = std::vector<int>();
+
+	_timeStepSize = Parameters::TIME_STEP;
+	_simulatedTime = 0;
 
 	_neighborRadius = Parameters::NEIGHBORHOOD_RADIUS;
 	_stiffness = Parameters::GAMMA;
@@ -28,16 +31,40 @@ Simulation::Simulation(int framelimit) {
 	_spawnLocations = std::vector<sf::Vector2f>();
 	_spawnVelocities = std::vector<sf::Vector2f>();
 
+	_pauseSimulation = false;
+	_endSimulation = false;
 
 	_clock = sf::Clock();
 	_lastUpdate = _clock.getElapsedTime();
 	std::srand(std::time(nullptr));
 	_watchedParticleId = - 1;
-	_maxVelocity = 0;
+	_maxVelocity = 1;
+	_nextFrame = 0;
+	_frameDistance = 1. / framesPerSec;
 
 }
 
+// _________________________________________________________________________________
+void Simulation::check_input() {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		_pauseSimulation = true;
+	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		// Close application
+		_window.close();
+		_endSimulation = true;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+		// Switch observed particle randomly
+		int randomValue = std::rand() % _particles.size();
+		_watchedParticleId = randomValue;
+		while (_particles[_watchedParticleId]._type != fluid) {
+			int randomValue = std::rand() % _particles.size();
+			_watchedParticleId = randomValue;
+		}
+	}
+}
 
 // _________________________________________________________________________________
 void Simulation::update_hashTable() {
@@ -120,7 +147,7 @@ void Simulation::calculate_s_vd() {
 		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
 		_averageDensity += std::max(density, FluidParticle::_restDensity);
 		// Let's ignore viscosity for the time being
-		_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * (_gravity
+		_particles[i]._v_adv = _particles[i]._velocity + _timeStepSize * (_gravity
 			+ FluidParticle::_materialParameter * 8 * viscosity);
 		//_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity;
 		_particles[i].c_f = c_f;
@@ -155,8 +182,8 @@ void Simulation::calculate_s_vd() {
 					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
 			}
 		}
-		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - Parameters::timeStepSize * p_adv;
-		_particles[i]._a_ii = Parameters::timeStepSize * Parameters::timeStepSize * a_ii;
+		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - _timeStepSize * p_adv;
+		_particles[i]._a_ii = _timeStepSize * _timeStepSize * a_ii;
 		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
 		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
 	}
@@ -229,10 +256,10 @@ void Simulation::calculate_s_di() {
 		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
 		_averageDensity += std::max(density, FluidParticle::_restDensity);
 		// Let's ignore viscosity for the time being
-		_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * (_gravity
+		_particles[i]._v_adv = _particles[i]._velocity + _timeStepSize * (_gravity
 			+ FluidParticle::_materialParameter * 8 * viscosity);
 		//_particles[i]._v_adv = _particles[i]._velocity + Parameters::timeStepSize * _gravity;
-		_particles[i]._x_adv = _particles[i]._position + Parameters::timeStepSize * _particles[i]._v_adv;
+		_particles[i]._x_adv = _particles[i]._position + _timeStepSize * _particles[i]._v_adv;
 		_particles[i].c_f = c_f;
 	}
 	// Division by _numFluidParticles not a problem, as function would have terminated if _nFP == 0
@@ -262,7 +289,7 @@ void Simulation::calculate_s_di() {
 			}
 		}
 		_particles[i]._s_i = FluidParticle::_restDensity - rho_adv;
-		_particles[i]._a_ii = Parameters::timeStepSize * Parameters::timeStepSize * a_ii;
+		_particles[i]._a_ii = _timeStepSize * _timeStepSize * a_ii;
 		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
 		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
 	}
@@ -327,7 +354,7 @@ void Simulation::jacobi_solve_vd() {
 						* Functions::scalar_product2D(_particles[i]._pressureAcc, kernelDeriv);
 				}
 			}
-			Ap = Ap * Parameters::timeStepSize * Parameters::timeStepSize;
+			Ap = Ap * _timeStepSize * _timeStepSize;
 			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
@@ -391,7 +418,7 @@ void Simulation::jacobi_solve_di() {
 						* kernelDeriv;
 				}
 			}
-			_particles[i]._v_adv += Parameters::timeStepSize * _particles[i]._pressureAcc;
+			_particles[i]._v_adv += _timeStepSize * _particles[i]._pressureAcc;
 		}
 		densityError = 0;
 		for (int i = 0; i < _numParticles; i++) {
@@ -412,7 +439,7 @@ void Simulation::jacobi_solve_di() {
 						Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
 				}
 			}
-			Ap = FluidParticle::_restDensity - _particles[i]._density - Parameters::timeStepSize * Ap;
+			Ap = FluidParticle::_restDensity - _particles[i]._density - _timeStepSize * Ap;
 
 			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
@@ -433,7 +460,6 @@ void Simulation::jacobi_solve_di() {
 			break;
 		}
 	}
-	std::cout << densityError << "\n" << std::endl;
 }
 
 
@@ -441,11 +467,12 @@ void Simulation::jacobi_solve_di() {
 // _________________________________________________________________________________
 void Simulation::update_x_and_v() {
 	float velocityNorm;
+	_maxVelocity = 0;
 	for (int i = 0; i < _numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
-		_particles[i]._velocity = Parameters::timeStepSize * _particles[i]._pressureAcc
+		_particles[i]._velocity = _timeStepSize * _particles[i]._pressureAcc
 			+ _particles[i]._v_adv;
-		_particles[i]._position += Parameters::timeStepSize * _particles[i]._velocity;
+		_particles[i]._position += _timeStepSize * _particles[i]._velocity;
 
 		velocityNorm = Functions::calculate_distance_norm(_particles[i]._velocity);
 		if (Parameters::COLOR_CODE_SPEED) {
@@ -459,11 +486,11 @@ void Simulation::update_x_and_v() {
 
 // _________________________________________________________________________________
 void Simulation::spawn_particles() {
-	if (_numIterations * Parameters::timeStepSize - _lastSpawnTime < _spawnDelay || _numFluidParticles >= maxNumParticles) { return; }
+	if (_simulatedTime - _lastSpawnTime < _spawnDelay || _numFluidParticles >= maxNumParticles) { return; }
 	for (int i = 0; i < _spawnLocations.size(); i++) {
 		_particles.push_back(FluidParticle(_particles.size(), _spawnLocations[i], _spawnVelocities[i]));
 	}
-	_lastSpawnTime = _numIterations * Parameters::timeStepSize;
+	_lastSpawnTime = _simulatedTime;
 }
 
 // _________________________________________________________________________________
@@ -498,7 +525,17 @@ void Simulation::update_physics() {
 	if (_deleteParticles) { delete_particles(); }
 }
 
-
+// _________________________________________________________________________________
+void Simulation::run_tests() {
+	if (_testNeighbors) {
+		_testedParticlesId.clear();
+		_testedParticlesId = TestManager::test_correct_neighbor_amount(&_particles);
+	}
+	if (_testKernel) {
+		_testedParticlesId.clear();
+		_testedParticlesId = TestManager::test_kernel(&_particles, Parameters::H);
+	}
+}
 
 // _________________________________________________________________________________
 void Simulation::run() {
@@ -507,7 +544,6 @@ void Simulation::run() {
 	if (Parameters::INTERACTIVE) {
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_window.create(_videoMode, "SPH Fluid Solver");
-		bool runSimulation = true;
 		sf::Time newTime;
 		sf::Time renderTime;
 		float elapsedTime;
@@ -516,7 +552,7 @@ void Simulation::run() {
 		_lastSpawnTime = 0.4;
 		_renderer.init_solids(&_particles);
 		_watchedParticleId = (int)(_particles.size() / 2);
-		while (runSimulation) {
+		while (true) {
 			// Update Clock
 			newTime = _clock.getElapsedTime();
 			elapsedTime = newTime.asSeconds() - _lastUpdate.asSeconds();
@@ -524,26 +560,10 @@ void Simulation::run() {
 
 			_lastUpdate = _clock.getElapsedTime();
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-				// Pause
-          		continue;
-			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-				// Close application
-				_window.close();
-				runSimulation = false;
-				break;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-				// Switch observed particle randomly
-				int randomValue = std::rand() % _particles.size();
-				_watchedParticleId = randomValue;
-				while (_particles[_watchedParticleId]._type != fluid) {
-					int randomValue = std::rand() % _particles.size();
-					_watchedParticleId = randomValue;
-				}
-			}
+			_pauseSimulation = false;
+			check_input();
+			if (_endSimulation) { break; }
+			if (_pauseSimulation) { continue; }
 
 			if (_spawnParticles) {
 				spawn_particles();
@@ -562,24 +582,39 @@ void Simulation::run() {
 
 			if (_numFluidParticles > 0) { update_physics(); }
 
-			if (_testNeighbors) {
-				_testedParticlesId.clear();
-				_testedParticlesId = TestManager::test_correct_neighbor_amount(&_particles);
+			_simulatedTime += _timeStepSize;
+			_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
+
+			if (_simulatedTime >= _nextFrame) {
+				run_tests();
+
+				_currentTime = _clock.getElapsedTime();
+
+				_renderer.update_information(_currentTime.asSeconds(),
+					_simulatedTime, _particles.size(),
+					_numFluidParticles, _numUpdatesPerSec, _averageDensity, _cflNumber,
+					_totalNumSolverIterations / (1. + _numIterations), _watchedParticleDensity);
+
+				_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
+
+				renderTime += _clock.getElapsedTime() - _currentTime;
+				_nextFrame += _frameDistance;
 			}
-			if (_testKernel) {
-				_testedParticlesId.clear();
-				_testedParticlesId = TestManager::test_kernel(&_particles, Parameters::H);
+
+
+			// Adjust timestep if necessary
+			if (Parameters::ADAPTIVE_TIME_STEP) {
+				_timeStepSize = Parameters::CFL_NUMBER * Parameters::H / _maxVelocity;
+				if (_simulatedTime + _timeStepSize > _nextFrame) {
+					_timeStepSize = _nextFrame - _simulatedTime + Parameters::TIME_OFFSET;
+				}
+				else if (_simulatedTime + _timeStepSize + _timeStepSize > _nextFrame) {
+					_timeStepSize = (_nextFrame - _simulatedTime + Parameters::TIME_OFFSET) / 2;
+				}
+				if (_timeStepSize > Parameters::MAX_TIME_STEP) {
+					_timeStepSize = Parameters::MAX_TIME_STEP;
+				}
 			}
-			_currentTime = _clock.getElapsedTime();
-
-			_renderer.update_information(_currentTime.asSeconds(),
-				_numIterations * Parameters::timeStepSize, _particles.size(),
-				_numFluidParticles, _numUpdatesPerSec, _averageDensity, _maxVelocity,
-				_totalNumSolverIterations / (1. + _numIterations), _watchedParticleDensity);
-
-			_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
-
-			renderTime += _clock.getElapsedTime() - _currentTime;
 
 			_numIterations++;
 		}
@@ -593,7 +628,8 @@ void Simulation::run() {
 			_lastSpawnTime = 0;
 			_renderFile.open("./renderFile.dat", std::fstream::out | std::fstream::trunc);
 			_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
-			_renderFile << Parameters::timeStepSize << std::endl;
+			_renderFile << Parameters::TIME_STEP << std::endl;
+			std::string timeString;
 			for (int i = 0; i < _particles.size(); i++) {
 				if (_particles[i]._type == solid) {
 					_renderFile << "SP " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
@@ -603,10 +639,8 @@ void Simulation::run() {
 
 			_renderFile << "EOS" << std::endl;
 
-			for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH; timeSteps++) {
-				if (timeSteps % 10 == 0) {
-					std::cout << "Calculating step " << timeSteps << " / " << Parameters::SIMULATION_LENGTH << "\r";
-				}
+			while (true) {
+				_numParticles = _particles.size();
 
 				if (_spawnParticles) {
 					spawn_particles();
@@ -623,11 +657,18 @@ void Simulation::run() {
 					_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
 				}
 
-				update_physics();
+				if (_numFluidParticles > 0) { update_physics(); }
 
-				int numParticles = _particles.size();
-				if (timeSteps % Parameters::SPEEDUP == 0) {
-					for (int i = 0; i < numParticles; i++) {
+				_simulatedTime += _timeStepSize;
+				_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
+				_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";
+
+				if (_simulatedTime >= _nextFrame) {
+					timeString = std::to_string(_simulatedTime);
+					timeString.resize(5, ' ');
+					std::cout << "Calculated time: " << timeString << " / "
+						<< Parameters::SIMULATION_LENGTH << "\r";
+					for (int i = 0; i < _numParticles; i++) {
 						if (_particles[i]._type == fluid) {
 							_renderFile << "FP " << _particles[i]._position.x << " " << _particles[i]._position.y << " " <<
 								_particles[i]._colorFactor << std::endl;
@@ -635,11 +676,26 @@ void Simulation::run() {
 					}
 					_renderFile << "D " << _averageDensity << "\n";
 					_renderFile << "EOU" << std::endl;
+					_nextFrame += _frameDistance;
 				}
 	
-				_avgDensityFile << timeSteps * Parameters::timeStepSize << " " << _averageDensity << "\n";
+				// Adjust timestep if necessary
+				if (Parameters::ADAPTIVE_TIME_STEP) {
+					_timeStepSize = Parameters::CFL_NUMBER * Parameters::H / _maxVelocity;
+					if (_simulatedTime + _timeStepSize > _nextFrame) {
+						_timeStepSize = _nextFrame - _simulatedTime + Parameters::TIME_OFFSET;
+					}
+					else if (_simulatedTime + _timeStepSize + _timeStepSize > _nextFrame) {
+						_timeStepSize = (_nextFrame - _simulatedTime + Parameters::TIME_OFFSET) / 2;
+					}
+					if (_timeStepSize > Parameters::MAX_TIME_STEP) {
+						_timeStepSize = Parameters::MAX_TIME_STEP;
+					}
+				}
 				_numIterations++;
+				if (_simulatedTime > Parameters::SIMULATION_LENGTH) { break; }
 			}
+			_renderFile << "Z" << std::endl;
 			_renderFile.close();
 		}
 		_avgDensityFile.close();
@@ -668,9 +724,9 @@ void Simulation::run() {
 		float yValue;
 		float colorFactor;
 		float density;
-		bool runSimulation = true;
 		float timeStepSize;
 		int c = 0;
+		_endSimulation = false;
 		_renderFile >> timeStepSize;
 		_clock.restart();
 
@@ -679,6 +735,7 @@ void Simulation::run() {
 		while (true) {
 			_renderFile >> type;
 			if (type[0] == 'E') { break; }
+			if (type[0] == 'Z') { _endSimulation = true; break; }
 			_renderFile >> xValue >> yValue >> colorFactor;
 			sf::CircleShape newShape = sf::CircleShape();
 			newShape.setFillColor(sf::Color::Color::White);
@@ -688,16 +745,7 @@ void Simulation::run() {
 			numSolids++;
 		}
 
-		for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH / Parameters::SPEEDUP; timeSteps++) {
-			if (c % Parameters::RENDER_SPEEDUP != 0) {
-				while (true) {
-					_renderFile >> type;
-					if (type[0] == 'E') { break; }
-					_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-				}
-				c++;
-				continue;
-			}
+		while(true) {
 			elapsedTime = _clock.getElapsedTime();
 			numShapes = 0;
 			numFluids = 0;
@@ -709,18 +757,19 @@ void Simulation::run() {
 			while (true) {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 					// Close application
-					runSimulation = false;
+					_endSimulation = true;
 					break;
 				}
 
 				_renderFile >> type;
+				if (type[0] == 'Z') { _endSimulation = true; break; }
 				if (type[0] == 'E') {
 					break;
 				}
 				if (type[0] == 'D') {
 					_renderFile >> density;
 					_averageDensity = density;
-					_avgDensityFile << c * Parameters::timeStepSize << " " << _averageDensity << "\n";
+					_avgDensityFile << c * Parameters::TIME_STEP << " " << _averageDensity << "\n";
 					continue;
 				}
 				_renderFile >> xValue >> yValue >> colorFactor;
@@ -735,13 +784,15 @@ void Simulation::run() {
 				numShapes++;
 				_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			}
+			if (_endSimulation) { break; }
 
 			for (int i = 0; i < numSolids; i++) {
 				_window.draw(solidShapes[i]);
 			}
 
- 			_renderer.update_information(elapsedTime.asSeconds(), timeSteps* timeStepSize,
-				numShapes, numFluids, numUpdatesPerSec, _averageDensity, _maxVelocity, _totalNumSolverIterations / _numIterations);
+ 			_renderer.update_information(elapsedTime.asSeconds(), c * _frameDistance,
+				numShapes, numFluids, numUpdatesPerSec, _averageDensity,
+				Parameters::CFL_NUMBER, _totalNumSolverIterations / (_numIterations + 1));
 			_window.draw(_renderer._infoPanel);
 			_window.draw(_renderer._graphBackground);
 			for (int i = 0; i < _renderer._graphShapes.size(); i++) {
@@ -751,7 +802,6 @@ void Simulation::run() {
 			_window.draw(_renderer._information);
 			_window.display();
 			c++;
-			if (!runSimulation) { break; }
 		}
 		_window.close();
 
@@ -790,16 +840,8 @@ void Simulation::render_from_file(std::string fileName) {
 	int c = 0;
 	_renderFile >> timeStepSize;
 
-	for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH / Parameters::SPEEDUP; timeSteps++) {
-		if (c % Parameters::RENDER_SPEEDUP != 0) {
-			while (true) {
-				_renderFile >> type;
-				if (type[0] == 'E') { break; }
-				_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			}
-			c++;
-			continue;
-		}
+	for (int timeSteps = 0; timeSteps < Parameters::SIMULATION_LENGTH; timeSteps++) {
+		
 		elapsedTime = _clock.getElapsedTime();
 		numShapes = 0;
 		numFluids = 0;
@@ -822,7 +864,7 @@ void Simulation::render_from_file(std::string fileName) {
 			if (type[0] == 'D') {
 				_renderFile >> density;
 				_averageDensity = density;
-				_avgDensityFile << c * Parameters::timeStepSize << " " << _averageDensity << "\n";
+				_avgDensityFile << c * Parameters::TIME_STEP << " " << _averageDensity << "\n";
 				continue;
 			}
 			_renderFile >> xValue >> yValue >> colorFactor;

@@ -84,7 +84,7 @@ void Renderer::init_solids(std::vector<Particle>* particles) {
 
 // ___________________________________________________________
 void Renderer::update_information(float time, float simTime, int numParticles, int numFluidParticles, float numUpdates, float avgDensity,
-	float maxVel, float avgSolverIters, float watchedParticleDensity, bool updateGraph) {
+	float cflNumber, float avgSolverIters, float watchedParticleDensity, bool updateGraph) {
 	// Information in the box
 	_applicationTimeInfo = std::to_string(time);
 	_simulatedTimeInfo = std::to_string(simTime);
@@ -92,7 +92,7 @@ void Renderer::update_information(float time, float simTime, int numParticles, i
 	_numFluidsInfo = std::to_string(numFluidParticles);
 	_numUpdatesInfo = std::to_string(numUpdates);
 	_avgDensityInfo = std::to_string(avgDensity);
-	_maxStepInfo = std::to_string(maxVel * Parameters::timeStepSize / Parameters::H);
+	_maxStepInfo = std::to_string(cflNumber);
 	_avgSolverIters = std::to_string(avgSolverIters);
 	_watchedParticleDensity = std::to_string(watchedParticleDensity);
 	 
