@@ -16,7 +16,7 @@
 
 int main()
 {
-    Simulation simulation = Simulation(24);
+    Simulation simulation = Simulation(50);
     InitManager initManager = InitManager(&simulation);
     initManager.init_simulation(BigBreakingDam);
     // TestManager::test_kernel_integral();

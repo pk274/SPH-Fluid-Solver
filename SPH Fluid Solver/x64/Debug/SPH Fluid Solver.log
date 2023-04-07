@@ -3,34 +3,7 @@ C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Parameters.cpp(10,3
 C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Parameters.cpp(14,49): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Parameters.cpp(17,42): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Parameters.cpp(29,46): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-  Simulation.cpp
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(39,22): warning C4244: "Argument": Konvertierung von "time_t" in "unsigned int", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(71,39): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(389,8): warning C4101: "kernel": Unreferenzierte lokale Variable
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(491,97): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(493,19): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(536,74): warning C4244: "Argument": Konvertierung von "const float" in "int", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(552,23): warning C4305: "=": Verkürzung von "double" in "float"
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(574,37): warning C4267: "=": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(596,32): warning C4244: "Argument": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(595,62): warning C4244: "Argument": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(596,80): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(594,6): warning C4244: "Argument": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(609,50): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(612,78): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(643,38): warning C4267: "=": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(651,38): warning C4267: "=": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(686,51): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(689,79): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(752,25): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(779,79): warning C4244: "Argument": Konvertierung von "float" in "sf::Uint8", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(795,55): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(794,27): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(793,61): warning C4244: "Argument": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(848,24): warning C4244: "=": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(880,78): warning C4244: "Argument": Konvertierung von "float" in "sf::Uint8", möglicher Datenverlust
-C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Simulation.cpp(889,58): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-  Code wird generiert...
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\Parameters.cpp(30,41): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 LINK : warning LNK4075: /INCREMENTAL wird aufgrund der Angabe von /PROFILE ignoriert.
 CompactHashManager.obj : warning LNK4075: /EDITANDCONTINUE wird aufgrund der Angabe von /OPT:REF ignoriert.
   SPH Fluid Solver.vcxproj -> C:\Users\Paul\source\repos\SPH-Fluid-Solver\x64\Debug\SPH Fluid Solver.exe

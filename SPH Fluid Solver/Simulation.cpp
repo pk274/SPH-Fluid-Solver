@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES
 
 #include <cstdlib>
+#include <stdlib.h>
 #include <ctime>
 #include <cmath>
 #include <iostream>
@@ -310,7 +311,7 @@ void Simulation::jacobi_solve_vd() {
 		if (l >= Parameters::MAX_SOLVER_ITERATIONS) {
 			break;
 		}
-
+		//std::cout << "l = " << l << std::endl;
 		for (int i = 0; i < _numParticles; i++) {
 			if (_particles[i]._type == solid) { continue; }
 			_particles[i]._pressureAcc.x = 0;
@@ -359,11 +360,12 @@ void Simulation::jacobi_solve_vd() {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
-			densityError += std::abs(Ap - _particles[i]._s_i);		//abs??
+			densityError += std::max(Ap - _particles[i]._s_i, 0.f);
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
 		densityError = densityError / _numFluidParticles;
+		//std::wcout << "Density error: " << densityError << "\n" << std::endl;
 
 		// Increment Solver iteration
 		l++;
@@ -540,6 +542,7 @@ void Simulation::run_tests() {
 // _________________________________________________________________________________
 void Simulation::run() {
 	_totalNumSolverIterations = 0;
+	_particles.reserve(_particles.size());
 
 	if (Parameters::INTERACTIVE) {
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
@@ -701,20 +704,12 @@ void Simulation::run() {
 		_avgDensityFile.close();
 		std::cout << _avgNeighborhoodTime / Parameters::SIMULATION_LENGTH << std::endl;
 
-		_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
 		_renderFile.open("./renderFile.dat", std::fstream::in);
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
-		_window.create(_videoMode, "SPH Fluid Solver");
 
-		std::cout << "=======================================================" << std::endl;
-		std::cout << "COMPUTATIONS READY! Press Space to watch the Simulation" << std::endl;
-		std::cout << "=======================================================" << std::endl;
-
-		while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-			continue;
-		}
 
 		sf::Time elapsedTime;
+		sf::Time timeDifference;
 		int numUpdatesPerSec;
 		int numShapes = 0;
 		int numFluids = 0;
@@ -731,13 +726,17 @@ void Simulation::run() {
 		_clock.restart();
 
 		std::vector<sf::CircleShape> solidShapes = std::vector<sf::CircleShape>();
+		std::vector<std::vector<sf::CircleShape>> fluidShapes = std::vector<std::vector<sf::CircleShape>>();
+		std::vector<sf::CircleShape> currentFluids = std::vector<sf::CircleShape>();
+		std::vector<float> densities = std::vector<float>();
+		sf::CircleShape newShape = sf::CircleShape();
 
+		// Solid reading Loop
 		while (true) {
 			_renderFile >> type;
 			if (type[0] == 'E') { break; }
 			if (type[0] == 'Z') { _endSimulation = true; break; }
 			_renderFile >> xValue >> yValue >> colorFactor;
-			sf::CircleShape newShape = sf::CircleShape();
 			newShape.setFillColor(sf::Color::Color::White);
 			newShape.setRadius(SolidParticle::_size * _zoomFactor);
 			newShape.setPosition(xValue * _zoomFactor, yValue * _zoomFactor);
@@ -745,64 +744,85 @@ void Simulation::run() {
 			numSolids++;
 		}
 
+		// Fluid Reading Loop
 		while(true) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				// Close application
+				_endSimulation = true;
+				break;
+			}
+			_renderFile >> type;
+			if (type[0] == 'Z') { break; }
+			if (type[0] == 'E') {
+				fluidShapes.push_back(currentFluids);
+				int size = currentFluids.size();
+				currentFluids.clear();
+				currentFluids.reserve(size);
+				c++;
+				continue;
+			}
+			if (type[0] == 'D') {
+				_renderFile >> density;
+				densities.push_back(density);
+				continue;
+			}
+			_renderFile >> xValue >> yValue >> colorFactor;
+
+			if (type[0] == 'F') {
+				newShape.setRadius(FluidParticle::_size * _zoomFactor / 2);
+				newShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
+				newShape.setPosition(xValue* _zoomFactor, yValue* _zoomFactor);
+				currentFluids.push_back(newShape);
+			}
+			_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+
+		std::cout << "=======================================================" << std::endl;
+		std::cout << "COMPUTATIONS READY! Press Space to watch the Simulation" << std::endl;
+		std::cout << "=======================================================" << std::endl;
+
+		while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+			continue;
+		}
+		_window.create(_videoMode, "SPH Fluid Solver");
+
+		_clock.restart();
+		// Render Loop
+		for (int i = 0; i < c; i++) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				// Close application
+				_endSimulation = true;
+				break;
+			}
 			elapsedTime = _clock.getElapsedTime();
-			numShapes = 0;
-			numFluids = 0;
+			timeDifference = elapsedTime - _lastUpdate;
+			while (timeDifference.asSeconds() < _frameDistance) {
+				// Wait with next frame
+				sf::sleep(sf::seconds(_frameDistance) - timeDifference + sf::seconds(Parameters::TIME_OFFSET));
+			}
+			numFluids = fluidShapes[i].size();
+			numShapes = numFluids + numSolids;
+			_averageDensity = densities[i];
 			numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
 			_lastUpdate = elapsedTime;
 			_window.clear();
-			
 
-			while (true) {
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-					// Close application
-					_endSimulation = true;
-					break;
-				}
-
-				_renderFile >> type;
-				if (type[0] == 'Z') { _endSimulation = true; break; }
-				if (type[0] == 'E') {
-					break;
-				}
-				if (type[0] == 'D') {
-					_renderFile >> density;
-					_averageDensity = density;
-					_avgDensityFile << c * Parameters::TIME_STEP << " " << _averageDensity << "\n";
-					continue;
-				}
-				_renderFile >> xValue >> yValue >> colorFactor;
-
-				if (type[0] == 'F') {
-					_renderer._fluidShape.setPosition(sf::Vector2f(xValue* _zoomFactor, yValue* _zoomFactor));
-					_renderer._fluidShape.setFillColor(sf::Color::Blue + sf::Color::Color(0, colorFactor, 0));
-					numFluids++;
-					_window.draw(_renderer._fluidShape);
-				}
-
-				numShapes++;
-				_renderFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			for (int ii = 0; ii < numFluids; ii++ ) {
+				_window.draw(fluidShapes[i][ii]);
 			}
-			if (_endSimulation) { break; }
-
-			for (int i = 0; i < numSolids; i++) {
-				_window.draw(solidShapes[i]);
+			for (int ii = 0; ii < numSolids; ii++) {
+				_window.draw(solidShapes[ii]);
 			}
 
- 			_renderer.update_information(elapsedTime.asSeconds(), c * _frameDistance,
+			_renderer.update_information(elapsedTime.asSeconds(), i * _frameDistance,
 				numShapes, numFluids, numUpdatesPerSec, _averageDensity,
-				Parameters::CFL_NUMBER, _totalNumSolverIterations / (_numIterations + 1));
+				Parameters::CFL_NUMBER);
 			_window.draw(_renderer._infoPanel);
-			_window.draw(_renderer._graphBackground);
-			for (int i = 0; i < _renderer._graphShapes.size(); i++) {
-				_window.draw(_renderer._graphShapes[i]);
-			}
 			_window.draw(_renderer._description);
 			_window.draw(_renderer._information);
 			_window.display();
-			c++;
 		}
+		
 		_window.close();
 
 	}
