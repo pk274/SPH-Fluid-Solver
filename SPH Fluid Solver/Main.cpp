@@ -6,19 +6,14 @@
 #include "./Simulation.h"
 #include "./InitManager.h"
 
-//____________________________________________
-// TODO:
-// -neighborhood search und hastable update verbessern
-// _____________________________________________
-
 
 
 
 int main()
 {
-    Simulation simulation = Simulation(50);
+    Simulation simulation = Simulation(30);
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(Fountain);
+    initManager.init_simulation(BreakingDam);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

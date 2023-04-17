@@ -14,6 +14,7 @@ public:
 	static const float MAX_DENSITY_ERROR;
 	static const float OMEGA;
 	static const int MAX_SOLVER_ITERATIONS;
+	static const int MIN_SOLVER_ITERATIONS;
 	static const float TIME_STEP;
 
 	static const float GRAPH_ZOOM;
@@ -32,4 +33,7 @@ public:
 	static const float SLOW_DOWN;
 
 	static const float PRESSURE_CODE_ROUGHNESS;
+
+	static const bool DOCUMENT_ITERATIONS_TIME;
+	static const bool DOCUMENT_AVG_DENSITY;
 };

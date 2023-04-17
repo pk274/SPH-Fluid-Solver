@@ -305,6 +305,7 @@ void Simulation::jacobi_solve_vd() {
 	sf::Vector2f x_ij;
 	float distanceNorm;
 	sf::Vector2f kernelDeriv;
+	_numSolverIterations = 0;
 
 	while (true) {
 		// Exit Condition
@@ -361,6 +362,7 @@ void Simulation::jacobi_solve_vd() {
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
 			densityError += std::max(Ap - _particles[i]._s_i, 0.f);
+			//densityError += Ap - _particles[i]._s_i;
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
@@ -369,13 +371,14 @@ void Simulation::jacobi_solve_vd() {
 
 		// Increment Solver iteration
 		l++;
-		_totalNumSolverIterations++;
 
 		// Exit Condition
-		if (densityError < Parameters::MAX_DENSITY_ERROR) {
+		if (densityError < Parameters::MAX_DENSITY_ERROR && l >= Parameters::MIN_SOLVER_ITERATIONS) {
 			break;
 		}
 	}
+	_numSolverIterations = l;
+	_totalNumSolverIterations += _numSolverIterations;
 }
 
 // _________________________________________________________________________________
@@ -550,11 +553,16 @@ void Simulation::run() {
 		sf::Time newTime;
 		sf::Time renderTime;
 		float elapsedTime;
+		_maxTimeStep = 0;
+		_minTimeStep = Parameters::MAX_TIME_STEP;
 		_numUpdatesPerSec = 0;
 		_numIterations = 0;
 		_lastSpawnTime = 0.4;
 		_renderer.init_solids(&_particles);
 		_watchedParticleId = (int)(_particles.size() / 2);
+		_timeStepFile.open("./timeStepFile.dat", std::fstream::out | std::fstream::trunc);
+		_iterationsFile.open("./iterationsFile.dat", std::fstream::out | std::fstream::trunc);
+		_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
 		while (true) {
 			// Update Clock
 			newTime = _clock.getElapsedTime();
@@ -584,6 +592,13 @@ void Simulation::run() {
 			}
 
 			if (_numFluidParticles > 0) { update_physics(); }
+			if (Parameters::DOCUMENT_ITERATIONS_TIME) {
+				_timeStepFile << _simulatedTime << " " << _timeStepSize << "\n";
+				_iterationsFile << _simulatedTime << " " << _numSolverIterations << "\n";
+			}
+			if (Parameters::DOCUMENT_AVG_DENSITY) {
+				_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";
+			}
 
 			_simulatedTime += _timeStepSize;
 			_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
@@ -612,7 +627,7 @@ void Simulation::run() {
 					_timeStepSize = _nextFrame - _simulatedTime + Parameters::TIME_OFFSET;
 				}
 				else if (_simulatedTime + _timeStepSize + _timeStepSize > _nextFrame) {
-					_timeStepSize = (_nextFrame - _simulatedTime + Parameters::TIME_OFFSET) / 2;
+					_timeStepSize = (_nextFrame - _simulatedTime) / 2 + Parameters::TIME_OFFSET;
 				}
 				if (_timeStepSize > Parameters::MAX_TIME_STEP) {
 					_timeStepSize = Parameters::MAX_TIME_STEP;
@@ -621,8 +636,6 @@ void Simulation::run() {
 
 			_numIterations++;
 		}
-		std::cout << renderTime.asSeconds() / _numIterations << std::endl;
-
 	}
 
 	else {
@@ -661,10 +674,16 @@ void Simulation::run() {
 				}
 
 				if (_numFluidParticles > 0) { update_physics(); }
+				if (Parameters::DOCUMENT_ITERATIONS_TIME) {
+					_timeStepFile << _simulatedTime << " " << _timeStepSize << "\n";
+					_iterationsFile << _simulatedTime << " " << _numSolverIterations << "\n";
+				}
+				if (Parameters::DOCUMENT_AVG_DENSITY) {
+					_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";
+				}
 
 				_simulatedTime += _timeStepSize;
 				_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
-				_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";
 
 				if (_simulatedTime >= _nextFrame) {
 					timeString = std::to_string(_simulatedTime);
@@ -831,6 +850,9 @@ void Simulation::run() {
 	}
 
 	_renderFile.close();
+	_timeStepFile.close();
+	_iterationsFile.close();
+	_avgDensityFile.close();
 }
 
 
@@ -923,5 +945,8 @@ void Simulation::render_from_file(std::string fileName) {
 	}
 	_window.close();
 	_renderFile.close();
+	_timeStepFile.close();
+	_iterationsFile.close();
+	_avgDensityFile.close();
 
 }

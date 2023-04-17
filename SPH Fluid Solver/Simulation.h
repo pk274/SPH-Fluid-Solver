@@ -66,16 +66,21 @@ class Simulation {
 	  float _watchedParticleDensity;
 	  float _avgNeighborhoodTime;
 	  int _totalNumSolverIterations;
+	  int _numSolverIterations;
 	  double _simulatedTime;
 	  double _cflNumber;
 	  double _nextFrame;
 	  double _frameDistance;
+	  float _maxTimeStep;
+	  float _minTimeStep;
 
 	  std::vector<sf::Vector2f> _spawnLocations;
 	  std::vector<sf::Vector2f> _spawnVelocities;
 
 	  std::fstream _avgDensityFile;
 	  std::fstream _renderFile;
+	  std::fstream _timeStepFile;
+	  std::fstream _iterationsFile;
 
 	  Simulation(int framelimit = 30);
 
