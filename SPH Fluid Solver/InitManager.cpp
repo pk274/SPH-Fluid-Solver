@@ -122,6 +122,36 @@ std::vector<Particle> placeTriangle(sf::Vector2f pos1, sf::Vector2f pos2, sf::Ve
 	return triangle;
 }
 
+// _________________________________________________________________________________
+std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, int startId = 0) {
+	int height = 500;
+	int width = 600;
+	sf::Vector2f pos1 = lowerLeft;
+	sf::Vector2f pos2 = lowerLeft;
+	sf::Vector2f pos3 = lowerLeft;
+	sf::Vector2f pos4 = lowerLeft;
+	std::vector<Particle> object1 = std::vector<Particle>();
+	std::vector<Particle> object2 = std::vector<Particle>();
+	std::vector<Particle> fountain = std::vector<Particle>();
+
+	for (int i = 0; i < height / 5; i++) {
+		fountain.push_back(SolidParticle(startId + object1.size(), pos1));
+		pos1.y += SolidParticle::_size;
+	}
+	for (int i = 0; i < width; i++) {
+		fountain.push_back(SolidParticle(startId + object1.size(), pos1));
+		pos1.x += SolidParticle::_size;
+	}
+	for (int i = 0; i < height / 5; i++) {
+		fountain.push_back(SolidParticle(startId + object1.size(), pos1));
+		pos1.y -= SolidParticle::_size;
+	}
+
+	return fountain;
+}
+
+
+
 
 // Initialization procedures:
 
@@ -188,6 +218,8 @@ void InitManager::init_simulation(SimulationPreset preset) {
 	case Rain2:
 		init_rain2_simulation(70, 5);
 		break;
+	case Fountain:
+		init_fountain_simulation();
 	}
 }
 
@@ -808,4 +840,27 @@ void InitManager::init_rain2_simulation(int size, int zoom) {
 
 	_sim->_spawnDelay = 0.0037;
 	_sim->maxNumParticles = 10000;
+}
+
+// ______________________________________________________________________
+void InitManager::init_fountain_simulation() {
+	int size = 700;
+	_sim->_zoomFactor = 1;
+	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
+	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 2);
+
+	std::vector<Particle> fountain = place_fountain(sf::Vector2f(50, 700));
+	for (int i = 0; i < fountain.size(); i++) {
+		_sim->_particles.push_back(fountain[i]);
+	}
+
+	_sim->_moveParticles = true;
+	_sim->_testNeighbors = false;
+	_sim->_testKernel = false;
+	_sim->_printFPS = false;
+	_sim->_printParticleInfo = false;
+	_sim->_deleteParticles = false;
+	_sim->_spawnParticles = false;
+
+
 }

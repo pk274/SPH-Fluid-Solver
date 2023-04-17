@@ -34,6 +34,7 @@ enum SimulationPreset {
 	SideSpawn = 50,
 	Rain = 51,
 	Rain2 = 52,
+	Fountain = 60,
 };
 
 
@@ -61,4 +62,5 @@ public:
 	void init_side_spawn_simulation(int size, int zoom);
 	void init_rain_simulation(int size, int zoom);
 	void init_rain2_simulation(int size, int zoom);
+	void init_fountain_simulation();
 };

@@ -29,6 +29,7 @@ public:
 	static const float MAX_TIME_STEP;
 	static const float CFL_NUMBER;
 	static const double TIME_OFFSET;
+	static const float SLOW_DOWN;
 
 	static const float PRESSURE_CODE_ROUGHNESS;
 };

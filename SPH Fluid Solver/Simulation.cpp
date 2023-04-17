@@ -722,6 +722,7 @@ void Simulation::run() {
 		float timeStepSize;
 		int c = 0;
 		_endSimulation = false;
+		_lastUpdate = sf::seconds(0);
 		_renderFile >> timeStepSize;
 		_clock.restart();
 
@@ -745,6 +746,7 @@ void Simulation::run() {
 		}
 
 		// Fluid Reading Loop
+		std::cout << std::endl;
 		while(true) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 				// Close application
@@ -759,6 +761,7 @@ void Simulation::run() {
 				currentFluids.clear();
 				currentFluids.reserve(size);
 				c++;
+				std::cout << "Reading Frame: " << c << "\r";
 				continue;
 			}
 			if (type[0] == 'D') {
@@ -796,15 +799,15 @@ void Simulation::run() {
 			}
 			elapsedTime = _clock.getElapsedTime();
 			timeDifference = elapsedTime - _lastUpdate;
-			while (timeDifference.asSeconds() < _frameDistance) {
+			if (timeDifference.asSeconds() < _frameDistance * Parameters::SLOW_DOWN) {
 				// Wait with next frame
-				sf::sleep(sf::seconds(_frameDistance) - timeDifference + sf::seconds(Parameters::TIME_OFFSET));
+				sf::sleep(sf::seconds(_frameDistance) * Parameters::SLOW_DOWN - timeDifference + sf::seconds(Parameters::TIME_OFFSET));
 			}
 			numFluids = fluidShapes[i].size();
 			numShapes = numFluids + numSolids;
 			_averageDensity = densities[i];
 			numUpdatesPerSec = 1 / (elapsedTime.asSeconds() - _lastUpdate.asSeconds());
-			_lastUpdate = elapsedTime;
+			_lastUpdate = _clock.getElapsedTime();
 			_window.clear();
 
 			for (int ii = 0; ii < numFluids; ii++ ) {
