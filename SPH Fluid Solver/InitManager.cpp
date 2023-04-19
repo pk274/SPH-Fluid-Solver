@@ -195,7 +195,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(60, 7, 10);
+		init_layer_simulation(59, 7, 50);
 		break;
 	case WideLayers:
 		init_wide_layer_simulation(60, 7, 30);
@@ -422,14 +422,17 @@ void InitManager::init_layer_simulation(int size, int zoom, int layers) {
 	for (int i = 0; i < box.size(); i++) {
 		_sim->_particles.push_back(box[i]);
 	}
-	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
+	float xOffset = 0.5;
+	float yOffset = 0.05;
+	pos = sf::Vector2f(SolidParticle::_size * 2 + xOffset / 2, SolidParticle::_size * (size - 2));
 	for (int i = 0; i < layers; i++) {
 		for (int j = 0; j < size / 2 - 3; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
-		pos.x = SolidParticle::_size * 2;
-		pos.y -= FluidParticle::_size;
+		xOffset = xOffset * -1;
+		pos.x = SolidParticle::_size * 2 + xOffset;
+		pos.y -= FluidParticle::_size + yOffset;
 	}
 	_sim->_moveParticles = true;
 	_sim->_testNeighbors = false;
@@ -461,14 +464,17 @@ void InitManager::init_wide_layer_simulation(int size, int zoom, int layers) {
 	for (int i = 0; i < box.size(); i++) {
 		_sim->_particles.push_back(box[i]);
 	}
-	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
+	float xOffset = 0.5;
+	float yOffset = 0.05;
+	pos = sf::Vector2f(SolidParticle::_size * 2 + xOffset / 2, SolidParticle::_size * (size - 2));
 	for (int i = 0; i < layers; i++) {
 		for (int j = 0; j < size - 3; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}
-		pos.x = SolidParticle::_size * 2;
-		pos.y -= FluidParticle::_size;
+		xOffset = xOffset * -1;
+		pos.x = SolidParticle::_size * 2 + xOffset;
+		pos.y -= FluidParticle::_size + yOffset;
 	}
 	_sim->_moveParticles = true;
 	_sim->_testNeighbors = false;

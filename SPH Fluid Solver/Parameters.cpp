@@ -12,8 +12,8 @@ const float Parameters::BOUNDARY_VISCOSITY = 3;
 
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
 const float Parameters::MAX_DENSITY_ERROR = 0.01;
-const float Parameters::OMEGA = 0.5;
-const int Parameters::MAX_SOLVER_ITERATIONS = 90;
+const float Parameters::OMEGA = 0.6;
+const int Parameters::MAX_SOLVER_ITERATIONS = 80;
 const int Parameters::MIN_SOLVER_ITERATIONS = 2;
 const float Parameters::TIME_STEP = 0.005;
 

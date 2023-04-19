@@ -41,7 +41,8 @@ Simulation::Simulation(int framesPerSec) {
 	_watchedParticleId = - 1;
 	_maxVelocity = 1;
 	_nextFrame = 0;
-	_frameDistance = 1. / framesPerSec;
+	_frameDistance = (int)10000 * (1. / framesPerSec);
+	_frameDistance = _frameDistance / 10000;
 
 }
 
@@ -622,12 +623,18 @@ void Simulation::run() {
 
 			// Adjust timestep if necessary
 			if (Parameters::ADAPTIVE_TIME_STEP) {
+				std::cout << _simulatedTime << std::endl;
 				_timeStepSize = Parameters::CFL_NUMBER * Parameters::H / _maxVelocity;
+				if (_timeStepSize < Parameters::MAX_TIME_STEP) {
+					std::cout << "cut bc of cfl number" << std::endl;
+				}
 				if (_simulatedTime + _timeStepSize > _nextFrame) {
 					_timeStepSize = _nextFrame - _simulatedTime + Parameters::TIME_OFFSET;
+					std::cout << "cut bc of next frame" << std::endl;
 				}
 				else if (_simulatedTime + _timeStepSize + _timeStepSize > _nextFrame) {
 					_timeStepSize = (_nextFrame - _simulatedTime) / 2 + Parameters::TIME_OFFSET;
+					std::cout << "cut bc of 2 frames" << std::endl;
 				}
 				if (_timeStepSize > Parameters::MAX_TIME_STEP) {
 					_timeStepSize = Parameters::MAX_TIME_STEP;
