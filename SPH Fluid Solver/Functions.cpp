@@ -65,3 +65,49 @@ std::vector<Particle*> Functions::n_square_neighborhood_search(std::vector<Parti
 	}
 	return neighbors;
 }
+
+// ___________________________________________________________________________________________
+std::tuple<int, int, int> Functions::color_code_pressure(float pressure) {
+	if (pressure <= 1) {
+		return std::make_tuple<int, int, int>(48, 33, 217);
+	}
+	else if (pressure <= 300 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(33, 90, 217);
+	}
+	else if (pressure <= 800 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(33, 130, 217);
+	}
+	else if (pressure <= 2000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(33, 162, 217);
+	}
+	else if (pressure <= 5000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(33, 217, 186);
+	}
+	else if (pressure <= 10000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(33, 217, 125);
+	}
+	else if (pressure <= 25000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(33, 217, 42);
+	}
+	else if (pressure <= 50000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(131, 217, 33);
+	}
+	else if (pressure <= 70000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(199, 217, 33);
+	}
+	else if (pressure <= 90000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(217, 174, 33);
+	}
+	else if (pressure <= 110000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(217, 125, 33);
+	}
+	else if (pressure <= 140000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(217, 79, 33);
+	}
+	else if (pressure <= 170000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
+		return std::make_tuple<int, int, int>(217, 48, 33);
+	}
+	else {
+		return std::make_tuple<int, int, int>(181, 18, 4);
+	}
+}

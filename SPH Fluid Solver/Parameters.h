@@ -28,6 +28,7 @@ public:
 	static const bool COLOR_CODE_PRESSURE;
 	static const bool ADAPTIVE_TIME_STEP;
 	static const float MAX_TIME_STEP;
+	static const float INITIALIZATION_PHASE;
 	static const float CFL_NUMBER;
 	static const double TIME_OFFSET;
 	static const float SLOW_DOWN;

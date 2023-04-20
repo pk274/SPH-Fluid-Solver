@@ -73,7 +73,7 @@ void Renderer::init_solids(std::vector<Particle>* particles) {
 	for (int i = 0; i < particles->size(); i++) {
 		if (particles->at(i)._type == solid) {
 			sf::CircleShape newShape = sf::CircleShape();
-			newShape.setFillColor(sf::Color::Color::White);
+			newShape.setFillColor(sf::Color::White);
 			newShape.setRadius(_solidShapeRadius);
 			newShape.setPosition(particles->at(i)._position.x * _zoomFactor, particles->at(i)._position.y * _zoomFactor);
 			_solidShapes.push_back(newShape);
@@ -175,6 +175,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 	window->clear(sf::Color::Black);
 
 	int numParticles = particles->size();
+	std::tuple<int, int, int> rgb;
 
 	// Update each fluid shapes position
 	for (int i = 0; i < numParticles; i++) {
@@ -182,48 +183,8 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 
 		_fluidShape.setPosition(particles->at(i)._position * _zoomFactor);
 		if (Parameters::COLOR_CODE_PRESSURE) {
-			if (particles->at(i)._pressure <= 1) {
-				_fluidShape.setFillColor(sf::Color::Color(48, 33, 217));
-			}
-			else if (particles->at(i)._pressure <= 300 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(33, 90, 217));
-			}
-			else if (particles->at(i)._pressure <= 800 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(33, 130, 217));
-			}
-			else if (particles->at(i)._pressure <= 2000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(33, 162, 217));
-			}
-			else if (particles->at(i)._pressure <= 5000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(33, 217, 186));
-			}
-			else if (particles->at(i)._pressure <= 10000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(33, 217, 125));
-			}
-			else if (particles->at(i)._pressure <= 25000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(33, 217, 42));
-			}
-			else if (particles->at(i)._pressure <= 50000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(131, 217, 33));
-			}
-			else if (particles->at(i)._pressure <= 70000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(199, 217, 33));
-			}
-			else if (particles->at(i)._pressure <= 90000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(217, 174, 33));
-			}
-			else if (particles->at(i)._pressure <= 110000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(217, 125, 33));
-			}
-			else if (particles->at(i)._pressure <= 140000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(217, 79, 33));
-			}
-			else if (particles->at(i)._pressure <= 170000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(217, 48, 33));
-			}
-			else if (particles->at(i)._pressure <= 210000 * Parameters::PRESSURE_CODE_ROUGHNESS) {
-				_fluidShape.setFillColor(sf::Color::Color(181, 18, 4));
-			}
+			rgb = Functions::color_code_pressure(particles->at(i)._pressure);
+			_fluidShape.setFillColor(sf::Color::Color(std::get<0>(rgb), std::get<1>(rgb), std::get<2>(rgb)));
 		}
 		else {
 			_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
