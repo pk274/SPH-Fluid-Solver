@@ -20,7 +20,7 @@ const float Parameters::TIME_STEP = 0.002;
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
-const bool Parameters::INTERACTIVE = 0;
+const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 0;
 const int Parameters::SIMULATION_LENGTH = 2;
 
@@ -38,3 +38,5 @@ const float Parameters::PRESSURE_CODE_ROUGHNESS = 2;
 
 const bool Parameters::DOCUMENT_ITERATIONS_TIME = 1;
 const bool Parameters::DOCUMENT_AVG_DENSITY = 1;
+
+const float Parameters::STIFFNESS = 250000;

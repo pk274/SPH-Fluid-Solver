@@ -90,6 +90,8 @@ class Simulation {
 	  void update_hashTable();
 	  void update_hashTable_old();
 
+	  void EOS_solve();
+
 	  void calculate_s_vd();
 	  void calculate_s_di();
 

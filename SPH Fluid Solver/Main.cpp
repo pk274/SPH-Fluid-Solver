@@ -13,7 +13,7 @@ int main()
 {
     Simulation simulation = Simulation(30);
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(BigBreakingDam);
+    initManager.init_simulation(Cup);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

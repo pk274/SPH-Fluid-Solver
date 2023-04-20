@@ -37,4 +37,6 @@ public:
 
 	static const bool DOCUMENT_ITERATIONS_TIME;
 	static const bool DOCUMENT_AVG_DENSITY;
+
+	static const float STIFFNESS;
 };
