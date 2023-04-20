@@ -39,4 +39,5 @@ const float Parameters::PRESSURE_CODE_ROUGHNESS = 2;
 const bool Parameters::DOCUMENT_ITERATIONS_TIME = 1;
 const bool Parameters::DOCUMENT_AVG_DENSITY = 1;
 
-const float Parameters::STIFFNESS = 250000;
+const float Parameters::EOS_STIFFNESS = 1000000;
+const float Parameters::EOS_VISCOSITY = 100;

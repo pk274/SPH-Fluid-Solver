@@ -86,7 +86,8 @@ void Simulation::update_hashTable_old() {
 
 // _________________________________________________________________________________
 void Simulation::EOS_solve() {
-	_stiffness = Parameters::STIFFNESS;
+	_stiffness = Parameters::EOS_STIFFNESS;
+	_viscosity = Parameters::EOS_VISCOSITY;
 	float density;
 	sf::Vector2f v_ij;
 	sf::Vector2f x_ij;
@@ -609,14 +610,13 @@ void Simulation::update_physics() {
 	_averageDensity = 0;
 	
 	// Calculate source term
-	//calculate_s_vd();
+	calculate_s_vd();
 
 	// Solve pressure
-	//jacobi_solve_vd();
+	jacobi_solve_vd();
 
 	// Update Position and Velocity
-	//if (_moveParticles) { update_x_and_v(); }
-	EOS_solve();
+	if (_moveParticles) { update_x_and_v(); }
 
 	// Delete stray particles
 	if (_deleteParticles) { delete_particles(); }
