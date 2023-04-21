@@ -123,9 +123,9 @@ std::vector<Particle> placeTriangle(sf::Vector2f pos1, sf::Vector2f pos2, sf::Ve
 }
 
 // _________________________________________________________________________________
-std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, int startId = 0) {
+std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, int startId = 0) {
 	int height = 500;
-	int width = 600;
+	int width = 500;
 	sf::Vector2f pos1 = lowerLeft;
 	sf::Vector2f pos2 = lowerLeft;
 	sf::Vector2f pos3 = lowerLeft;
@@ -134,18 +134,89 @@ std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, int startId = 0) {
 	std::vector<Particle> object2 = std::vector<Particle>();
 	std::vector<Particle> fountain = std::vector<Particle>();
 
-	for (int i = 0; i < height / 5; i++) {
-		fountain.push_back(SolidParticle(startId + object1.size(), pos1));
+	// Place first pond
+	pos1.y -= height * SolidParticle::_size / 10;
+	for (int i = 0; i < height / 10; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
 		pos1.y += SolidParticle::_size;
 	}
 	for (int i = 0; i < width; i++) {
-		fountain.push_back(SolidParticle(startId + object1.size(), pos1));
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
 		pos1.x += SolidParticle::_size;
 	}
-	for (int i = 0; i < height / 5; i++) {
-		fountain.push_back(SolidParticle(startId + object1.size(), pos1));
+	for (int i = 0; i < height / 10; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
 		pos1.y -= SolidParticle::_size;
 	}
+
+	// Second pond
+	pos1.x = lowerLeft.x + width * SolidParticle::_size / 5;
+	pos1.y = lowerLeft.y - height * SolidParticle::_size * 7/20;
+	for (int i = 0; i < height / 12; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y += SolidParticle::_size;
+	}
+	for (int i = 0; i < width * 3/5; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.x += SolidParticle::_size;
+	}
+	for (int i = 0; i < height / 12; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y -= SolidParticle::_size;
+	}
+
+	// Third pond
+	pos1.x = lowerLeft.x + width * SolidParticle::_size / 3;
+	pos1.y = lowerLeft.y - height * SolidParticle::_size * 6/10;
+	for (int i = 0; i < height / 15; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y += SolidParticle::_size;
+	}
+	for (int i = 0; i < width / 3; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.x += SolidParticle::_size;
+	}
+	for (int i = 0; i < height / 15; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y -= SolidParticle::_size;
+	}
+
+	// Place central pillar
+	pos1.x = lowerLeft.x + width * SolidParticle::_size / 2 - width * SolidParticle::_size / 100;
+	pos1.y = lowerLeft.y;
+	for (int i = 0; i < height * 11/16; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y -= SolidParticle::_size;
+	}
+	pos1.x = lowerLeft.x + width * SolidParticle::_size / 2 + width * SolidParticle::_size / 100;
+	pos1.y = lowerLeft.y;
+	for (int i = 0; i < height * 11/16; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y -= SolidParticle::_size;
+	}
+
+	pos1.x = lowerLeft.x + width * SolidParticle::_size / 2 - width * SolidParticle::_size / 100;
+	pos1.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + 2 * SolidParticle::_size;
+	pos1.x += SolidParticle::_size;
+	for (int i = 0; i < (width / 50) - 1; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.x += SolidParticle::_size;
+	}
+
+	// Add Spawns
+	pos1.x = lowerLeft.x + width * SolidParticle::_size / 2 - width * SolidParticle::_size / 100;
+	pos1.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size;
+	pos1.x += SolidParticle::_size;
+	pos2.x = lowerLeft.x + width * SolidParticle::_size / 2;
+	pos2.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size;
+	for (int i = 0; i < (width / 50) - 1; i++) {
+		sim->_spawnLocations.push_back(pos1);
+		sim->_spawnVelocities.push_back(sf::Vector2f(0, -600
+			- ( 40 / (1 + Functions::calculate_distance_norm(Functions::calculate_distance(pos1, pos2))))));
+		pos1.x += SolidParticle::_size;
+	}
+	sim->_spawnDelay = 0.005;
+
 
 	return fountain;
 }
@@ -699,7 +770,7 @@ void InitManager::init_side_spawn_simulation(int size, int zoom) {
 	_sim->_spawnParticles = true;
 
 	_sim->_spawnDelay = 0.005;
-	_sim->maxNumParticles = 10000;
+	_sim->_maxNumParticles = 10000;
 }
 
 
@@ -765,7 +836,7 @@ void InitManager::init_rain_simulation(int size, int zoom) {
 	_sim->_spawnParticles = true;
 
 	_sim->_spawnDelay = 0.0037;
-	_sim->maxNumParticles = 10000;
+	_sim->_maxNumParticles = 10000;
 }
 
 // _________________________________________________________________________________
@@ -845,17 +916,17 @@ void InitManager::init_rain2_simulation(int size, int zoom) {
 	_sim->_spawnParticles = true;
 
 	_sim->_spawnDelay = 0.0037;
-	_sim->maxNumParticles = 10000;
+	_sim->_maxNumParticles = 10000;
 }
 
 // ______________________________________________________________________
 void InitManager::init_fountain_simulation() {
-	int size = 700;
+	int size = 600;
 	_sim->_zoomFactor = 1;
 	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
 	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 2);
 
-	std::vector<Particle> fountain = place_fountain(sf::Vector2f(50, 700));
+	std::vector<Particle> fountain = place_fountain(sf::Vector2f(50, 1000), _sim);
 	for (int i = 0; i < fountain.size(); i++) {
 		_sim->_particles.push_back(fountain[i]);
 	}
@@ -866,7 +937,9 @@ void InitManager::init_fountain_simulation() {
 	_sim->_printFPS = false;
 	_sim->_printParticleInfo = false;
 	_sim->_deleteParticles = false;
-	_sim->_spawnParticles = false;
+	_sim->_spawnParticles = true;
+
+	_sim->_maxNumParticles = 20000;
 
 
 }

@@ -583,7 +583,7 @@ void Simulation::update_x_and_v() {
 
 // _________________________________________________________________________________
 void Simulation::spawn_particles() {
-	if (_simulatedTime - _lastSpawnTime < _spawnDelay || _numFluidParticles >= maxNumParticles) { return; }
+	if (_simulatedTime - _lastSpawnTime < _spawnDelay || _numFluidParticles >= _maxNumParticles) { return; }
 	for (int i = 0; i < _spawnLocations.size(); i++) {
 		_particles.push_back(FluidParticle(_particles.size(), _spawnLocations[i], _spawnVelocities[i]));
 	}
@@ -653,7 +653,7 @@ void Simulation::run() {
 		_minTimeStep = Parameters::MAX_TIME_STEP;
 		_numUpdatesPerSec = 0;
 		_numIterations = 0;
-		_lastSpawnTime = 0.4;
+		_lastSpawnTime = 0.1;
 		_renderer.init_solids(&_particles);
 		_watchedParticleId = (int)(_particles.size() / 2);
 		while (true) {
@@ -889,7 +889,7 @@ void Simulation::run() {
 				currentFluids.clear();
 				currentFluids.reserve(size);
 				c++;
-				std::cout << "Reading Frame: " << c << "\r";
+				std::cout << "Reading Frame: " << c << " of " << Parameters::SIMULATION_LENGTH / _frameDistance << "\r";
 				continue;
 			}
 			if (type[0] == 'D') {

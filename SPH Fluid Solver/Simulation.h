@@ -48,7 +48,7 @@ class Simulation {
 
 	  float _spawnDelay;
 	  float _lastSpawnTime;
-	  int maxNumParticles;
+	  int _maxNumParticles;
 
 	  bool _pauseSimulation;
 	  bool _endSimulation;
