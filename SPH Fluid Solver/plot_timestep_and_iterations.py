@@ -19,7 +19,7 @@ iterationsSum = iterationsSum / len(iterationsData)
 
 
 
-fig, (timeStep, iters) = plt.subplots(2)
+fig, (timeStep, iters) = plt.subplots(2, sharex = True)
 timeStep.plot(*zip(*timeStepData), 'g.', label = 'time step size')
 timeStep.plot(*zip(*timeStepData), 'g-', label = 'time step size')
 timeStep.plot([0, timeStepData[-1][0]], [timeStepSum, timeStepSum], 'y--', label = 'Average time step size')

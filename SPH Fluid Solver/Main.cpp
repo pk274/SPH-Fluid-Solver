@@ -11,9 +11,9 @@
 
 int main()
 {
-    Simulation simulation = Simulation(25);
+    Simulation simulation = Simulation(30);
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(Fountain);
+    initManager.init_simulation(ManyLayers);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");
