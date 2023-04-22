@@ -24,8 +24,8 @@ const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 0;
 const int Parameters::SIMULATION_LENGTH = 20;
 
-const bool Parameters::COLOR_CODE_SPEED = 1;
-const bool Parameters::COLOR_CODE_PRESSURE = 0;
+const bool Parameters::COLOR_CODE_SPEED = 0;
+const bool Parameters::COLOR_CODE_PRESSURE = 1;
 
 const bool Parameters::ADAPTIVE_TIME_STEP = 0;
 const float Parameters::MAX_TIME_STEP = 0.005;
@@ -37,9 +37,9 @@ const float Parameters::SLOW_DOWN = 1;
 const float Parameters::PRESSURE_CODE_ROUGHNESS = 2;
 const float Parameters::COLOR_CODE_RANGE = 3.4;
 
-const bool Parameters::DOCUMENT_ITERATIONS_TIME = 1;
-const bool Parameters::DOCUMENT_AVG_DENSITY = 1;
-const bool Parameters::WRITE_SCREEN_IMAGES = 0;
+const bool Parameters::DOCUMENT_ITERATIONS_TIME = 0;
+const bool Parameters::DOCUMENT_AVG_DENSITY = 0;
+const bool Parameters::WRITE_SCREEN_IMAGES = 1;
 
 const float Parameters::EOS_STIFFNESS = 1000000;
 const float Parameters::EOS_VISCOSITY = 100;
