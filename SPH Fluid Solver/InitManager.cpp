@@ -124,8 +124,8 @@ std::vector<Particle> placeTriangle(sf::Vector2f pos1, sf::Vector2f pos2, sf::Ve
 
 // _________________________________________________________________________________
 std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, int startId = 0) {
-	int height = 500;
-	int width = 500;
+	int height = 400;
+	int width = 350;
 	sf::Vector2f pos1 = lowerLeft;
 	sf::Vector2f pos2 = lowerLeft;
 	sf::Vector2f pos3 = lowerLeft;
@@ -211,8 +211,8 @@ std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, in
 	pos2.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size;
 	for (int i = 0; i < (width / 50) - 1; i++) {
 		sim->_spawnLocations.push_back(pos1);
-		sim->_spawnVelocities.push_back(sf::Vector2f(0, -600
-			- ( 40 / (1 + Functions::calculate_distance_norm(Functions::calculate_distance(pos1, pos2))))));
+		sim->_spawnVelocities.push_back(sf::Vector2f(0, -height * 6 / 5
+			- ( 80 / (1.8 + Functions::calculate_distance_norm(Functions::calculate_distance(pos1, pos2))))));
 		pos1.x += SolidParticle::_size;
 	}
 	sim->_spawnDelay = 0.005;
@@ -921,12 +921,12 @@ void InitManager::init_rain2_simulation(int size, int zoom) {
 
 // ______________________________________________________________________
 void InitManager::init_fountain_simulation() {
-	int size = 600;
+	int size = 500;
 	_sim->_zoomFactor = 1;
 	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
 	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 2);
 
-	std::vector<Particle> fountain = place_fountain(sf::Vector2f(50, 1000), _sim);
+	std::vector<Particle> fountain = place_fountain(sf::Vector2f(50, 800), _sim);
 	for (int i = 0; i < fountain.size(); i++) {
 		_sim->_particles.push_back(fountain[i]);
 	}
@@ -936,7 +936,7 @@ void InitManager::init_fountain_simulation() {
 	_sim->_testKernel = false;
 	_sim->_printFPS = false;
 	_sim->_printParticleInfo = false;
-	_sim->_deleteParticles = false;
+	_sim->_deleteParticles = true;
 	_sim->_spawnParticles = true;
 
 	_sim->_maxNumParticles = 20000;

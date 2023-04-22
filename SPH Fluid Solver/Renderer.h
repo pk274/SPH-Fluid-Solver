@@ -31,6 +31,9 @@ class Renderer {
 	std::string _avgSolverIters;
 	std::string _watchedParticleDensity;
 
+	sf::Texture _screenTexture;
+	int _frameCounter;
+
 
 	bool _graphShapesFull;
 

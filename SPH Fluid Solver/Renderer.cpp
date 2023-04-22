@@ -222,4 +222,10 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 	window->draw(_information);
 
 	window->display();
+
+	if (Parameters::WRITE_SCREEN_IMAGES) {
+		_screenTexture.update(*window);
+		_screenTexture.copyToImage().saveToFile("./sim_images/frame" + std::to_string(_frameCounter) + ".png");
+		_frameCounter++;
+	}
 }

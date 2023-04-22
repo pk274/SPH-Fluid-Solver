@@ -573,7 +573,7 @@ void Simulation::update_x_and_v() {
 
 		velocityNorm = Functions::calculate_distance_norm(_particles[i]._velocity);
 		if (Parameters::COLOR_CODE_SPEED) {
-			_particles[i]._colorFactor = std::min((int)(velocityNorm * 0.6), 255);
+			_particles[i]._colorFactor = std::min((int)(velocityNorm / Parameters::COLOR_CODE_RANGE), 255);
 		}
 		if (velocityNorm > _maxVelocity) {
 			_maxVelocity = Functions::calculate_distance_norm(_particles[i]._velocity);
@@ -642,6 +642,10 @@ void Simulation::run() {
 	_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
 	_timeStepFile.open("./timeStepFile.dat", std::fstream::out | std::fstream::trunc);
 	_iterationsFile.open("./iterationsFile.dat", std::fstream::out | std::fstream::trunc);
+	if (Parameters::WRITE_SCREEN_IMAGES) {
+		_renderer._screenTexture.create(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
+		_renderer._frameCounter = 0;
+	}
 
 	if (Parameters::INTERACTIVE) {
 		_videoMode = sf::VideoMode(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
