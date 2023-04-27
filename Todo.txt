@@ -1,5 +1,9 @@
 Todo:
 
-- VD+ID Implementierung
+- CFL Zahl Grafik
 
-- Moving Least Squares Boundaries?
+- IISPH Pseudocode
+
+- SESPH Pseudocode
+
+- Simulation Pseudocode

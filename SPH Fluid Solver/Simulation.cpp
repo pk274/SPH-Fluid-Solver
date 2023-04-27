@@ -624,9 +624,6 @@ void Simulation::update_physics() {
 
 	// Update Position and Velocity
 	if (_moveParticles) { update_x_and_v(); }
-
-	// Delete stray particles
-	if (_deleteParticles) { delete_particles(); }
 }
 
 // _________________________________________________________________________________
@@ -695,7 +692,12 @@ void Simulation::run() {
 				_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
 			}
 
+			// Update Physics
 			if (_numFluidParticles > 0) { update_physics(); }
+
+			// Delete stray particles
+			if (_deleteParticles) { delete_particles(); }
+
 			if (Parameters::DOCUMENT_ITERATIONS_TIME) {
 				_timeStepFile << _simulatedTime << " " << _timeStepSize << "\n";
 				_iterationsFile << _simulatedTime << " " << _numSolverIterations << "\n";
