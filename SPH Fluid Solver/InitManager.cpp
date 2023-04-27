@@ -204,6 +204,7 @@ std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, in
 	}
 
 	// Add Spawns
+	int VELREDUCTION = 300;
 	pos1.x = lowerLeft.x + width * SolidParticle::_size / 2 - width * SolidParticle::_size / 100;
 	pos1.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size;
 	pos1.x += SolidParticle::_size;
@@ -212,7 +213,8 @@ std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, in
 	for (int i = 0; i < (width / 50) - 1; i++) {
 		sim->_spawnLocations.push_back(pos1);
 		sim->_spawnVelocities.push_back(sf::Vector2f(0, -height * 6 / 5
-			- ( 80 / (1.8 + Functions::calculate_distance_norm(Functions::calculate_distance(pos1, pos2))))));
+			- ( 80 / (1.8 + Functions::calculate_distance_norm(Functions::calculate_distance(pos1, pos2))
+				+ VELREDUCTION))));
 		pos1.x += SolidParticle::_size;
 	}
 	sim->_spawnDelay = 0.005;
@@ -457,8 +459,8 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom) {
 		_sim->_particles.push_back(box[i]);
 	}
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
-	for (int i = 0; i < 120; i++) {
-		for (int j = 0; j < 110; j++) {
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 30; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}

@@ -33,7 +33,7 @@ iters.set_title('# iterations')
 timeStep.set_xlabel('t')
 timeStep.set_ylabel('delta t')
 #Add Frame Grid
-intervals = 1 / 30
+intervals = 1 / 25
 loc = plticker.MultipleLocator(base=intervals)
 timeStep.yaxis.set_minor_locator(loc)
 timeStep.xaxis.set_minor_locator(loc)

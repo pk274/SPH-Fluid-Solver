@@ -398,8 +398,9 @@ void Simulation::jacobi_solve_vd() {
 	sf::Vector2f x_ij;
 	float distanceNorm;
 	sf::Vector2f kernelDeriv;
-	_numSolverIterations = 0;
+	int numFluidsWithNeighbors;
 
+	_numSolverIterations = 0;
 	while (true) {
 		// Exit Condition
 		if (l >= Parameters::MAX_SOLVER_ITERATIONS) {
@@ -431,6 +432,7 @@ void Simulation::jacobi_solve_vd() {
 			}
 		}
 		densityError = 0;
+		numFluidsWithNeighbors = 0;
 		for (int i = 0; i < _numParticles; i++) {
 			if (_particles[i]._type == solid) { continue; }
 			Ap = 0;
@@ -453,13 +455,18 @@ void Simulation::jacobi_solve_vd() {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
-			densityError += std::max(Ap - _particles[i]._s_i, 0.f);
-			//densityError += Ap - _particles[i]._s_i;
+			//densityError += Ap - _particles[i]._s_i;						// No Clamp
+			densityError += std::max(Ap - _particles[i]._s_i, 0.f);		// Clamping
+			//densityError += std::abs(Ap - _particles[i]._s_i);			// Absolute
+			//if (_particles[i]._neighbors.size() > 0) {					// Absolute
+			//	densityError += std::abs(Ap - _particles[i]._s_i);		// with
+			//	numFluidsWithNeighbors++;								// neighbor
+			//}															// selection
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
 		densityError = densityError / _numFluidParticles;
-		//std::wcout << "Density error: " << densityError << "\n" << std::endl;
+		//densityError = densityError / numFluidsWithNeighbors;			// For abs with selection
 
 		// Increment Solver iteration
 		l++;
@@ -542,7 +549,7 @@ void Simulation::jacobi_solve_di() {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
-			densityError += std::abs(Ap - _particles[i]._s_i);
+			densityError += std::abs(Ap - _particles[i]._s_i);	// Clamping
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
