@@ -47,6 +47,7 @@ void CompactHashManager::reset_map() {
 // __________________________________________________________________________
 void CompactHashManager::reset_buckets() {
 	_buckets.clear();
+	_buckets.reserve(_numParticles);
 	for (int i = 0; i < _numParticles; i++) {
 		_buckets.push_back(std::vector<Particle*>());
 	}
@@ -101,5 +102,4 @@ void CompactHashManager::update(int numParticles) {
 	_bucketCounter = 0;
 	reset_buckets();
 	reset_map();
-
 }

@@ -698,9 +698,11 @@ void Simulation::run() {
 			// Delete stray particles
 			if (_deleteParticles) { delete_particles(); }
 
-			if (Parameters::DOCUMENT_ITERATIONS_TIME) {
-				_timeStepFile << _simulatedTime << " " << _timeStepSize << "\n";
+			if (Parameters::DOCUMENT_ITERATIONS) {
 				_iterationsFile << _simulatedTime << " " << _numSolverIterations << "\n";
+			}
+			if (Parameters::DOCUMENT_TIME) {
+				_timeStepFile << _simulatedTime << " " << _timeStepSize << "\n";
 			}
 			if (Parameters::DOCUMENT_AVG_DENSITY) {
 				_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";
@@ -782,9 +784,11 @@ void Simulation::run() {
 				}
 
 				if (_numFluidParticles > 0) { update_physics(); }
-				if (Parameters::DOCUMENT_ITERATIONS_TIME) {
-					_timeStepFile << _simulatedTime << " " << _timeStepSize << "\n";
+				if (Parameters::DOCUMENT_ITERATIONS) {
 					_iterationsFile << _simulatedTime << " " << _numSolverIterations << "\n";
+				}
+				if (Parameters::DOCUMENT_TIME) {
+					_timeStepFile << _simulatedTime << " " << _timeStepSize << "\n";
 				}
 				if (Parameters::DOCUMENT_AVG_DENSITY) {
 					_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";

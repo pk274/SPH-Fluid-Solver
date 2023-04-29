@@ -36,7 +36,8 @@ public:
 	static const float PRESSURE_CODE_ROUGHNESS;
 	static const float COLOR_CODE_RANGE;
 
-	static const bool DOCUMENT_ITERATIONS_TIME;
+	static const bool DOCUMENT_ITERATIONS;
+	static const bool DOCUMENT_TIME;
 	static const bool DOCUMENT_AVG_DENSITY;
 	static const bool WRITE_SCREEN_IMAGES;
 

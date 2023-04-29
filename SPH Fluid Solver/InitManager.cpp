@@ -148,6 +148,21 @@ std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, in
 		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
 		pos1.y -= SolidParticle::_size;
 	}
+	pos1 = lowerLeft;
+	pos1.y -= height * SolidParticle::_size / 10;
+	pos1.x += SolidParticle::_size;
+	for (int i = 0; i < height / 10 - 1; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y += SolidParticle::_size;
+	}
+	for (int i = 0; i < width - 2; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.x += SolidParticle::_size;
+	}
+	for (int i = 0; i < height / 10 - 1; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
+		pos1.y -= SolidParticle::_size;
+	}
 
 	// Second pond
 	pos1.x = lowerLeft.x + width * SolidParticle::_size / 5;
@@ -195,28 +210,48 @@ std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, in
 		pos1.y -= SolidParticle::_size;
 	}
 
+	int openPillar = -SolidParticle::_size * 30;
 	pos1.x = lowerLeft.x + width * SolidParticle::_size / 2 - width * SolidParticle::_size / 100;
-	pos1.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + 2 * SolidParticle::_size;
+	pos1.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + 2 * SolidParticle::_size - openPillar;
 	pos1.x += SolidParticle::_size;
 	for (int i = 0; i < (width / 50) - 1; i++) {
 		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
 		pos1.x += SolidParticle::_size;
 	}
 
-	// Add Spawns
-	int VELREDUCTION = 300;
+	// Add central Spawns
 	pos1.x = lowerLeft.x + width * SolidParticle::_size / 2 - width * SolidParticle::_size / 100;
-	pos1.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size;
+	pos1.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size - openPillar;
 	pos1.x += SolidParticle::_size;
 	pos2.x = lowerLeft.x + width * SolidParticle::_size / 2;
-	pos2.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size;
+	pos2.y = lowerLeft.y - (height * SolidParticle::_size * 11 / 16) + SolidParticle::_size - openPillar;
 	for (int i = 0; i < (width / 50) - 1; i++) {
 		sim->_spawnLocations.push_back(pos1);
-		sim->_spawnVelocities.push_back(sf::Vector2f(0, -height * 6 / 5
-			- ( 80 / (1.8 + Functions::calculate_distance_norm(Functions::calculate_distance(pos1, pos2))
-				+ VELREDUCTION))));
+		sim->_spawnVelocities.push_back(sf::Vector2f(0, - height * 1.2
+			- (height / 5 / (1.5 + Functions::calculate_distance_norm(Functions::calculate_distance(pos1, pos2))))));
 		pos1.x += SolidParticle::_size;
 	}
+
+	// Add side spawns
+	// left
+	pos1 = lowerLeft;
+	pos1.y -= height * SolidParticle::_size / 10 + 1;
+	sim->_spawnLocations.push_back(pos1);
+	sim->_spawnVelocities.push_back(sf::Vector2f(width / 2.5, -height * 2.2));
+	pos1.x += SolidParticle::_size;
+	sim->_spawnLocations.push_back(pos1);
+	sim->_spawnVelocities.push_back(sf::Vector2f(width / 2.5, -height * 2.2));
+	// right
+	pos1 = lowerLeft;
+	pos1.x += width * SolidParticle::_size;
+	pos1.y -= height * SolidParticle::_size / 10 + 1;
+	sim->_spawnLocations.push_back(pos1);
+	sim->_spawnVelocities.push_back(sf::Vector2f(- width / 2.5, -height * 2.2));
+	pos1.x -= SolidParticle::_size;
+	sim->_spawnLocations.push_back(pos1);
+	sim->_spawnVelocities.push_back(sf::Vector2f(- width / 2.5, -height * 2.2));
+
+
 	sim->_spawnDelay = 0.005;
 
 
