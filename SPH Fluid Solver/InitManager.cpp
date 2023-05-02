@@ -167,33 +167,39 @@ std::vector<Particle> place_fountain(sf::Vector2f lowerLeft, Simulation* sim, in
 	// Second pond
 	pos1.x = lowerLeft.x + width * SolidParticle::_size / 5;
 	pos1.y = lowerLeft.y - height * SolidParticle::_size * 7/20;
-	for (int i = 0; i < height / 12; i++) {
-		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
-		pos1.y += SolidParticle::_size;
+	pos2.x = lowerLeft.x + width * SolidParticle::_size / 4;
+	pos2.y = lowerLeft.y - height * SolidParticle::_size * 7 / 20 + SolidParticle::_size * height / 12;
+	object1 = placeParticleLine(pos1, pos2, solid, fountain.size(), true, true);
+	for (int i = 0; i < object1.size(); i++) {
+		fountain.push_back(object1[i]);
 	}
-	for (int i = 0; i < width * 3/5; i++) {
-		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
-		pos1.x += SolidParticle::_size;
+	for (int i = 0; i < width / 2; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos2));
+		pos2.x += SolidParticle::_size;
 	}
-	for (int i = 0; i < height / 12; i++) {
-		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
-		pos1.y -= SolidParticle::_size;
+	pos1.x += 6 * width / 5;
+	object1 = placeParticleLine(pos1, pos2, solid, fountain.size(), true, true);
+	for (int i = 0; i < object1.size(); i++) {
+		fountain.push_back(object1[i]);
 	}
 
 	// Third pond
 	pos1.x = lowerLeft.x + width * SolidParticle::_size / 3;
 	pos1.y = lowerLeft.y - height * SolidParticle::_size * 6/10;
-	for (int i = 0; i < height / 15; i++) {
-		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
-		pos1.y += SolidParticle::_size;
+	pos2.x = lowerLeft.x + width * SolidParticle::_size * 23 / 60;
+	pos2.y = lowerLeft.y - height * SolidParticle::_size * 6 / 10 + height * SolidParticle::_size / 15;
+	object1 = placeParticleLine(pos1, pos2, solid, fountain.size(), true, true);
+	for (int i = 0; i < object1.size(); i++) {
+		fountain.push_back(object1[i]);
 	}
-	for (int i = 0; i < width / 3; i++) {
-		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
-		pos1.x += SolidParticle::_size;
+	for (int i = 0; i < width * 7 / 30; i++) {
+		fountain.push_back(SolidParticle(startId + fountain.size(), pos2));
+		pos2.x += SolidParticle::_size;
 	}
-	for (int i = 0; i < height / 15; i++) {
-		fountain.push_back(SolidParticle(startId + fountain.size(), pos1));
-		pos1.y -= SolidParticle::_size;
+	pos1.x += 2 * width / 3;
+	object1 = placeParticleLine(pos1, pos2, solid, fountain.size(), true, true);
+	for (int i = 0; i < object1.size(); i++) {
+		fountain.push_back(object1[i]);
 	}
 
 	// Place central pillar

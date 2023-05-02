@@ -92,11 +92,9 @@ class Simulation {
 
 	  void EOS_solve();
 
-	  void calculate_s_vd();
-	  void calculate_s_di();
+	  void calculate_s();
 
-	  void jacobi_solve_vd();
-	  void jacobi_solve_di();
+	  void jacobi_solve();
 	  void jacobi_solve_vd_ps();
 	  void update_x_and_v();
 	  void spawn_particles();
