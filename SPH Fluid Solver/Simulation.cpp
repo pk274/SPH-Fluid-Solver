@@ -287,7 +287,6 @@ void Simulation::jacobi_solve() {
 
 	int l = 0;
 	float Ap = 0;
-	float densityError;
 	sf::Vector2f x_ij;
 	float distanceNorm;
 	sf::Vector2f kernelDeriv;
@@ -317,14 +316,14 @@ void Simulation::jacobi_solve() {
 						* kernelDeriv;
 				}
 				else {
-					_particles[i]._pressureAcc += -Parameters::GAMMA * SolidParticle::_mass
-						* (_particles[i]._pressure
-							/ (_particles[i]._density * _particles[i]._density)) * 2
+					_particles[i]._pressureAcc += - Parameters::GAMMA * SolidParticle::_mass
+						* 2 * (_particles[i]._pressure
+							/ (_particles[i]._density * _particles[i]._density))
 						* kernelDeriv;
 				}
 			}
 		}
-		densityError = 0;
+		_estimatedDensityError = 0;
 		numFluidsWithNeighbors = 0;
 		for (int i = 0; i < _numParticles; i++) {
 			if (_particles[i]._type == solid) { continue; }
@@ -348,29 +347,30 @@ void Simulation::jacobi_solve() {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
-			//densityError += Ap - _particles[i]._s_i;						// No Clamp
-			densityError += std::max(Ap - _particles[i]._s_i, 0.f);		// Clamping
-			//densityError += std::abs(Ap - _particles[i]._s_i);			// Absolute
+			//_estimatedDensityError += Ap - _particles[i]._s_i;						// No Clamp
+			_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);		// Clamping
+			//_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);			// Absolute
 			//if (_particles[i]._neighbors.size() > 0) {					// Absolute
-			//	densityError += std::abs(Ap - _particles[i]._s_i);		// with
+			//	_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);		// with
 			//	numFluidsWithNeighbors++;								// neighbor
 			//}															// selection
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
-		densityError = densityError / _numFluidParticles;
-		//densityError = densityError / numFluidsWithNeighbors;			// For abs with selection
+		_estimatedDensityError = _estimatedDensityError / _numFluidParticles;
+		//_estimatedDensityError = _estimatedDensityError / numFluidsWithNeighbors;		// For abs with selection
 
 		// Increment Solver iteration
 		l++;
 
 		// Exit Condition
-		if (densityError < Parameters::MAX_DENSITY_ERROR && l >= Parameters::MIN_SOLVER_ITERATIONS) {
+		if (_estimatedDensityError < Parameters::MAX_DENSITY_ERROR && l >= Parameters::MIN_SOLVER_ITERATIONS) {
 			break;
 		}
 	}
 	_numSolverIterations = l;
 	_totalNumSolverIterations += _numSolverIterations;
+	
 }
 
 
@@ -452,6 +452,7 @@ void Simulation::run() {
 	_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
 	_timeStepFile.open("./timeStepFile.dat", std::fstream::out | std::fstream::trunc);
 	_iterationsFile.open("./iterationsFile.dat", std::fstream::out | std::fstream::trunc);
+	_estimatedDensityFile.open("./estimatedDensityFile.dat", std::fstream::out | std::fstream::trunc);
 	if (Parameters::WRITE_SCREEN_IMAGES) {
 		_renderer._screenTexture.create(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_renderer._frameCounter = 0;
@@ -512,6 +513,9 @@ void Simulation::run() {
 			}
 			if (Parameters::DOCUMENT_AVG_DENSITY) {
 				_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";
+			}
+			if (Parameters::DOCUMENT_ESTIMATED_DENSITY) {
+				_estimatedDensityFile << _simulatedTime << " " << FluidParticle::_restDensity + _estimatedDensityError << "\n";
 			}
 
 			_simulatedTime += _timeStepSize;
@@ -599,6 +603,9 @@ void Simulation::run() {
 				if (Parameters::DOCUMENT_AVG_DENSITY) {
 					_avgDensityFile << _simulatedTime << " " << _averageDensity << "\n";
 				}
+				if (Parameters::DOCUMENT_ESTIMATED_DENSITY) {
+					_estimatedDensityFile << _simulatedTime << " " << FluidParticle::_restDensity + _estimatedDensityError << "\n";
+				}
 
 				_simulatedTime += _timeStepSize;
 				_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
@@ -649,6 +656,7 @@ void Simulation::run() {
 			_avgDensityFile.close();
 			_timeStepFile.close();
 			_iterationsFile.close();
+			_estimatedDensityFile.close();
 			std::cout << _avgNeighborhoodTime / Parameters::SIMULATION_LENGTH << std::endl;
 		}
 

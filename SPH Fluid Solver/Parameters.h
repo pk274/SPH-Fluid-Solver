@@ -39,6 +39,7 @@ public:
 	static const bool DOCUMENT_ITERATIONS;
 	static const bool DOCUMENT_TIME;
 	static const bool DOCUMENT_AVG_DENSITY;
+	static const bool DOCUMENT_ESTIMATED_DENSITY;
 	static const bool WRITE_SCREEN_IMAGES;
 
 	static const float EOS_STIFFNESS;

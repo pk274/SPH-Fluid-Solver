@@ -61,6 +61,7 @@ class Simulation {
 	  std::vector<int> _markedParticlesId;
 	  std::vector<int> _testedParticlesId;
 	  sf::Time _lastUpdate;
+	  float _estimatedDensityError;
 	  float _averageDensity;
 	  float _maxVelocity;
 	  float _watchedParticleDensity;
@@ -81,6 +82,7 @@ class Simulation {
 	  std::fstream _renderFile;
 	  std::fstream _timeStepFile;
 	  std::fstream _iterationsFile;
+	  std::fstream _estimatedDensityFile;
 
 	  Simulation(int framelimit = 30);
 

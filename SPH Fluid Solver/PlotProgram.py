@@ -6,15 +6,16 @@ import numpy as np
 
 
 # Options:
-plotAvgDensityAndIterations = True
-plotTimeStep = True
-plotDensityOnly = False
+plotAvgDensityAndIterations = 1
+plotTimeStep = 0
+plotDensityOnly = 0
+plotDensityAndEstimatedDensity = 0
 
-DensityThreshhold = 0.01
-FrameIntervals = 1 / 25
+DensityThreshhold = 0.001
+FrameIntervals = 1 / 30
+
+
 # Plot AvgDensity and NumIterations
-
-
 if (plotAvgDensityAndIterations):
     fig, (density, iters) = plt.subplots(2, sharex = True)
     avgDensityData = np.loadtxt("./avgDensityFile.dat", dtype=float)
@@ -31,7 +32,7 @@ if (plotAvgDensityAndIterations):
     densitySum = densitySum / len(avgDensityData)
 
     iters.plot(*zip(*iterationsData), 'b-', label = '# iterations')
-    iters.plot([0, iterationsData[-1][0]], [iterationsSum, iterationsSum], 'm--', label = 'Average # iterations')
+    #iters.plot([0, iterationsData[-1][0]], [iterationsSum, iterationsSum], 'm--', label = 'Average # iterations')
 
     density.plot(*zip(*avgDensityData))
     density.plot([0, avgDensityData[-1][0]], [1 + DensityThreshhold, 1 + DensityThreshhold], label = 'Density Threshhold')
@@ -73,16 +74,20 @@ if (plotTimeStep):
 
 
 
-if (plotDensityOnly):
+if (plotDensityOnly or plotDensityAndEstimatedDensity):
     avgDensityData = np.loadtxt("./avgDensityFile.dat", dtype=float)
     densitySum = 0
     for i in range(len(avgDensityData)):
         densitySum += avgDensityData[i][1]
     densitySum = densitySum / len(avgDensityData)
     plt.plot(*zip(*avgDensityData))
-    #plt.plot([0, avgDensityData[-1][0]], [sum, sum], label = 'Mean average density')
-    plt.plot([0, avgDensityData[-1][0]], [DensityThreshhold, DensityThreshhold], label = 'Density Threshhold')
-    plt.legend()
+    plt.plot([0, avgDensityData[-1][0]], [1 + DensityThreshhold, 1 + DensityThreshhold], label = 'Density Threshhold')
+
+    if (plotDensityAndEstimatedDensity):
+        estimatedDensityData = np.loadtxt("./estimatedDensityFile.dat", dtype=float)
+        plt.plot(*zip(*estimatedDensityData), 'g-', label = 'Estimated average density')
+
+    plt.legend(["Average density", "Density threshhold", "Estimated average density"])
     plt.title('Average density over time')
     plt.xlabel('t')
     plt.ylabel('Average Density')
