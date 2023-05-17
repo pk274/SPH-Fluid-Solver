@@ -309,7 +309,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(59, 7, 50, 1, 1);
+		init_layer_simulation(100, 5, 80, 1, 1);
 		break;
 	case WideLayers:
 		init_wide_layer_simulation(60, 7, 30);
@@ -763,7 +763,7 @@ void InitManager::init_osmosis_simulation(int size, int zoom) {
 
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
 	for (int i = 0; i < size / 1.5; i++) {
-		for (int j = 0; j < size / 2 - 1; j++) {
+		for (int j = 0; j < size / 2 - 2; j++) {
 			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
 			pos.x += FluidParticle::_size;
 		}

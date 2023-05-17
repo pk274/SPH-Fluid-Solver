@@ -73,7 +73,7 @@ void Renderer::init_solids(std::vector<Particle>* particles) {
 	for (int i = 0; i < particles->size(); i++) {
 		if (particles->at(i)._type == solid) {
 			sf::CircleShape newShape = sf::CircleShape();
-			newShape.setFillColor(sf::Color::White);
+			newShape.setFillColor(Parameters::SOLID_COLOR);
 			newShape.setRadius(_solidShapeRadius);
 			newShape.setPosition(particles->at(i)._position.x * _zoomFactor, particles->at(i)._position.y * _zoomFactor);
 			_solidShapes.push_back(newShape);
@@ -172,7 +172,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 	int watchedParticleId, std::vector<int> markedParticlesId,
 	std::vector<int> testedParticlesId, bool updateArrows, bool drawGraph, bool drawArrows) {
 
-	window->clear(sf::Color::Black);
+	window->clear(Parameters::BACKGROUND_COLOR);
 
 	int numParticles = particles->size();
 	std::tuple<int, int, int> rgb;
@@ -186,13 +186,32 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 			rgb = Functions::color_code_pressure(particles->at(i)._pressure);
 			_fluidShape.setFillColor(sf::Color::Color(std::get<0>(rgb), std::get<1>(rgb), std::get<2>(rgb)));
 		}
-		else {
+		else if (Parameters::COLOR_CODE_SPEED) {
 			_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
+		}
+		else if (Parameters::COLOR_CODE_DENSITY) {
+			//if (particles->at(i)._density > FluidParticle::_restDensity + 0.005) {
+			//	// Color red
+			//	_fluidShape.setFillColor(
+			//		sf::Color::Color(220, 0,
+			//			std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY)));
+			//}
+			//else
+				if (particles->at(i)._density < FluidParticle::_restDensity - 0.005) {
+				// Color green
+				_fluidShape.setFillColor(
+					sf::Color::Color(std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY),
+						220, std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY)));
+			}
+			else {
+				// Color blue
+				_fluidShape.setFillColor(particles->at(i)._stasisColor);
+			}
 		}
 
 		if (particles->at(i)._id == watchedParticleId) {
 			//_searchRadiusShape.setPosition(particles->at(i)._position * _zoomFactor + _searchRadiusOffset);
-			_fluidShape.setFillColor(sf::Color::Red);
+			//_fluidShape.setFillColor(sf::Color::Red);
 		}
 		if (updateArrows) {
 		    update_arrows(&particles->at(i));

@@ -26,6 +26,7 @@ public:
 
 	static const bool COLOR_CODE_SPEED;
 	static const bool COLOR_CODE_PRESSURE;
+	static const bool COLOR_CODE_DENSITY;
 	static const bool ADAPTIVE_TIME_STEP;
 	static const float MAX_TIME_STEP;
 	static const float INITIALIZATION_PHASE;
@@ -34,7 +35,8 @@ public:
 	static const float SLOW_DOWN;
 
 	static const float PRESSURE_CODE_ROUGHNESS;
-	static const float COLOR_CODE_RANGE;
+	static const float VELOCITY_CODE_RANGE;
+	static const float DENSITY_CODE_INTENSITY;
 
 	static const bool DOCUMENT_ITERATIONS;
 	static const bool DOCUMENT_TIME;
@@ -44,4 +46,7 @@ public:
 
 	static const float EOS_STIFFNESS;
 	static const float EOS_VISCOSITY;
+
+	static const sf::Color BACKGROUND_COLOR;
+	static const sf::Color SOLID_COLOR;
 };

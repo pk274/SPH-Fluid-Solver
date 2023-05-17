@@ -6,13 +6,13 @@ import numpy as np
 
 
 # Options:
-plotAvgDensityAndIterations = 1
-plotTimeStep = 0
+plotAvgDensityAndIterations = 0
+plotTimeStep = 1
 plotDensityOnly = 0
 plotDensityAndEstimatedDensity = 0
 
 DensityThreshhold = 0.001
-FrameIntervals = 1 / 30
+FrameIntervals = 1 / 50
 
 
 # Plot AvgDensity and NumIterations
