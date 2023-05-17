@@ -569,6 +569,7 @@ void Simulation::run() {
 		_window.create(_videoMode, "SPH Fluid Solver");
 		sf::Time newTime;
 		sf::Time renderTime;
+		sf::Time lastFrameTimeStamp = _clock.getElapsedTime();
 		float elapsedTime;
 		_maxTimeStep = 0;
 		_minTimeStep = Parameters::MAX_TIME_STEP;
@@ -629,9 +630,11 @@ void Simulation::run() {
 
 			if (_simulatedTime >= _nextFrame) {
 				run_tests();
-
 				_currentTime = _clock.getElapsedTime();
-
+				if ((_currentTime - lastFrameTimeStamp).asSeconds() < _frameDistance * Parameters::SLOW_DOWN) {
+					// Wait with next frame
+					sf::sleep(sf::seconds(_frameDistance) * Parameters::SLOW_DOWN - (_currentTime - lastFrameTimeStamp) + sf::seconds(Parameters::TIME_OFFSET));
+				}
 				_renderer.update_information(_currentTime.asSeconds(),
 					_simulatedTime, _particles.size(),
 					_numFluidParticles, _numUpdatesPerSec, _averageDensity, _cflNumber,
@@ -639,7 +642,7 @@ void Simulation::run() {
 
 				_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
 
-				renderTime += _clock.getElapsedTime() - _currentTime;
+				lastFrameTimeStamp = _currentTime;
 				_nextFrame += _frameDistance;
 			}
 
