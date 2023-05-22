@@ -28,6 +28,7 @@ enum SimulationPreset {
 	WideLayers = 9,
 	BreakingDam = 10,
 	BigBreakingDam = 11,
+	FixedBreakingDam = 12,
 	Cup = 20,
 	Complex = 30,
 	Osmosis = 40,
@@ -53,7 +54,7 @@ public:
 	void init_single_particle_simulation(int size = 50, int zoom = 5);
 	void init_rotated_box_simulation(int size, int zoom, int rotation);
 	void init_random_particles_simulation(int size, int zoom, int numParticles);
-	void init_breaking_dam_simulation(int size = 50, int zoom = 5);
+	void init_breaking_dam_simulation(int size = 50, int zoom = 5, bool adaptive = true, int numFluidParticles = 10000);
 	void init_layer_simulation(int size, int zoom, int layers, bool xOffset = true, bool yOffset = true);
 	void init_wide_layer_simulation(int size, int zoom, int layers, bool xOffset = true, bool yOffset = true);
 	void init_cup_simulation(int size, int zoom);

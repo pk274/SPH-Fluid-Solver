@@ -6,13 +6,13 @@ import numpy as np
 
 
 # Options:
-plotAvgDensityAndIterations = 0
-plotTimeStep = 1
+plotAvgDensityAndIterations = 1
+plotTimeStep = 0
 plotDensityOnly = 0
 plotDensityAndEstimatedDensity = 0
 
-DensityThreshhold = 0.001
-FrameIntervals = 1 / 50
+DensityThreshhold = 0.0005
+FrameIntervals = 1 / 30
 
 
 # Plot AvgDensity and NumIterations
@@ -25,11 +25,13 @@ if (plotAvgDensityAndIterations):
     for i in range(len(iterationsData)):
         iterationsSum += iterationsData[i][1]
     iterationsSum = iterationsSum / len(iterationsData)
+    print('average number of iterations = ', iterationsSum)
 
     densitySum = 0
     for i in range(len(avgDensityData)):
         densitySum += avgDensityData[i][1]
     densitySum = densitySum / len(avgDensityData)
+    print('mean average density = ', densitySum)
 
     iters.plot(*zip(*iterationsData), 'b-', label = '# iterations')
     #iters.plot([0, iterationsData[-1][0]], [iterationsSum, iterationsSum], 'm--', label = 'Average # iterations')
@@ -37,13 +39,11 @@ if (plotAvgDensityAndIterations):
     density.plot(*zip(*avgDensityData))
     density.plot([0, avgDensityData[-1][0]], [1 + DensityThreshhold, 1 + DensityThreshhold], label = 'Density Threshhold')
     #fig.legend()
-    iters.set_title('# iterations')
-    iters.set_xlabel('t')
+    iters.set_xlabel('simulated time (s)')
     iters.set_ylabel('# iterations')
 
-    density.set_title('Average density over time')
-    density.set_xlabel('t')
-    density.set_ylabel('Average Density')
+    density.set_xlabel('simulated time (s)')
+    density.set_ylabel('average density')
     plt.show()
 
 
@@ -88,7 +88,6 @@ if (plotDensityOnly or plotDensityAndEstimatedDensity):
         plt.plot(*zip(*estimatedDensityData), 'g-', label = 'Estimated average density')
 
     plt.legend(["Average density", "Density threshhold", "Estimated average density"])
-    plt.title('Average density over time')
-    plt.xlabel('t')
-    plt.ylabel('Average Density')
+    plt.xlabel('simulated time (s)')
+    plt.ylabel('average density')
     plt.show()

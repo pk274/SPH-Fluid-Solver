@@ -1,1 +1,1 @@
-- matrix für distance anlegen?
+- gamma ändert nix für einzelnen partikel

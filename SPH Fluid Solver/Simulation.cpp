@@ -626,6 +626,7 @@ void Simulation::run() {
 			}
 
 			_simulatedTime += _timeStepSize;
+			if (_simulatedTime >= Parameters::SIMULATION_LENGTH) { _endSimulation = true; }
 			_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
 
 			if (_simulatedTime >= _nextFrame) {
