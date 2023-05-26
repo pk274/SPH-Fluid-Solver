@@ -1,4 +1,0 @@
-30x30 partikel bd instabil für 50 frames / sekunde (min timestep = 0.00010irgendwas)
-"" stabil für 30 frames (min timestep = 0.00033irgendwas)
-"" instabil für 40 frames (min timestep 8.4e-5)
-"" stabil für 60 frames (min timestep 0.001irgendwas)

@@ -190,13 +190,13 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 			_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
 		}
 		else if (Parameters::COLOR_CODE_DENSITY) {
-			//if (particles->at(i)._density > FluidParticle::_restDensity + 0.005) {
-			//	// Color red
-			//	_fluidShape.setFillColor(
-			//		sf::Color::Color(220, 0,
-			//			std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY)));
-			//}
-			//else
+			if (particles->at(i)._density > FluidParticle::_restDensity + 0.005) {
+				// Color red
+				_fluidShape.setFillColor(
+					sf::Color::Color(220, 0,
+						std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY)));
+			}
+			else
 				if (particles->at(i)._density < FluidParticle::_restDensity - 0.005) {
 				// Color green
 				_fluidShape.setFillColor(

@@ -7,11 +7,12 @@ import numpy as np
 
 # Options:
 plotAvgDensityAndIterations = 1
-plotTimeStep = 0
+plotTimeStep = 1
 plotDensityOnly = 0
 plotDensityAndEstimatedDensity = 0
+plotDensityAndAverageDensity = 0
 
-DensityThreshhold = 0.0005
+DensityThreshhold = 0.001
 FrameIntervals = 1 / 30
 
 
@@ -74,20 +75,23 @@ if (plotTimeStep):
 
 
 
-if (plotDensityOnly or plotDensityAndEstimatedDensity):
+if (plotDensityOnly or plotDensityAndEstimatedDensity or plotDensityAndAverageDensity):
     avgDensityData = np.loadtxt("./avgDensityFile.dat", dtype=float)
     densitySum = 0
     for i in range(len(avgDensityData)):
         densitySum += avgDensityData[i][1]
     densitySum = densitySum / len(avgDensityData)
     plt.plot(*zip(*avgDensityData))
-    plt.plot([0, avgDensityData[-1][0]], [1 + DensityThreshhold, 1 + DensityThreshhold], label = 'Density Threshhold')
+    if (plotDensityAndAverageDensity):
+        plt.plot([0, avgDensityData[-1][0]], [densitySum, densitySum], 'g--', label = 'mean average density')
+    else:
+        plt.plot([0, avgDensityData[-1][0]], [1 + DensityThreshhold, 1 + DensityThreshhold], label = 'density threshhold')
 
     if (plotDensityAndEstimatedDensity):
         estimatedDensityData = np.loadtxt("./estimatedDensityFile.dat", dtype=float)
-        plt.plot(*zip(*estimatedDensityData), 'g-', label = 'Estimated average density')
+        plt.plot(*zip(*estimatedDensityData), 'g-', label = 'estimated average density')
 
-    plt.legend(["Average density", "Density threshhold", "Estimated average density"])
+    #plt.legend(["Average density", "Density threshhold", "Estimated average density"])
     plt.xlabel('simulated time (s)')
     plt.ylabel('average density')
     plt.show()

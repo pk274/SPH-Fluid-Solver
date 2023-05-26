@@ -73,7 +73,7 @@ class Simulation {
 	  double _nextFrame;
 	  double _frameDistance;
 	  float _maxTimeStep;
-	  float _minTimeStep;
+	  float _lastTimeStep;
 
 	  std::vector<sf::Vector2f> _spawnLocations;
 	  std::vector<sf::Vector2f> _spawnVelocities;

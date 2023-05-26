@@ -393,7 +393,6 @@ void Simulation::jacobi_solve() {
 	sf::Vector2f x_ij;
 	float distanceNorm;
 	sf::Vector2f kernelDeriv;
-	int numFluidsWithNeighbors;
 
 	_numSolverIterations = 0;
 	while (true) {
@@ -427,7 +426,6 @@ void Simulation::jacobi_solve() {
 			}
 		}
 		_estimatedDensityError = 0;
-		numFluidsWithNeighbors = 0;
 		for (int i = 0; i < _numParticles; i++) {
 			if (_particles[i]._type == solid) { continue; }
 			Ap = 0;
@@ -450,18 +448,11 @@ void Simulation::jacobi_solve() {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
-			//_estimatedDensityError += Ap - _particles[i]._s_i;						// No Clamp
-			_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);		// Clamping
-			//_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);			// Absolute
-			//if (_particles[i]._neighbors.size() > 0) {					// Absolute
-			//	_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);		// with
-			//	numFluidsWithNeighbors++;								// neighbor
-			//}															// selection
+			_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
 		_estimatedDensityError = _estimatedDensityError / _numFluidParticles;
-		//_estimatedDensityError = _estimatedDensityError / numFluidsWithNeighbors;		// For abs with selection
 
 		// Increment Solver iteration
 		l++;
@@ -571,8 +562,9 @@ void Simulation::run() {
 		sf::Time renderTime;
 		sf::Time lastFrameTimeStamp = _clock.getElapsedTime();
 		float elapsedTime;
+		float maxMaxVelocity = 0;
 		_maxTimeStep = 0;
-		_minTimeStep = Parameters::MAX_TIME_STEP;
+		_lastTimeStep = Parameters::TIME_STEP;
 		_numUpdatesPerSec = 0;
 		_numIterations = 0;
 		_lastSpawnTime = 0.1;
@@ -628,6 +620,8 @@ void Simulation::run() {
 			_simulatedTime += _timeStepSize;
 			if (_simulatedTime >= Parameters::SIMULATION_LENGTH) { _endSimulation = true; }
 			_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
+			if (_cflNumber > 1) { std::cout << "CFL CONDITION VIOLATED" << std::endl; }
+			if (_maxVelocity > maxMaxVelocity) { maxMaxVelocity = _maxVelocity; }
 
 			if (_simulatedTime >= _nextFrame) {
 				run_tests();
@@ -650,7 +644,12 @@ void Simulation::run() {
 
 			// Adjust timestep if necessary
 			if (Parameters::ADAPTIVE_TIME_STEP && _simulatedTime >= Parameters::INITIALIZATION_PHASE) {
+				_lastTimeStep = _timeStepSize;
 				_timeStepSize = Parameters::CFL_NUMBER * Parameters::H / _maxVelocity;
+				if (_timeStepSize > _lastTimeStep) {
+					// Cut because of last time step
+					_timeStepSize -= (_timeStepSize - _lastTimeStep) * Parameters::SMOOTHING;
+				}
 				if (_timeStepSize > Parameters::MAX_TIME_STEP) {
 					// Cut because of max time step
 					_timeStepSize = Parameters::MAX_TIME_STEP;
@@ -666,6 +665,7 @@ void Simulation::run() {
 			}
 			_numIterations++;
 		}
+		std::cout<< maxMaxVelocity << std::endl;
 	}
 
 	else {

@@ -20,19 +20,21 @@ public:
 	static const float GRAPH_ZOOM;
 	static const float GRAPH_SPEED;
 
-	static const int SIMULATION_LENGTH;
+	static const float SIMULATION_LENGTH;
 	static const bool JUST_RENDER;
 	static const bool INTERACTIVE;
 
 	static const bool COLOR_CODE_SPEED;
 	static const bool COLOR_CODE_PRESSURE;
 	static const bool COLOR_CODE_DENSITY;
+
 	static const bool ADAPTIVE_TIME_STEP;
 	static const float MAX_TIME_STEP;
 	static const float INITIALIZATION_PHASE;
 	static const float CFL_NUMBER;
 	static const double TIME_OFFSET;
 	static const float SLOW_DOWN;
+	static const float SMOOTHING;
 
 	static const float PRESSURE_CODE_ROUGHNESS;
 	static const float VELOCITY_CODE_RANGE;
