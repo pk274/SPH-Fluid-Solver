@@ -41,6 +41,8 @@ class Renderer {
 	int _fluidShapeRadius;
 	int _solidShapeRadius;
 
+	int _maxFreeParticles;
+
 	Renderer(float zoomFactor = 1, float fluidSize = 1, float solidSize = 1, float searchRadius = 3);
 	void init_solids(std::vector<Particle>* particles);
 	void update_information(float time, float simTime, int numParticles, int numFluidParticles, float numUpdates,

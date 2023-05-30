@@ -29,6 +29,7 @@ enum SimulationPreset {
 	BreakingDam = 10,
 	BigBreakingDam = 11,
 	FixedBreakingDam = 12,
+	SmallBreakingDam = 13,
 	Cup = 20,
 	Complex = 30,
 	Osmosis = 40,

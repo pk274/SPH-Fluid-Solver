@@ -305,6 +305,9 @@ void InitManager::init_simulation(SimulationPreset preset) {
 	case FixedBreakingDam:
 		init_breaking_dam_simulation(200, 2, false, 10000);
 		break;
+	case SmallBreakingDam:
+		init_breaking_dam_simulation(40, 13);
+		break;
 	case GiantBox:
 		init_stuffed_box_simulation(50, 4);
 		break;
@@ -312,7 +315,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(59, 8, 50, 1, 1);
+		init_layer_simulation(59, 8, 1, 1, 1);
 		break;
 	case WideLayers:
 		init_wide_layer_simulation(60, 7, 30);
@@ -503,11 +506,12 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom, bool adaptiv
 		_sim->_particles.push_back(box[i]);
 	}
 
-	float xOffsetSize = 0.3;
-	float yOffsetSize = 0.05;	//0.05
+	float xOffsetSize = 0.02;	// 0.3
+	float yOffsetSize = 0.02;	// 0.05
 	float xFluidSize = 1;
 	float yFluidSize = 1;
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
+	pos.x = SolidParticle::_size * 2 + xOffsetSize;
 	if (adaptive) { xFluidSize = size / 2.2; yFluidSize = size / 1.8; }
 	else { xFluidSize = std::sqrt(numFluidParticles); yFluidSize = std::sqrt(numFluidParticles); }
 	for (int i = 0; i < yFluidSize; i++) {

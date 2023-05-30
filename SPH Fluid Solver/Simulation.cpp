@@ -103,7 +103,6 @@ void Simulation::EOS_solve() {
 	// Update Density and Pressure
 	for (int i = 0; i < _numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
-		_numFluidParticles++;
 		density = 0;
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 			distanceNorm = Functions::calculate_distance_norm(Functions::calculate_distance(
@@ -117,7 +116,7 @@ void Simulation::EOS_solve() {
 		}
 		_particles[i]._density = density;
 		_averageDensity += std::max((float)density, FluidParticle::_restDensity);
-		_particles[i]._pressure = std::max(0., _stiffness * (_particles[i]._density / FluidParticle::_restDensity - 1));
+		_particles[i]._pressure = std::max(0., _stiffness * (std::pow(_particles[i]._density / FluidParticle::_restDensity, 7) - 1));
 	}
 	_averageDensity = _averageDensity / _numFluidParticles;
 
@@ -159,14 +158,16 @@ void Simulation::EOS_solve() {
 		}
 		a_nonp *= (float)(2 * _viscosity);
 		a_nonp += _gravity;
-		_particles[i]._pressureAcc = a_p + a_nonp;
+		_particles[i]._v_adv = a_nonp;
+		_particles[i]._pressureAcc = a_p;
 	}
 
 	// Update Position and Velocity
 	if (!_moveParticles) { return; }
+	_maxVelocity = 0;
 	for (int i = 0; i < _numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
-		_particles[i]._velocity += _timeStepSize * _particles[i]._pressureAcc;
+		_particles[i]._velocity += _timeStepSize * (_particles[i]._pressureAcc + _particles[i]._v_adv);
 		_particles[i]._position += _timeStepSize * _particles[i]._velocity;
 
 		velocityNorm = Functions::calculate_distance_norm(_particles[i]._velocity);
@@ -426,6 +427,7 @@ void Simulation::jacobi_solve() {
 			}
 		}
 		_estimatedDensityError = 0;
+		int numParticlesWithNeighbors = 0;
 		for (int i = 0; i < _numParticles; i++) {
 			if (_particles[i]._type == solid) { continue; }
 			Ap = 0;
@@ -447,12 +449,16 @@ void Simulation::jacobi_solve() {
 			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
+				//_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);
+				//numParticlesWithNeighbors++;
 			}
 			_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);
+			//_estimatedDensityError += Ap - _particles[i]._s_i;
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
 		_estimatedDensityError = _estimatedDensityError / _numFluidParticles;
+		//_estimatedDensityError = _estimatedDensityError / numParticlesWithNeighbors;
 
 		// Increment Solver iteration
 		l++;
@@ -517,16 +523,20 @@ void Simulation::delete_particles() {
 void Simulation::update_physics() {
 	_averageDensity = 0;
 	
-	// Calculate source term
-	calculate_s_di();
-	//calculate_s_vd();
+	if (Parameters::SOLVE_PPE) {
+		// Calculate source term
+		calculate_s_di();
+		//calculate_s_vd();
 
-	// Solve pressure
-	jacobi_solve();
-	//EOS_solve();
+		// Solve pressure
+		jacobi_solve();
 
-	// Update Position and Velocity
-	if (_moveParticles) { update_x_and_v(); }
+		// Update Position and Velocity
+		if (_moveParticles) { update_x_and_v(); }
+	}
+	else {
+		EOS_solve();
+	}
 }
 
 // _________________________________________________________________________________

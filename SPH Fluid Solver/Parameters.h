@@ -3,6 +3,8 @@
 
 class Parameters {
 public:
+	static const bool SOLVE_PPE;
+
 	static const int WINDOW_WIDTH;
 	static const int WINDOW_HEIGHT;
 	static const float NEIGHBORHOOD_RADIUS;

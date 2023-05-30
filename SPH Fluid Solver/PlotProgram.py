@@ -6,14 +6,14 @@ import numpy as np
 
 
 # Options:
-plotAvgDensityAndIterations = 1
-plotTimeStep = 1
+plotAvgDensityAndIterations = 0
+plotTimeStep = 0
 plotDensityOnly = 0
 plotDensityAndEstimatedDensity = 0
-plotDensityAndAverageDensity = 0
+plotDensityAndAverageDensity = 1
 
 DensityThreshhold = 0.001
-FrameIntervals = 1 / 30
+FrameIntervals = 1 / 25
 
 
 # Plot AvgDensity and NumIterations
@@ -23,10 +23,14 @@ if (plotAvgDensityAndIterations):
     iterationsData = np.loadtxt("./iterationsFile.dat", dtype=float)
 
     iterationsSum = 0
+    iterationsMax = 0
     for i in range(len(iterationsData)):
         iterationsSum += iterationsData[i][1]
+        if iterationsData[i][1] > iterationsMax:
+            iterationsMax = iterationsData[i][1]
     iterationsSum = iterationsSum / len(iterationsData)
     print('average number of iterations = ', iterationsSum)
+    print('max number of iterations = ', iterationsMax)
 
     densitySum = 0
     for i in range(len(avgDensityData)):

@@ -25,6 +25,8 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 	_fluidShapeRadius = _zoomFactor * fluidSize / 2;
 	_solidShapeRadius = _zoomFactor * fluidSize / 2;
 
+	_maxFreeParticles = 0;
+
 	_fluidShape.setRadius(_fluidShapeRadius);
 
 	float outlineThickness = 3;
@@ -177,6 +179,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 	int numParticles = particles->size();
 	std::tuple<int, int, int> rgb;
 
+	int freeParticles = 0;
 	// Update each fluid shapes position
 	for (int i = 0; i < numParticles; i++) {
 		if (particles->at(i)._type == solid) { continue; }
@@ -190,14 +193,14 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 			_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, 0));
 		}
 		else if (Parameters::COLOR_CODE_DENSITY) {
-			if (particles->at(i)._density > FluidParticle::_restDensity + 0.005) {
-				// Color red
-				_fluidShape.setFillColor(
-					sf::Color::Color(220, 0,
-						std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY)));
-			}
-			else
-				if (particles->at(i)._density < FluidParticle::_restDensity - 0.005) {
+			//if (particles->at(i)._density > FluidParticle::_restDensity + 0.005) {
+			//	// Color red
+			//	_fluidShape.setFillColor(
+			//		sf::Color::Color(220, 0,
+			//			std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY)));
+			//}
+			//else
+				if (particles->at(i)._density < FluidParticle::_restDensity - 0.05) {
 				// Color green
 				_fluidShape.setFillColor(
 					sf::Color::Color(std::min(200.f, (float)std::pow(1 / particles->at(i)._density - FluidParticle::_restDensity, 2) * Parameters::DENSITY_CODE_INTENSITY),
