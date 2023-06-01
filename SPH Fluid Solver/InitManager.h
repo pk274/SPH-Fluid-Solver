@@ -30,6 +30,7 @@ enum SimulationPreset {
 	BigBreakingDam = 11,
 	FixedBreakingDam = 12,
 	SmallBreakingDam = 13,
+	TallBreakingDam = 14,
 	Cup = 20,
 	Complex = 30,
 	Osmosis = 40,
@@ -37,6 +38,9 @@ enum SimulationPreset {
 	Rain = 51,
 	Rain2 = 52,
 	Fountain = 60,
+	MovingWall = 70,
+	WaveGenerator = 71,
+	Island = 75
 };
 
 
@@ -56,6 +60,7 @@ public:
 	void init_rotated_box_simulation(int size, int zoom, int rotation);
 	void init_random_particles_simulation(int size, int zoom, int numParticles);
 	void init_breaking_dam_simulation(int size = 50, int zoom = 5, bool adaptive = true, int numFluidParticles = 10000);
+	void init_tall_breaking_dam_simulation(int size = 50, int zoom = 5);
 	void init_layer_simulation(int size, int zoom, int layers, bool xOffset = true, bool yOffset = true);
 	void init_wide_layer_simulation(int size, int zoom, int layers, bool xOffset = true, bool yOffset = true);
 	void init_cup_simulation(int size, int zoom);
@@ -65,4 +70,7 @@ public:
 	void init_rain_simulation(int size, int zoom);
 	void init_rain2_simulation(int size, int zoom);
 	void init_fountain_simulation();
+	void init_moving_wall_simulation(int size, int zoom);
+	void init_wave_generator_simulation(int size, int zoom);
+	void init_island_simulation(int size, int zoom);
 };

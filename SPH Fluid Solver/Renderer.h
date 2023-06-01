@@ -10,6 +10,7 @@ class Renderer {
   public:
 	std::vector<sf::CircleShape> _solidShapes;
 	sf::CircleShape _fluidShape;
+	sf::CircleShape _movingShape;
 	sf::CircleShape _watchedParticleShape;
 	std::vector<sf::RectangleShape>_arrowBodies;
 	std::vector<sf::CircleShape> _arrowHeads;

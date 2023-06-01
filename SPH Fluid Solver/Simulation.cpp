@@ -43,6 +43,7 @@ Simulation::Simulation(int framesPerSec) {
 	_nextFrame = 0;
 	_frameDistance = (int)10000 * (1. / framesPerSec);
 	_frameDistance = _frameDistance / 10000;
+	_moveSolids = false;
 
 }
 
@@ -102,7 +103,7 @@ void Simulation::EOS_solve() {
 	float velocityNorm = 0;
 	// Update Density and Pressure
 	for (int i = 0; i < _numParticles; i++) {
-		if (_particles[i]._type == solid) { continue; }
+		if (_particles[i]._type != fluid) { continue; }
 		density = 0;
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 			distanceNorm = Functions::calculate_distance_norm(Functions::calculate_distance(
@@ -123,7 +124,7 @@ void Simulation::EOS_solve() {
 	// Update Accelerations
 	for (int i = 0; i < _numParticles; i++) {
 		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = _particles[i]._density; }
-		if (_particles[i]._type == solid) { continue; }
+		if (_particles[i]._type != fluid) { continue; }
 		a_nonp.x = 0;
 		a_nonp.y = 0;
 		a_p.x = 0;
@@ -199,7 +200,7 @@ void Simulation::calculate_s_di() {
 
 	// Compute density, v_adv and c_i
 	for (int i = 0; i < _numParticles; i++) {
-		if (_particles[i]._type == solid) { continue; }
+		if (_particles[i]._type != fluid) { continue; }
 		density = 0;
 		viscosity.x = 0;
 		viscosity.y = 0;
@@ -212,7 +213,7 @@ void Simulation::calculate_s_di() {
 			if (_particles[i]._neighbors[j]->_type == fluid) {
 				density += FluidParticle::_mass * Functions::kernel(distanceNorm);
 			}
-			else if (_particles[i]._neighbors[j]->_type == solid) {
+			else if (_particles[i]._neighbors[j]->_type == solid || _particles[i]._neighbors[j]->_type == moving) {
 				density += SolidParticle::_mass * Functions::kernel(distanceNorm);
 			}
 		}
@@ -250,7 +251,7 @@ void Simulation::calculate_s_di() {
 
 	// Calculate source term and diagonal element a_ii
 	for (int i = 0; i < _numParticles; i++) {
-		if (_particles[i]._type == solid) { continue; }
+		if (_particles[i]._type != fluid) { continue; }
 		p_adv = 0;
 		a_ii = 0;
 		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
@@ -269,6 +270,13 @@ void Simulation::calculate_s_di() {
 						* _particles[i]._density)) * -kernelDeriv, kernelDeriv);
 			}
 			else if (_particles[i]._neighbors[j]->_type == solid) {
+				p_adv += SolidParticle::_mass
+					* Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
+				a_ii += SolidParticle::_mass *
+					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
+			}
+			else if (_particles[i]._neighbors[j]->_type == moving) {
+				v_adv_ij = _particles[i]._v_adv - _particles[i]._neighbors[j]->_velocity;
 				p_adv += SolidParticle::_mass
 					* Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
 				a_ii += SolidParticle::_mass *
@@ -402,7 +410,7 @@ void Simulation::jacobi_solve() {
 			break;
 		}
 		for (int i = 0; i < _numParticles; i++) {
-			if (_particles[i]._type == solid) { continue; }
+			if (_particles[i]._type != fluid) { continue; }
 			_particles[i]._pressureAcc.x = 0;
 			_particles[i]._pressureAcc.y = 0;
 			for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
@@ -429,7 +437,7 @@ void Simulation::jacobi_solve() {
 		_estimatedDensityError = 0;
 		int numParticlesWithNeighbors = 0;
 		for (int i = 0; i < _numParticles; i++) {
-			if (_particles[i]._type == solid) { continue; }
+			if (_particles[i]._type != fluid) { continue; }
 			Ap = 0;
 			for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
 				x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
@@ -480,6 +488,10 @@ void Simulation::update_x_and_v() {
 	_maxVelocity = 0;
 	for (int i = 0; i < _numParticles; i++) {
 		if (_particles[i]._type == solid) { continue; }
+		if (_particles[i]._type == moving) {
+			_particles[i]._position += _timeStepSize * _particles[i]._velocity;
+			continue;
+		}
 		_particles[i]._velocity = _timeStepSize * _particles[i]._pressureAcc
 			+ _particles[i]._v_adv;
 		_particles[i]._position += _timeStepSize * _particles[i]._velocity;
@@ -494,7 +506,43 @@ void Simulation::update_x_and_v() {
 	}
 }
 
-
+// _________________________________________________________________________________
+void Simulation::update_moving_objects() {
+	bool switchState;
+	for (int i = 0; i < _movingObjects.size(); i++) {
+		switchState = false;
+		for (int ii = 0; ii < _movingObjects[i]._particles.size(); ii++) {
+			if (_movingObjects[i]._conditionBigger[_movingObjects[i]._state]) {
+				if (_movingObjects[i]._particles[ii]->_position.x >
+					_movingObjects[i]._conditions[_movingObjects[i]._state].x
+					||
+					_movingObjects[i]._particles[ii]->_position.y >
+					_movingObjects[i]._conditions[_movingObjects[i]._state].y) {
+					switchState = true;
+					break;
+				}
+			}
+			else if (_movingObjects[i]._particles[ii]->_position.x <
+				_movingObjects[i]._conditions[_movingObjects[i]._state].x
+				||
+				_movingObjects[i]._particles[ii]->_position.y <
+				_movingObjects[i]._conditions[_movingObjects[i]._state].y) {
+				switchState = true;
+				break;
+			}
+		}
+		if (switchState) {
+			_movingObjects[i]._state++;
+			if (_movingObjects[i]._state >= _movingObjects[i]._directions.size()) {
+				_movingObjects[i]._state = 0;
+			}
+			for (int ii = 0; ii < _movingObjects[i]._particles.size(); ii++) {
+				_movingObjects[i]._particles[ii]->_velocity
+					= _movingObjects[i]._directions[_movingObjects[i]._state];
+			}
+		}
+	}
+}
 // _________________________________________________________________________________
 void Simulation::spawn_particles() {
 	if (_simulatedTime - _lastSpawnTime < _spawnDelay || _numFluidParticles >= _maxNumParticles) { return; }
@@ -507,7 +555,7 @@ void Simulation::spawn_particles() {
 // _________________________________________________________________________________
 void Simulation::delete_particles() {
 	for (int i = 0; i < _particles.size(); i++) {
-		if (_particles[i]._type == solid) { continue; }
+		if (_particles[i]._type != fluid) { continue; }
 		// Delete Particles which fell out of the window
 		if (_particles[i]._position.x < -10 || _particles[i]._position.y < -10 ||
 			_particles[i]._position.x > Parameters::WINDOW_WIDTH / _zoomFactor ||
@@ -573,6 +621,8 @@ void Simulation::run() {
 		sf::Time lastFrameTimeStamp = _clock.getElapsedTime();
 		float elapsedTime;
 		float maxMaxVelocity = 0;
+		float avgSolverIterations = 0;
+		int frameIterations = 0;
 		_maxTimeStep = 0;
 		_lastTimeStep = Parameters::TIME_STEP;
 		_numUpdatesPerSec = 0;
@@ -603,13 +653,16 @@ void Simulation::run() {
 
 			// Find Neighbors and count fluid particles
 			for (int i = 0; i < _numParticles; i++) {
-				if (_particles[i]._type == solid) { continue; }
+				if (_particles[i]._type != fluid) { continue; }
 				_numFluidParticles++;
 				_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
 			}
 
 			// Update Physics
 			if (_numFluidParticles > 0) { update_physics(); }
+
+			// Update moving objects
+			if (_moveSolids) { update_moving_objects(); }
 
 			// Delete stray particles
 			if (_deleteParticles) { delete_particles(); }
@@ -632,6 +685,8 @@ void Simulation::run() {
 			_cflNumber = _maxVelocity * _timeStepSize / Parameters::H;
 			if (_cflNumber > 1) { std::cout << "CFL CONDITION VIOLATED" << std::endl; }
 			if (_maxVelocity > maxMaxVelocity) { maxMaxVelocity = _maxVelocity; }
+			frameIterations++;
+			avgSolverIterations = _totalNumSolverIterations / frameIterations;
 
 			if (_simulatedTime >= _nextFrame) {
 				run_tests();
@@ -643,12 +698,14 @@ void Simulation::run() {
 				_renderer.update_information(_currentTime.asSeconds(),
 					_simulatedTime, _particles.size(),
 					_numFluidParticles, _numUpdatesPerSec, _averageDensity, _cflNumber,
-					_totalNumSolverIterations / (1. + _numIterations), _watchedParticleDensity);
+					avgSolverIterations, _watchedParticleDensity);
 
 				_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
 
 				lastFrameTimeStamp = _currentTime;
 				_nextFrame += _frameDistance;
+				frameIterations = 0;
+				_totalNumSolverIterations = 0;
 			}
 
 
