@@ -34,6 +34,8 @@ public:
 	static const float MAX_TIME_STEP;
 	static const float INITIALIZATION_PHASE;
 	static const float CFL_NUMBER;
+	static const int DESIRED_ITERATIONS;
+	static const float ITERATIONS_ENFORCEMENT;
 	static const double TIME_OFFSET;
 	static const float SLOW_DOWN;
 	static const float SMOOTHING;

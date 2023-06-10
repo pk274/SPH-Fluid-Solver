@@ -5,8 +5,8 @@ C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(21,
 C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(35,46): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(37,41): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
   Code wird generiert.
-  2 of 1055 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  4 of 1251 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    4 functions had inline decision re-evaluated but remain unchanged
+    3 functions had inline decision re-evaluated but remain unchanged
   Codegenerierung ist abgeschlossen.
   SPH Fluid Solver.vcxproj -> C:\Users\paulk\source\repos\SPH Fluid Solver\x64\Release\SPH Fluid Solver.exe

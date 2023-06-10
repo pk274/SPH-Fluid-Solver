@@ -6,7 +6,8 @@
 enum ParticleType
 {
 	solid = 0,
-	fluid = 1
+	fluid = 1,
+	moving = 2
 };
 
 class Particle {

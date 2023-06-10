@@ -6,11 +6,11 @@ import numpy as np
 
 
 # Options:
-plotAvgDensityAndIterations = 0
-plotTimeStep = 0
+plotAvgDensityAndIterations = 1
+plotTimeStep = 1
 plotDensityOnly = 0
 plotDensityAndEstimatedDensity = 0
-plotDensityAndAverageDensity = 1
+plotDensityAndAverageDensity = 0
 
 DensityThreshhold = 0.001
 FrameIntervals = 1 / 25
@@ -63,7 +63,7 @@ if (plotTimeStep):
     fig = plt.figure()
     timeStep = fig.add_subplot()
 
-    timeStep.plot(*zip(*timeStepData), 'g.', label = 'time step size')
+    #timeStep.plot(*zip(*timeStepData), 'g.', label = 'time step size')
     timeStep.plot(*zip(*timeStepData), 'g-', label = 'time step size')
     timeStep.plot([0, timeStepData[-1][0]], [timeStepSum, timeStepSum], 'y--', label = 'Average time step size')
     #timeStep.set_ylim(0.003, 0.005)
@@ -74,7 +74,7 @@ if (plotTimeStep):
     loc = plticker.MultipleLocator(base=FrameIntervals)
     timeStep.yaxis.set_minor_locator(loc)
     timeStep.xaxis.set_minor_locator(loc)
-    timeStep.grid(which='minor', axis='both', linestyle='-', color = 'black', linewidth = '0.5')
+    #timeStep.grid(which='minor', axis='both', linestyle='-', color = 'black', linewidth = '0.5')
     plt.show()
 
 

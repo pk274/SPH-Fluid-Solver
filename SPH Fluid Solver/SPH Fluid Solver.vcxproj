@@ -161,6 +161,7 @@
     <ClInclude Include="FluidParticle.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="HashManager.h" />
+    <ClInclude Include="MovingObject.h" />
     <ClInclude Include="InitManager.h" />
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="Particle.h" />

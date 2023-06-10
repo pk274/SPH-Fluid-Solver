@@ -12,6 +12,7 @@
 #include "./HashManager.h"
 #include "./TestManager.h"
 #include "./CompactHashManager.h"
+#include "./MovingObject.h"
 
 #include "./Renderer.h"
 
@@ -45,6 +46,7 @@ class Simulation {
 	  bool _printParticleInfo;
 	  bool _deleteParticles;
 	  bool _spawnParticles;
+	  bool _moveSolids;
 
 	  float _spawnDelay;
 	  float _lastSpawnTime;
@@ -82,6 +84,9 @@ class Simulation {
 	  std::vector<sf::Vector2f> _spawnLocations;
 	  std::vector<sf::Vector2f> _spawnVelocities;
 
+	  std::vector<MovingObject> _movingObjects;
+
+
 	  std::fstream _avgDensityFile;
 	  std::fstream _renderFile;
 	  std::fstream _timeStepFile;
@@ -103,6 +108,7 @@ class Simulation {
 
 	  void jacobi_solve();
 	  void update_x_and_v();
+	  void update_moving_objects();
 	  void spawn_particles();
 	  void delete_particles();
 

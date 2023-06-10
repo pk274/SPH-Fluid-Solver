@@ -86,6 +86,9 @@
     <ClInclude Include="InitManager.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="MovingObject.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\Resources\times new roman.ttf">
