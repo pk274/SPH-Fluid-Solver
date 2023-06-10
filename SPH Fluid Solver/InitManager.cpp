@@ -315,7 +315,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(59, 8, 1, 1, 1);
+		init_layer_simulation(59, 8, 50, 1, 1);
 		break;
 	case WideLayers:
 		init_wide_layer_simulation(60, 7, 30);

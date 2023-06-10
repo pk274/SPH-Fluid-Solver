@@ -56,6 +56,10 @@ class Simulation {
 
 	  sf::Clock _clock;
 	  sf::Time _currentTime;
+	  sf::Time _beforePhysics;
+	  sf::Time _physicsTime;
+	  sf::Time _neighborhoodTime;
+	  sf::Time _beforeNeighborhood;
 	  float _numUpdatesPerSec;
 	  int _watchedParticleId;
 	  std::vector<int> _markedParticlesId;

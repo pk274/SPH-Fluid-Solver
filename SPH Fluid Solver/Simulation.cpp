@@ -601,15 +601,21 @@ void Simulation::run() {
 			_numFluidParticles = 0;
 			_numParticles = _particles.size();
 
+			_beforeNeighborhood = _clock.getElapsedTime();
 			// Find Neighbors and count fluid particles
 			for (int i = 0; i < _numParticles; i++) {
 				if (_particles[i]._type == solid) { continue; }
 				_numFluidParticles++;
 				_particles[i]._neighbors = _hashManager.return_neighbors(&_particles[i], _neighborRadius);
 			}
+			_neighborhoodTime += _clock.getElapsedTime() - _beforeNeighborhood;
 
 			// Update Physics
-			if (_numFluidParticles > 0) { update_physics(); }
+			if (_numFluidParticles > 0) {
+				_beforePhysics = _clock.getElapsedTime();
+				update_physics();
+				_physicsTime += _clock.getElapsedTime() - _beforePhysics;
+			}
 
 			// Delete stray particles
 			if (_deleteParticles) { delete_particles(); }
@@ -675,7 +681,11 @@ void Simulation::run() {
 			}
 			_numIterations++;
 		}
-		std::cout<< maxMaxVelocity << std::endl;
+		std::cout << "max velocity:" << maxMaxVelocity << std::endl;
+		std::cout << "physics time: " << _physicsTime.asMilliseconds() << "	neighborhood time: " << _neighborhoodTime.asMilliseconds()
+			<< "	total time: " << _physicsTime.asMilliseconds() + _neighborhoodTime.asMilliseconds() << std::endl;
+		std::cout << "avg physics time: " << _physicsTime.asMicroseconds() / _numIterations << "	avg neighborhood time: " << _neighborhoodTime.asMicroseconds()
+			/ _numIterations << "	avg total time: " << (_physicsTime.asMicroseconds() + _neighborhoodTime.asMicroseconds()) / _numIterations << std::endl;
 	}
 
 	else {
