@@ -299,7 +299,7 @@ void Simulation::calculate_s_vd() {
 	sf::Vector2f viscosity = sf::Vector2f();
 	sf::Vector2f c_f = sf::Vector2f();
 	sf::Vector2f d_ij = sf::Vector2f();
-	sf::Vector2f v_adv_ji;
+	sf::Vector2f v_adv_ij;
 	float distanceNorm = 1;
 	sf::Vector2f kernelDeriv;
 	float velocityDiv = 0;
@@ -371,9 +371,9 @@ void Simulation::calculate_s_vd() {
 			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
 
 			if (_particles[i]._neighbors[j]->_type == fluid) {
-				v_adv_ji =  _particles[i]._neighbors[j]->_v_adv - _particles[i]._v_adv;
-				velocityDiv += (FluidParticle::_mass / _particles[i]._neighbors[j]->_density)
-					* Functions::scalar_product2D(v_adv_ji, kernelDeriv);
+				v_adv_ij = _particles[i]._v_adv - _particles[i]._neighbors[j]->_v_adv;
+				velocityDiv -= (FluidParticle::_mass / _particles[i]._neighbors[j]->_density)
+					* Functions::scalar_product2D(v_adv_ij, kernelDeriv);
 				a_ii += FluidParticle::_mass *
 					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
 				a_ii += FluidParticle::_mass * Functions::scalar_product2D(
@@ -381,13 +381,13 @@ void Simulation::calculate_s_vd() {
 						* _particles[i]._density)) * -kernelDeriv, kernelDeriv);
 			}
 			else if (_particles[i]._neighbors[j]->_type == solid) {
-				velocityDiv += (SolidParticle::_mass / _particles[i]._density)
-					* Functions::scalar_product2D(v_adv_ji, kernelDeriv);
+				velocityDiv -= (SolidParticle::_mass / FluidParticle::_restDensity)
+					* Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
 				a_ii += SolidParticle::_mass *
 					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
 			}
 		}
-		_particles[i]._s_i = - _timeStepSize * _particles[i]._density * velocityDiv;
+		_particles[i]._s_i = _timeStepSize * _particles[i]._density * velocityDiv;
 		_particles[i]._a_ii = _timeStepSize * _timeStepSize * a_ii;
 		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
 		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }

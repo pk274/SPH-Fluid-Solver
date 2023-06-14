@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "./Parameters.h"
 
-const bool Parameters::SOLVE_PPE = 0;
+const bool Parameters::SOLVE_PPE = 1;
 
 const int Parameters::WINDOW_WIDTH = 1920;
 const int Parameters::WINDOW_HEIGHT = 1080;
@@ -14,11 +14,11 @@ const float Parameters::GAMMA = 0.7;
 const float Parameters::BOUNDARY_VISCOSITY = 3.f;		// 0.3
 
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
-const float Parameters::MAX_DENSITY_ERROR = 0.005;
+const float Parameters::MAX_DENSITY_ERROR = 0.01;
 const float Parameters::OMEGA = 0.5;
 const int Parameters::MAX_SOLVER_ITERATIONS = 1000;
 const int Parameters::MIN_SOLVER_ITERATIONS = 2;
-const float Parameters::TIME_STEP = 0.000001;
+const float Parameters::TIME_STEP = 0.004;
 
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
@@ -42,7 +42,7 @@ const float Parameters::SLOW_DOWN = 1;
 const float Parameters::SMOOTHING = 0.6f;
 
 const float Parameters::PRESSURE_CODE_ROUGHNESS = 1.5;
-const float Parameters::VELOCITY_CODE_RANGE = 0.8;
+const float Parameters::VELOCITY_CODE_RANGE = 0.5;
 const float Parameters::DENSITY_CODE_INTENSITY = 100;
 
 const bool Parameters::DOCUMENT_AVG_DENSITY = 1;
@@ -51,7 +51,7 @@ const bool Parameters::DOCUMENT_TIME = 1;
 const bool Parameters::DOCUMENT_ESTIMATED_DENSITY = 1;
 const bool Parameters::WRITE_SCREEN_IMAGES = 0;
 
-const float Parameters::EOS_STIFFNESS = 670000;	// 1000000
+const float Parameters::EOS_STIFFNESS = 210000;	// 1000000
 const float Parameters::EOS_VISCOSITY = 35;
 
 const sf::Color Parameters::BACKGROUND_COLOR = sf::Color::Black;	//230

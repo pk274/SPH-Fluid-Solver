@@ -1,0 +1,61 @@
+25 layers
+
+
+
+
+sesph:
+
+error 5% stiffness 60000 time step 0.003
+physics time: 238       neighborhood time: 1542 total time: 1780
+avg physics time: 238   avg neighborhood time: 1542     avg total time: 1780
+
+
+error 2% stiffness 160000 time step 0.002
+physics time: 328       neighborhood time: 2140 total time: 2468
+avg physics time: 218   avg neighborhood time: 1426     avg total time: 1645
+
+
+error 1% stiffness 340000 time step 0.001
+physics time: 633       neighborhood time: 4174 total time: 4807
+avg physics time: 211   avg neighborhood time: 1391     avg total time: 1602
+
+
+error 0.5% stiffness 700000 time step 0.0002
+physics time: 3055      neighborhood time: 20387        total time: 23442
+avg physics time: 203   avg neighborhood time: 1359     avg total time: 1562
+
+0.1% stiffness: 2700000 time step 0.000004 didnt even work
+physics time: 1433582   neighborhood time: 10846156     total time: 12279738
+avg physics time: 191   avg neighborhood time: 1446     avg total time: 1637
+
+
+
+
+iisph:
+error 5% time step 0.007 avg iters 6.1
+physics time: 613       neighborhood time: 696  total time: 1309
+avg physics time: 1430  avg neighborhood time: 1624     avg total time: 3054
+
+
+error 2% time step 0.005 avg iters 7.8
+physics time: 967       neighborhood time: 913  total time: 1880
+avg physics time: 1609  avg neighborhood time: 1519     avg total time: 3129
+
+
+error 1% time step 0.004 avg iters 10
+physics time: 1433      neighborhood time: 1104 total time: 2537
+avg physics time: 1911  avg neighborhood time: 1473     avg total time: 3384
+
+
+error 0.5% time step 0.003 avg iters 11.2
+physics time: 2028      neighborhood time: 1414 total time: 3442
+avg physics time: 2028  avg neighborhood time: 1414     avg total time: 3443
+
+
+error 0.1% time step 0.0015 avg iters 13.862
+physics time: 4771      neighborhood time: 2751 total time: 7522
+avg physics time: 2385  avg neighborhood time: 1375     avg total time: 3761
+
+error 0.01% time step 0.0004 avg iters 9.9
+physics time: 13171     neighborhood time: 10217        total time: 23388
+avg physics time: 1755  avg neighborhood time: 1362     avg total time: 3118

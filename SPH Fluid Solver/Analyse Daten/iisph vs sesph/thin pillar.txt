@@ -1,0 +1,64 @@
+IISPH:
+
+2 LAYERS timestep 0.02
+physics time: 19        neighborhood time: 17   total time: 36
+avg physics time: 130   avg neighborhood time: 117      avg total time: 248
+
+5 LAYERS: timestep 0.009
+physics time: 203       neighborhood time: 72   total time: 275
+avg physics time: 609   avg neighborhood time: 215      avg total time: 824
+
+10 LAYERS: timestep 0.003
+physics time: 759       neighborhood time: 347  total time: 1106
+avg physics time: 759   avg neighborhood time: 347      avg total time: 1107
+
+15 LAYERS timestep 0.002
+physics time: 1230      neighborhood time: 706  total time: 1936
+avg physics time: 820   avg neighborhood time: 470      avg total time: 1290
+
+20 LAYERS: timestep: 0.002
+physics time: 2068      neighborhood time: 906  total time: 2974
+avg physics time: 1378  avg neighborhood time: 604      avg total time: 1983
+
+30 LAYERS: timestep: 0.001
+physics time: 2799      neighborhood time: 2658 total time: 5457
+avg physics time: 933   avg neighborhood time: 886      avg total time: 1819
+
+40 LAYERS: timestep: 0.001
+physics time: 4704      neighborhood time: 3508 total time: 8212
+avg physics time: 1568  avg neighborhood time: 1169     avg total time: 2737
+
+50 LAYERS: timestep 0.001
+physics time: 7127      neighborhood time: 4366 total time: 11493
+avg physics time: 2375  avg neighborhood time: 1455     avg total time: 3831
+
+
+SESPH:
+
+5 LAYERS timestep 0.004
+physics time: 30        neighborhood time: 186  total time: 216
+avg physics time: 40    avg neighborhood time: 249      avg total time: 289
+
+10 LAYERS: timestep 0.002
+physics time: 84        neighborhood time: 548  total time: 632
+avg physics time: 56    avg neighborhood time: 365      avg total time: 421
+
+15 LAYERS: timestep 0.002
+physics time: 118       neighborhood time: 788  total time: 906
+avg physics time: 79    avg neighborhood time: 525      avg total time: 604
+
+20 LAYERS: timestep 0.001
+physics time: 276       neighborhood time: 1804 total time: 2080
+avg physics time: 92    avg neighborhood time: 601      avg total time: 693
+
+30 LAYERS timestep 0.001
+physics time: 416       neighborhood time: 2753 total time: 3169
+avg physics time: 138   avg neighborhood time: 917      avg total time: 1056
+
+40 LAYERS timestep 0.0001	stiffness 580000
+physics time: 5254      neighborhood time: 34655        total time: 39909
+avg physics time: 175   avg neighborhood time: 1155     avg total time: 1330
+
+50 LAYERS: timestep 0.00004 stiffness 650000
+physics time: 16313     neighborhood time: 109323       total time: 125636
+avg physics time: 217   avg neighborhood time: 1457     avg total time: 1675
