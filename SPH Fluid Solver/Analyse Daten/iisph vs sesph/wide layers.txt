@@ -1,6 +1,9 @@
-3sec 80 container
+3sec 80 container	25 layers
 
 SESPH:
+5 layers	stiffness 70000	time step 0.004
+physics time: 68        neighborhood time: 470  total time: 538
+avg physics time: 91    avg neighborhood time: 626      avg total time: 718
 
 10 layers stiffness 135000 time step 0.002
 physics time: 221       neighborhood time: 1489 total time: 1710
@@ -27,6 +30,9 @@ physics time: 4139      neighborhood time: 28414        total time: 32553
 avg physics time: 689   avg neighborhood time: 4735     avg total time: 5425
 
 IISPH:
+5 layers time step 0.01 avg iters 9
+physics time: 245       neighborhood time: 224  total time: 469
+avg physics time: 814   avg neighborhood time: 745      avg total time: 1559
 
 10 layers time step 0.007 avg iters 11.2
 physics time: 691       neighborhood time: 505  total time: 1196

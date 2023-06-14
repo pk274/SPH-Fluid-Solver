@@ -1,7 +1,7 @@
 ﻿  Parameters.cpp
 C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(13,36): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(17,49): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(21,42): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(21,41): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(35,47): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(37,41): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
 C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\Parameters.cpp(39,53): warning C4305: "Initialisierung": Verkürzung von "double" in "float"

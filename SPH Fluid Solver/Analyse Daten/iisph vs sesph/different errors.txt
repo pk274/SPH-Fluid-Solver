@@ -8,7 +8,7 @@ sesph:
 error 5% stiffness 60000 time step 0.003
 physics time: 238       neighborhood time: 1542 total time: 1780
 avg physics time: 238   avg neighborhood time: 1542     avg total time: 1780
-
+3 sec 50 container
 
 error 2% stiffness 160000 time step 0.002
 physics time: 328       neighborhood time: 2140 total time: 2468
