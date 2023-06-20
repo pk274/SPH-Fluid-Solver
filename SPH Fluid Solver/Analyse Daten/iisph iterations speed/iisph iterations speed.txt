@@ -1,0 +1,55 @@
+timestep 0.0065 avgiters 27.6
+physics time: 4377      neighborhood time: 1376 total time: 5753
+avg physics time: 9475  avg neighborhood time: 2979     avg total time: 12454
+
+
+timestep 0.006 avgiters 25.9
+physics time: 4478      neighborhood time: 1465 total time: 5943
+avg physics time: 8956  avg neighborhood time: 2930     avg total time: 11886
+
+
+timestep 0.0055 avgiters 22.3
+physics time: 4243      neighborhood time: 1582 total time: 5825
+avg physics time: 7771  avg neighborhood time: 2898     avg total time: 10670
+
+
+timestep 0.005 avgiters 18.6
+physics time: 3891      neighborhood time: 1736 total time: 5627
+avg physics time: 6475  avg neighborhood time: 2890     avg total time: 9365
+
+
+timestep 0.0045 avgiters 15.18
+physics time: 3478      neighborhood time: 1897 total time: 5375
+avg physics time: 5214  avg neighborhood time: 2844     avg total time: 8059
+
+
+time step 0.004 avgiters 12
+physics time: 3204      neighborhood time: 2136 total time: 5340
+avg physics time: 4272  avg neighborhood time: 2848     avg total time: 7120
+
+
+timestep 0.0035 avgiters 9.3
+physics time: 3019      neighborhood time: 2446 total time: 5465
+avg physics time: 3519  avg neighborhood time: 2851     avg total time: 6370
+
+
+
+timestep 0.003 avgiters 6.8
+physics time: 2750      neighborhood time: 2898 total time: 5648
+avg physics time: 2750  avg neighborhood time: 2898     avg total time: 5648
+
+
+timestep 0.0025 avgiters 4.8
+physics time: 2518      neighborhood time: 3435 total time: 5953
+avg physics time: 2096  avg neighborhood time: 2860     avg total time: 4957
+
+
+timestep 0.002 avgiters 3.1
+physics time: 2357      neighborhood time: 4368 total time: 6725
+avg physics time: 1571  avg neighborhood time: 2912     avg total time: 4483
+
+
+timestep 0.0015
+avgiters 2
+physics time: 2417      neighborhood time: 5675 total time: 8092
+avg physics time: 1208  avg neighborhood time: 2837     avg total time: 4046

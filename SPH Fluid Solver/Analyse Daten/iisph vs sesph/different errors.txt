@@ -23,9 +23,9 @@ physics time: 633       neighborhood time: 4174 total time: 4807
 avg physics time: 211   avg neighborhood time: 1391     avg total time: 1602
 
 
-error 0.5% stiffness 700000 time step 0.0005	AM LAPTOP THO
-physics time: 2138      neighborhood time: 13826        total time: 15964
-avg physics time: 356   avg neighborhood time: 2304     avg total time: 2660
+error 0.5% stiffness 700000 time step 0.0005
+physics time: 1322      neighborhood time: 8802 total time: 10124
+avg physics time: 220   avg neighborhood time: 1467     avg total time: 1687
 t/p: 0.134	t/n: 0.866
 
 
@@ -46,9 +46,9 @@ t/p: 0.468	t/n: 0.532
 
 
 
-error 2% time step 0.005 avg iters 7.8
-physics time: 967       neighborhood time: 913  total time: 1880
-avg physics time: 1609  avg neighborhood time: 1519     avg total time: 3129
+error 2% time step 0.0055 avg iters 9.4
+physics time: 981       neighborhood time: 792  total time: 1773
+avg physics time: 1797  avg neighborhood time: 1452     avg total time: 3249
 t/p: 0.514	t/n: 0.486
 
 
