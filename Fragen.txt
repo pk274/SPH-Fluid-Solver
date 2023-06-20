@@ -1,0 +1,3 @@
+
+
+- konvergenz und m/rho bei sph diskretisierung
