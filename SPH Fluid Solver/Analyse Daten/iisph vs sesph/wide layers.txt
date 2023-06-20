@@ -4,14 +4,20 @@ SESPH:
 5 layers	stiffness 70000	time step 0.004
 physics time: 68        neighborhood time: 470  total time: 538
 avg physics time: 91    avg neighborhood time: 626      avg total time: 718
+t/p: 0.126	t/n: 0.874
+
 
 10 layers stiffness 135000 time step 0.002
 physics time: 221       neighborhood time: 1489 total time: 1710
 avg physics time: 147   avg neighborhood time: 992      avg total time: 1140
+t/p: 0.129	t/n: 0.871
+
 
 15 layers stiffness 210000 time step 0.002
 physics time: 317       neighborhood time: 2104 total time: 2421
 avg physics time: 211   avg neighborhood time: 1403     avg total time: 1615
+t/p: 0.131	t/n: 0.869
+
 
 20 layers stiffness 280000 time step 0.001
 physics time: 834       neighborhood time: 5541 total time: 6375
@@ -24,19 +30,25 @@ avg physics time: 418   avg neighborhood time: 2819     avg total time: 3238
 40 layers stiffness 56000 time step 0.0007
 physics time: 2361      neighborhood time: 15842        total time: 18203
 avg physics time: 550   avg neighborhood time: 3696     avg total time: 4247
+t/p: 0.130	t/n: 0.870
+
 
 50 layers stiffness 700000 time step 0.0005
 physics time: 4139      neighborhood time: 28414        total time: 32553
 avg physics time: 689   avg neighborhood time: 4735     avg total time: 5425
+t/p: 0.127	t/n: 0.873
+
 
 IISPH:
 5 layers time step 0.01 avg iters 9
 physics time: 245       neighborhood time: 224  total time: 469
 avg physics time: 814   avg neighborhood time: 745      avg total time: 1559
+t/p: 0.522	t/n: 0.478
 
 10 layers time step 0.007 avg iters 11.2
 physics time: 691       neighborhood time: 505  total time: 1196
 avg physics time: 1612  avg neighborhood time: 1177     avg total time: 2790
+t/p: 0.578	t/n: 0.422
 
 15 layers time step 0.005 avg iters 9.1
 physics time: 1104      neighborhood time: 898  total time: 2002
@@ -57,7 +69,9 @@ avg physics time: 4586  avg neighborhood time: 3841     avg total time: 8427
 50 layers time step 0.003 avg iters 11.3
 physics time: 6889      neighborhood time: 4718 total time: 11607
 avg physics time: 6889  avg neighborhood time: 4718     avg total time: 11608
+t/p: 0.594	t/n: 0.406
 
 60 layers time step 0.003 avg iters 13.6
 physics time: 9660      neighborhood time: 5607 total time: 15267
 avg physics time: 9660  avg neighborhood time: 5607     avg total time: 15267
+t/p: 0.633	t/n: 0.367

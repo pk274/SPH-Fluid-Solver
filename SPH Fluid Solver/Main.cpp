@@ -11,7 +11,7 @@
 
 int main()
 {
-    Simulation simulation = Simulation(30);
+    Simulation simulation = Simulation(60);
     InitManager initManager = InitManager(&simulation);
     initManager.init_simulation(WideLayers);
     // TestManager::test_kernel_integral();
