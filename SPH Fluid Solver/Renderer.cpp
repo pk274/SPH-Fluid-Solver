@@ -25,6 +25,7 @@ Renderer::Renderer(float zoomFactor, float fluidSize, float solidSize, float sea
 
 	_fluidShapeRadius = _zoomFactor * fluidSize / 2;
 	_solidShapeRadius = _zoomFactor * fluidSize / 2;
+	if (Parameters::PRETTY_MODE) { _fluidShapeRadius += _zoomFactor; _solidShapeRadius += _zoomFactor / 2; }
 
 	_maxFreeParticles = 0;
 
@@ -190,6 +191,12 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 			_movingShape.setPosition(particles->at(i)._position * _zoomFactor);
 			window->draw(_movingShape);
 			continue;
+		}
+
+
+		if (Parameters::PRETTY_MODE) {
+			if (particles->at(i)._density < 0.9) { continue; }
+			_fluidShape.setRadius(_fluidShapeRadius * std::pow(particles->at(i)._density, _zoomFactor));
 		}
 
 		_fluidShape.setPosition(particles->at(i)._position * _zoomFactor);

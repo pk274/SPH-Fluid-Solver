@@ -40,7 +40,8 @@ enum SimulationPreset {
 	Fountain = 60,
 	MovingWall = 70,
 	WaveGenerator = 71,
-	Island = 75
+	Island = 75,
+	CubeDrop = 80,
 };
 
 
@@ -73,4 +74,5 @@ public:
 	void init_moving_wall_simulation(int size, int zoom);
 	void init_wave_generator_simulation(int size, int zoom);
 	void init_island_simulation(int size, int zoom);
+	void init_cube_drop_simulation(int size, int zoom);
 };

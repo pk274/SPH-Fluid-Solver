@@ -4,6 +4,9 @@
 class Parameters {
 public:
 	static const bool SOLVE_PPE;
+	static const bool S_DI;
+	static const bool S_VD;
+	static const bool S_VD_DI;
 
 	static const int WINDOW_WIDTH;
 	static const int WINDOW_HEIGHT;
@@ -55,4 +58,5 @@ public:
 
 	static const sf::Color BACKGROUND_COLOR;
 	static const sf::Color SOLID_COLOR;
+	static const bool PRETTY_MODE;
 };

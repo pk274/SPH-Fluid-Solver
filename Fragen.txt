@@ -1,3 +1,6 @@
+With the knowledge about \eqref{eq: continuity equation},
+the relation $\rho = m/V$ and the fact that this work will mainly be focused on incompressible fluids,
+the mass, volume and density of a fluid can from now on all be assumed to be constant and will therefore often be used synonymously.
 
 
-- konvergenz und m/rho bei sph diskretisierung
+eq 30 auf seite 18

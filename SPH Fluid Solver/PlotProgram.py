@@ -7,12 +7,12 @@ import numpy as np
 
 # Options:
 plotAvgDensityAndIterations = 1
-plotTimeStep = 0
+plotTimeStep = 1
 plotDensityOnly = 0
 plotDensityAndEstimatedDensity = 0
 plotDensityAndAverageDensity = 0
 
-DensityThreshhold = 0.01
+DensityThreshhold = 0.001
 FrameIntervals = 1 / 25
 
 

@@ -300,7 +300,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_breaking_dam_simulation(60, 8);
 		break;
 	case BigBreakingDam:
-		init_breaking_dam_simulation(199, 2);
+		init_breaking_dam_simulation(120, 4);
 		break;
 	case FixedBreakingDam:
 		init_breaking_dam_simulation(200, 2, false, 10000);
@@ -348,7 +348,10 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_moving_wall_simulation(50, 8);
 		break;
 	case WaveGenerator:
-		init_wave_generator_simulation(80, 6);
+		init_wave_generator_simulation(120, 4);
+		break;
+	case CubeDrop:
+		init_cube_drop_simulation(120, 4);
 		break;
 	}
 }
@@ -872,8 +875,8 @@ void InitManager::init_side_spawn_simulation(int size, int zoom) {
 	}
 
 	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 5));
-	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 7));
-	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 9));
+	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 6.3));
+	_sim->_spawnLocations.push_back(sf::Vector2f(SolidParticle::_size * 4, SolidParticle::_size * 7.6));
 
 	_sim->_spawnVelocities.push_back(sf::Vector2f(400, 0));
 	_sim->_spawnVelocities.push_back(sf::Vector2f(400, 0));
@@ -1204,4 +1207,50 @@ void InitManager::init_wave_generator_simulation(int size, int zoom) {
 	_sim->_deleteParticles = false;
 	_sim->_spawnParticles = false;
 	_sim->_moveSolids = true;
+}
+
+
+// _________________________________________________________________________________
+void  InitManager::init_cube_drop_simulation(int size, int zoom) {
+
+	_sim->_zoomFactor = zoom;
+	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
+	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 2);
+
+	// Add Particles for arena
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	std::vector<Particle> box = placeBox(pos, size);
+	for (int i = 0; i < box.size(); i++) {
+		_sim->_particles.push_back(box[i]);
+	}
+	pos = sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
+	box = placeBox(pos, size - 2, _sim->_particles.size());
+	for (int i = 0; i < box.size(); i++) {
+		_sim->_particles.push_back(box[i]);
+	}
+
+	float xOffsetSize = 0.02;	// 0.3
+	float yOffsetSize = 0.02;	// 0.05
+	float xFluidSize = 1;
+	float yFluidSize = 1;
+	xFluidSize = size / 2; yFluidSize = size / 2;
+	pos = sf::Vector2f(SolidParticle::_size * size / 2, SolidParticle::_size * size / 1.3);
+	pos.x = SolidParticle::_size * size / 2 + xOffsetSize - xFluidSize;
+	for (int i = 0; i < yFluidSize; i++) {
+		for (int j = 0; j < xFluidSize; j++) {
+			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(), pos));
+			pos.x += FluidParticle::_size;
+		}
+		xOffsetSize = xOffsetSize * -1;
+		pos.x = SolidParticle::_size * size / 2 + xOffsetSize - xFluidSize;
+		pos.y -= FluidParticle::_size + yOffsetSize;
+	}
+	_sim->_moveParticles = true;
+	_sim->_testNeighbors = false;
+	_sim->_testKernel = false;
+	_sim->_printFPS = true;
+	_sim->_printParticleInfo = false;
+	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
+
 }

@@ -76,6 +76,7 @@ class Simulation {
 	  int _numSolverIterations;
 	  double _simulatedTime;
 	  double _cflNumber;
+	  float _maxCflNumber;
 	  double _nextFrame;
 	  double _frameDistance;
 	  float _maxTimeStep;
