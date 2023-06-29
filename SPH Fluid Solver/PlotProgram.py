@@ -7,8 +7,8 @@ import numpy as np
 
 # Options:
 plotAvgDensityAndIterations = 1
-plotTimeStep = 1
-plotDensityOnly = 0
+plotTimeStep = 0
+plotDensityOnly = 1
 plotDensityAndEstimatedDensity = 0
 plotDensityAndAverageDensity = 0
 
@@ -88,8 +88,8 @@ if (plotDensityOnly or plotDensityAndEstimatedDensity or plotDensityAndAverageDe
     plt.plot(*zip(*avgDensityData))
     if (plotDensityAndAverageDensity):
         plt.plot([0, avgDensityData[-1][0]], [densitySum, densitySum], 'g--', label = 'mean average density')
-    else:
-        plt.plot([0, avgDensityData[-1][0]], [1 + DensityThreshhold, 1 + DensityThreshhold], label = 'density threshhold')
+    #else:
+    #    plt.plot([0, avgDensityData[-1][0]], [1 + DensityThreshhold, 1 + DensityThreshhold], label = 'density threshhold')
 
     if (plotDensityAndEstimatedDensity):
         estimatedDensityData = np.loadtxt("./estimatedDensityFile.dat", dtype=float)

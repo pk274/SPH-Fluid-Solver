@@ -106,8 +106,10 @@ class Simulation {
 
 	  void calculate_s_di();
 	  void calculate_s_vd();
+	  void solve_vd_di();
 
-	  void jacobi_solve();
+	  void jacobi_solve(int maxIterations, bool vd);
+
 	  void update_x_and_v();
 	  void update_moving_objects();
 	  void spawn_particles();

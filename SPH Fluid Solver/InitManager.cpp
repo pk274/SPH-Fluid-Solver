@@ -318,10 +318,10 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(59, 8, 50, 1, 1);
+		init_layer_simulation(59, 8, 40, 1, 1);
 		break;
 	case WideLayers:
-		init_wide_layer_simulation(80, 6, 30);	// 50 for error analysis, 80 for layers
+		init_wide_layer_simulation(80, 6, 40);	// 50 for error analysis, 80 for layers
 		break;
 	case Cup:
 		init_cup_simulation(120, 4);	//3
