@@ -1,3 +1,8 @@
+bei prediction von density: wird angenommen dass rho_i = rho_j, deshalb nicht m_j/rho_j??
+				außerdem: estimation mit rho_i oder rho_0 so wie in vd+ps paper?
+
+in vd-pseudo code: delta t bei s_i, nur so klappts aber wo kommts her?
+
 
 With the knowledge about \eqref{eq: continuity equation},
 the relation $\rho = m/V$ and the fact that this work will mainly be focused on incompressible fluids,

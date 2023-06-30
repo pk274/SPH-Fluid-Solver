@@ -390,7 +390,7 @@ void Simulation::calculate_s_vd() {
 		_particles[i]._s_i = _timeStepSize * _particles[i]._density * velocityDiv;
 		_particles[i]._a_ii = _timeStepSize * _timeStepSize * a_ii;
 		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
-		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
+		if (_particles[i]._s_i / _particles[i]._density < FluidParticle::_restDensity) { _particles[i]._pressure = 0; }
 	}
 }
 
@@ -406,6 +406,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 	sf::Vector2f kernelDeriv;
 
 	_numSolverIterations = 0;
+	std::cout << "lets e go" << std::endl;
 	while (true) {
 		// Exit Condition
 		if (l >= maxIterations) {
@@ -456,28 +457,40 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 				}
 			}
 			Ap = Ap * _timeStepSize * _timeStepSize;
+
+			if (vd && _particles[i]._s_i / _particles[i]._density < FluidParticle::_restDensity) { continue; }
 			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 			}
-			_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);
+			if (!vd) {
+				_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);
+			}
+			else {
+				_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);
+			}
 
 		}
 		// This is alright, _numFluidParticles is sure to be unequal to 0
 		if (!vd) {
 			_estimatedDensityError = _estimatedDensityError / _numFluidParticles;
 		}
+		std::cout << _estimatedDensityError << std::endl;
 
 		// Increment Solver iteration
 		l++;
 
 		// Exit Condition
-		if (_estimatedDensityError < Parameters::MAX_DENSITY_ERROR && l >= Parameters::MIN_SOLVER_ITERATIONS) {
+		if (!vd && _estimatedDensityError < Parameters::MAX_DENSITY_ERROR && l >= Parameters::MIN_SOLVER_ITERATIONS) {
+			break;
+		}
+		if (vd && _estimatedDensityError < 0.01 && l >= Parameters::MIN_SOLVER_ITERATIONS) {
 			break;
 		}
 	}
 	_numSolverIterations = l;
 	_totalNumSolverIterations += _numSolverIterations;
+	std::cout << "\n\n" << std::endl;
 	
 }
 
@@ -485,7 +498,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 // _________________________________________________________________________________
 void Simulation::solve_vd_di() {
 	// == Solve vd == 
-	int maxVdIterations = 50;
+	int maxVdIterations = 10;
 	calculate_s_vd();
 	jacobi_solve(maxVdIterations, true);
 	std::cout << _numSolverIterations << std::endl;
