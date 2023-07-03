@@ -406,7 +406,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 	sf::Vector2f kernelDeriv;
 
 	_numSolverIterations = 0;
-	std::cout << "lets e go" << std::endl;
+	//std::cout << "lets e go" << std::endl;
 	while (true) {
 		// Exit Condition
 		if (l >= maxIterations) {
@@ -458,7 +458,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 			}
 			Ap = Ap * _timeStepSize * _timeStepSize;
 
-			if (vd && _particles[i]._s_i / _particles[i]._density < FluidParticle::_restDensity) { continue; }
+			if (vd && _particles[i]._density - _particles[i]._s_i < FluidParticle::_restDensity) { continue; }
 			if (_particles[i]._a_ii != 0) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
@@ -475,7 +475,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 		if (!vd) {
 			_estimatedDensityError = _estimatedDensityError / _numFluidParticles;
 		}
-		std::cout << _estimatedDensityError << std::endl;
+		//std::cout << _estimatedDensityError << std::endl;
 
 		// Increment Solver iteration
 		l++;
@@ -490,7 +490,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 	}
 	_numSolverIterations = l;
 	_totalNumSolverIterations += _numSolverIterations;
-	std::cout << "\n\n" << std::endl;
+	//std::cout << "\n\n" << std::endl;
 	
 }
 
@@ -498,7 +498,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 // _________________________________________________________________________________
 void Simulation::solve_vd_di() {
 	// == Solve vd == 
-	int maxVdIterations = 10;
+	int maxVdIterations = 50;
 	calculate_s_vd();
 	jacobi_solve(maxVdIterations, true);
 	std::cout << _numSolverIterations << std::endl;

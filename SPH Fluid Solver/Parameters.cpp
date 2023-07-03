@@ -5,8 +5,8 @@
 
 const bool Parameters::SOLVE_PPE = 1;
 const bool Parameters::S_DI = 0;
-const bool Parameters::S_VD = 1;
-const bool Parameters::S_VD_DI = 0;
+const bool Parameters::S_VD = 0;
+const bool Parameters::S_VD_DI = 1;
 
 const int Parameters::WINDOW_WIDTH = 1920;
 const int Parameters::WINDOW_HEIGHT = 1080;
@@ -30,8 +30,8 @@ const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 0;
 const float Parameters::SIMULATION_LENGTH = 10.1f;
 
-const bool Parameters::COLOR_CODE_SPEED = 0;
-const bool Parameters::COLOR_CODE_PRESSURE = 1;
+const bool Parameters::COLOR_CODE_SPEED = 1;
+const bool Parameters::COLOR_CODE_PRESSURE = 0;
 const bool Parameters::COLOR_CODE_DENSITY = 0;
 
 const bool Parameters::ADAPTIVE_TIME_STEP = 0;
