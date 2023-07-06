@@ -7,6 +7,7 @@ public:
 	static const bool S_DI;
 	static const bool S_VD;
 	static const bool S_VD_DI;
+	static const bool S_VD_DI_SIMPLE;
 
 	static const int WINDOW_WIDTH;
 	static const int WINDOW_HEIGHT;

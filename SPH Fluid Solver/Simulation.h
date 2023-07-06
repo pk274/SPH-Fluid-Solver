@@ -107,6 +107,7 @@ class Simulation {
 	  void calculate_s_di();
 	  void calculate_s_vd();
 	  void solve_vd_di();
+	  void solve_vd_di_simple();
 
 	  void jacobi_solve(int maxIterations, bool vd);
 

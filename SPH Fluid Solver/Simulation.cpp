@@ -187,12 +187,10 @@ void Simulation::calculate_s_di() {
 	sf::Vector2f distance;
 	sf::Vector2f viscosity = sf::Vector2f();
 	sf::Vector2f c_f = sf::Vector2f();
-	sf::Vector2f d_ij = sf::Vector2f();
 	sf::Vector2f v_adv_ij;
 	float distanceNorm = 1;
 	sf::Vector2f kernelDeriv;
 	float rho_adv = 0;
-	float p_0 = 0;
 	float a_ii = 0;
 
 
@@ -406,7 +404,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 	sf::Vector2f kernelDeriv;
 
 	_numSolverIterations = 0;
-	//std::cout << "lets e go" << std::endl;
+	std::cout << "lets e go" << std::endl;
 	while (true) {
 		// Exit Condition
 		if (l >= maxIterations) {
@@ -475,7 +473,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 		if (!vd) {
 			_estimatedDensityError = _estimatedDensityError / _numFluidParticles;
 		}
-		//std::cout << _estimatedDensityError << std::endl;
+		std::cout << _estimatedDensityError << std::endl;
 
 		// Increment Solver iteration
 		l++;
@@ -490,7 +488,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 	}
 	_numSolverIterations = l;
 	_totalNumSolverIterations += _numSolverIterations;
-	//std::cout << "\n\n" << std::endl;
+	std::cout << "\n\n" << std::endl;
 	
 }
 
@@ -498,7 +496,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 // _________________________________________________________________________________
 void Simulation::solve_vd_di() {
 	// == Solve vd == 
-	int maxVdIterations = 50;
+	int maxVdIterations = 10;
 	calculate_s_vd();
 	jacobi_solve(maxVdIterations, true);
 	std::cout << _numSolverIterations << std::endl;
@@ -621,6 +619,82 @@ void Simulation::solve_vd_di() {
 
 }
 
+
+// ________________________________________________________________________________
+void Simulation::solve_vd_di_simple() {
+	// == Solve vd == 
+	int maxVdIterations = 20;
+	calculate_s_vd();
+	jacobi_solve(maxVdIterations, true);
+	std::cout << _numSolverIterations << std::endl;
+	for (int i = 0; i < _numParticles; i++) {
+		_particles[i]._velocity = _timeStepSize * _particles[i]._pressureAcc
+			+ _particles[i]._v_adv;
+	}
+	float density;
+	sf::Vector2f v_ij;
+	sf::Vector2f x_ij;
+	sf::Vector2f distance;
+	sf::Vector2f v_adv_ij;
+	float distanceNorm = 1;
+	sf::Vector2f kernelDeriv;
+	float rho_adv = 0;
+
+
+	// Calculate source term and diagonal element a_ii
+	for (int i = 0; i < _numParticles; i++) {
+		if (_particles[i]._type != fluid) { continue; }
+		rho_adv = 0;
+		for (int j = 0; j < _particles[i]._neighbors.size(); j++) {
+			x_ij = _particles[i]._position - _particles[i]._neighbors[j]->_position;
+			distanceNorm = Functions::calculate_distance_norm(x_ij);
+			kernelDeriv = Functions::kernel_derivation(x_ij, distanceNorm);
+
+			if (_particles[i]._neighbors[j]->_type == fluid) {
+				v_adv_ij = _particles[i]._v_adv - _particles[i]._neighbors[j]->_v_adv;
+				rho_adv += FluidParticle::_mass
+					* Functions::scalar_product2D(v_adv_ij, kernelDeriv);
+			}
+			else if (_particles[i]._neighbors[j]->_type == solid) {
+				rho_adv += SolidParticle::_mass
+					* Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
+			}
+			else if (_particles[i]._neighbors[j]->_type == moving) {
+				v_adv_ij = _particles[i]._v_adv - _particles[i]._neighbors[j]->_velocity;
+				rho_adv += SolidParticle::_mass
+					* Functions::scalar_product2D(_particles[i]._v_adv, kernelDeriv);
+			}
+		}
+		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - _timeStepSize * rho_adv;
+		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
+		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
+	}
+	jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, false);
+	std::cout << _numSolverIterations << "\n" << std::endl;
+
+
+	// == Update positions ==
+	float velocityNorm;
+	_maxVelocity = 0;
+
+	for (int i = 0; i < _numParticles; i++) {
+		if (_particles[i]._type == solid) { continue; }
+		if (_particles[i]._type == moving) {
+			_particles[i]._position += _timeStepSize * _particles[i]._velocity;
+			continue;
+		}
+		//_particles[i]._velocity = _particles[i]._x_adv;
+		_particles[i]._position = _particles[i]._position + _timeStepSize * (_timeStepSize * _particles[i]._pressureAcc + _particles[i]._v_adv);
+		velocityNorm = Functions::calculate_distance_norm(_particles[i]._velocity);
+		if (Parameters::COLOR_CODE_SPEED) {
+			_particles[i]._colorFactor = std::min((int)(velocityNorm / Parameters::VELOCITY_CODE_RANGE), 255);
+		}
+		if (velocityNorm > _maxVelocity) {
+			_maxVelocity = Functions::calculate_distance_norm(_particles[i]._velocity);
+		}
+	}
+}
+
 // _________________________________________________________________________________
 void Simulation::update_x_and_v() {
 	float velocityNorm;
@@ -722,6 +796,9 @@ void Simulation::update_physics() {
 		}
 		else if (Parameters::S_VD_DI) {
 			solve_vd_di();
+		}
+		else if (Parameters::S_VD_DI_SIMPLE) {
+			solve_vd_di_simple();
 		}
 	}
 	else {
