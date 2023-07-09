@@ -7,7 +7,7 @@ import numpy as np
 
 # Options:
 plotAvgDensityAndIterations = 1
-plotTimeStep = 0
+plotTimeStep = 1
 plotDensityOnly = 1
 plotDensityAndEstimatedDensity = 0
 plotDensityAndAverageDensity = 0
@@ -65,7 +65,7 @@ if (plotTimeStep):
 
     #timeStep.plot(*zip(*timeStepData), 'g.', label = 'time step size')
     timeStep.plot(*zip(*timeStepData), 'g-', label = 'time step size')
-    timeStep.plot([0, timeStepData[-1][0]], [timeStepSum, timeStepSum], 'y--', label = 'Average time step size')
+    #timeStep.plot([0, timeStepData[-1][0]], [timeStepSum, timeStepSum], 'y--', label = 'Average time step size')
     #timeStep.set_ylim(0.003, 0.005)
     timeStep.set_title('Time step size')
     timeStep.set_xlabel('t')

@@ -204,8 +204,11 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 			rgb = Functions::color_code_pressure(particles->at(i)._pressure);
 			_fluidShape.setFillColor(sf::Color::Color(std::get<0>(rgb), std::get<1>(rgb), std::get<2>(rgb)));
 		}
-		else if (Parameters::COLOR_CODE_SPEED) {
+		else if (Parameters::COLOR_CODE_SPEED || Parameters::COLOR_CODE_VELOCITY_DIV) {
 			_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(0, particles->at(i)._colorFactor, particles->at(i)._colorFactor));
+			if (particles->at(i)._colorFactor < 0) {
+				_fluidShape.setFillColor(particles->at(i)._stasisColor + sf::Color::Color(-particles->at(i)._colorFactor, 0, -particles->at(i)._colorFactor));
+			}
 		}
 		else if (Parameters::COLOR_CODE_DENSITY) {
 			//if (particles->at(i)._density > FluidParticle::_restDensity + 0.005) {

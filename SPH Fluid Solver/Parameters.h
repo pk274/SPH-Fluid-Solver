@@ -33,6 +33,7 @@ public:
 	static const bool COLOR_CODE_SPEED;
 	static const bool COLOR_CODE_PRESSURE;
 	static const bool COLOR_CODE_DENSITY;
+	static const bool COLOR_CODE_VELOCITY_DIV;
 
 	static const bool ADAPTIVE_TIME_STEP;
 	static const float MAX_TIME_STEP;
