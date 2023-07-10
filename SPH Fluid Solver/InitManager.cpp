@@ -321,7 +321,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(59, 8, 40, 1, 1);
 		break;
 	case WideLayers:
-		init_wide_layer_simulation(80, 6, 40);	// 50 for error analysis, 80 for layers
+		init_wide_layer_simulation(80, 6, 30);	// 50 for error analysis, 80 for layers
 		break;
 	case Cup:
 		init_cup_simulation(120, 4);	//3
@@ -348,7 +348,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_moving_wall_simulation(50, 8);
 		break;
 	case WaveGenerator:
-		init_wave_generator_simulation(120, 4);
+		init_wave_generator_simulation(91, 4);
 		break;
 	case CubeDrop:
 		init_cube_drop_simulation(120, 4);

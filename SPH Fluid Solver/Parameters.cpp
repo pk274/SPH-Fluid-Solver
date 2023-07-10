@@ -18,11 +18,11 @@ const float Parameters::GAMMA = 0.7;
 const float Parameters::BOUNDARY_VISCOSITY = 3.f;		// 0.3
 
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
-const float Parameters::MAX_DENSITY_ERROR = 0.001;	// vd 0.00001
+const float Parameters::MAX_DENSITY_ERROR = 0.008;	// vd 0.00001
 const float Parameters::OMEGA = 0.5;
 const int Parameters::MAX_SOLVER_ITERATIONS = 500;
 const int Parameters::MIN_SOLVER_ITERATIONS = 2;
-const float Parameters::TIME_STEP = 0.0005;	//VD 0.002
+const float Parameters::TIME_STEP = 0.005;	//VD 0.002
 
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
@@ -37,9 +37,9 @@ const bool Parameters::COLOR_CODE_DENSITY = 0;
 const bool Parameters::COLOR_CODE_VELOCITY_DIV = 0;
 
 const bool Parameters::ADAPTIVE_TIME_STEP = 1;
-const float Parameters::MAX_TIME_STEP = 0.0025;
-const float Parameters::INITIALIZATION_PHASE = 0.33f;
-const float Parameters::CFL_NUMBER = 0.75;
+const float Parameters::MAX_TIME_STEP = 0.0075;
+const float Parameters::INITIALIZATION_PHASE = 0.25f;
+const float Parameters::CFL_NUMBER = 0.85;
 const double Parameters::TIME_OFFSET = 0.0000001;
 const float Parameters::SLOW_DOWN = 1;
 const float Parameters::SMOOTHING = 0.f;
@@ -52,9 +52,10 @@ const bool Parameters::DOCUMENT_AVG_DENSITY = 1;
 const bool Parameters::DOCUMENT_ITERATIONS = 1;
 const bool Parameters::DOCUMENT_TIME = 1;
 const bool Parameters::DOCUMENT_ESTIMATED_DENSITY = 1;
-const bool Parameters::WRITE_SCREEN_IMAGES = 1;
+const bool Parameters::DOCUMENT_CFL_NUMBER = 1;
+const bool Parameters::WRITE_SCREEN_IMAGES = 0;
 
-const float Parameters::EOS_STIFFNESS = 800000;	// 1000000
+const float Parameters::EOS_STIFFNESS = 500000;	// 1000000
 const float Parameters::EOS_VISCOSITY = 35;
 
 const sf::Color Parameters::BACKGROUND_COLOR = sf::Color::Black;	//230

@@ -840,6 +840,7 @@ void Simulation::run() {
 	_timeStepFile.open("./timeStepFile.dat", std::fstream::out | std::fstream::trunc);
 	_iterationsFile.open("./iterationsFile.dat", std::fstream::out | std::fstream::trunc);
 	_estimatedDensityFile.open("./estimatedDensityFile.dat", std::fstream::out | std::fstream::trunc);
+	_cflNumberFile.open("./cflNumberFile.dat", std::fstream::out | std::fstream::trunc);
 	if (Parameters::WRITE_SCREEN_IMAGES) {
 		_renderer._screenTexture.create(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_renderer._frameCounter = 0;
@@ -926,6 +927,11 @@ void Simulation::run() {
 			if (_maxVelocity > maxMaxVelocity) { maxMaxVelocity = _maxVelocity; }
 			frameIterations++;
 			avgSolverIterations = _totalNumSolverIterations / frameIterations;
+
+			if (Parameters::DOCUMENT_CFL_NUMBER) {
+				_cflNumberFile << _simulatedTime << " " << _cflNumber << "\n";
+			}
+
 
 			if (_simulatedTime >= _nextFrame) {
 				run_tests();
@@ -1216,6 +1222,7 @@ void Simulation::run() {
 	_timeStepFile.close();
 	_iterationsFile.close();
 	_avgDensityFile.close();
+	_cflNumberFile.close();
 }
 
 
