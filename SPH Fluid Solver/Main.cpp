@@ -11,9 +11,9 @@
 
 int main()
 {
-    Simulation simulation = Simulation(25);
+    Simulation simulation = Simulation(60);
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(WaveGenerator);
+    initManager.init_simulation(BreakingDam);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

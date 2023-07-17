@@ -8,6 +8,7 @@ const bool Parameters::S_DI = 1;
 const bool Parameters::S_VD = 0;
 const bool Parameters::S_VD_DI = 0;
 const bool Parameters::S_VD_DI_SIMPLE = 0;
+const bool Parameters::ALTERNATE_S = 0;
 
 const int Parameters::WINDOW_WIDTH = 1920;
 const int Parameters::WINDOW_HEIGHT = 1080;
@@ -18,25 +19,25 @@ const float Parameters::GAMMA = 0.7;
 const float Parameters::BOUNDARY_VISCOSITY = 3.f;		// 0.3
 
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
-const float Parameters::MAX_DENSITY_ERROR = 0.008;	// vd 0.00001
+const float Parameters::MAX_DENSITY_ERROR = 0.001;	// vd 0.00001
 const float Parameters::OMEGA = 0.5;
 const int Parameters::MAX_SOLVER_ITERATIONS = 500;
 const int Parameters::MIN_SOLVER_ITERATIONS = 2;
-const float Parameters::TIME_STEP = 0.005;	//VD 0.002
+const float Parameters::TIME_STEP = 0.001;	//VD 0.002
 
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
 const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 0;
-const float Parameters::SIMULATION_LENGTH = 3.f;
+const float Parameters::SIMULATION_LENGTH = 2.f;
 
-const bool Parameters::COLOR_CODE_SPEED = 1;
+const bool Parameters::COLOR_CODE_SPEED = 0;
 const bool Parameters::COLOR_CODE_PRESSURE = 0;
 const bool Parameters::COLOR_CODE_DENSITY = 0;
-const bool Parameters::COLOR_CODE_VELOCITY_DIV = 0;
+const bool Parameters::COLOR_CODE_VELOCITY_DIV = 1;
 
-const bool Parameters::ADAPTIVE_TIME_STEP = 1;
+const bool Parameters::ADAPTIVE_TIME_STEP = 0;
 const float Parameters::MAX_TIME_STEP = 0.0075;
 const float Parameters::INITIALIZATION_PHASE = 0.25f;
 const float Parameters::CFL_NUMBER = 0.85;
