@@ -1,593 +1,385 @@
 ﻿  InitManager.cpp
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(13,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(17,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(21,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(25,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(35,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(39,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(43,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(47,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(57,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(61,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(65,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(93,60): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(96,60): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(99,60): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(113,78): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(117,78): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(121,78): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(144,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(148,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(152,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(159,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(163,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(167,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(176,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(181,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(185,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(195,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(200,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(204,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(213,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(219,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(223,17): warning C4244: "Initialisierung": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(228,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(241,4): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(12,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(16,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(20,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(24,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(34,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(38,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(42,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(46,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(56,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(60,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(64,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(92,60): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(95,60): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(109,78): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(113,78): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(117,78): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(140,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(144,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(148,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(155,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(159,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(163,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(172,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(177,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(181,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(191,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(196,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(200,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(209,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(215,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(219,17): warning C4244: "Initialisierung": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(224,68): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(237,4): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(250,68): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(246,68): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(250,53): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(246,53): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(253,68): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(249,68): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(253,53): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(249,53): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(259,70): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(255,70): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(259,55): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(255,55): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(262,70): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(258,70): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(262,55): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(258,55): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(265,26): warning C4305: "=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(374,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(387,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(388,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(394,77): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(403,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(422,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(423,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(433,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(440,15): warning C4244: "=": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(261,26): warning C4305: "=": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(367,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(380,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(381,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(387,77): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(396,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(415,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(416,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(426,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(433,15): warning C4244: "=": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(441,92): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(456,45): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(434,92): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(449,45): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(459,4): warning C4244: "+=": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(452,4): warning C4244: "+=": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(461,4): warning C4244: "+=": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(454,4): warning C4244: "+=": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(476,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(477,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(487,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(494,88): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(513,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(514,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(524,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(529,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(530,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(535,36): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(535,61): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(536,31): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(536,74): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(539,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(560,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(561,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(571,62): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(576,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(577,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(582,20): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(582,43): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(585,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(605,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(606,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(616,62): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(621,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(627,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(649,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(650,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(665,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(671,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(691,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(692,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(699,46): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(469,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(470,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(480,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(487,88): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(506,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(507,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(517,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(522,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(523,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(528,36): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(528,61): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(529,31): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(529,74): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(532,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(553,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(554,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(564,62): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(569,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(570,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(575,20): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(575,43): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(578,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(598,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(599,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(609,62): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(614,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(620,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(642,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(643,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(658,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(664,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(684,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(685,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(692,46): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(699,35): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(692,35): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(700,46): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(693,46): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(700,35): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(693,35): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(705,56): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(698,56): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(706,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(711,115): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(716,93): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(722,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(727,128): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(745,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(746,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(759,56): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(767,75): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(770,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(775,57): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(699,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(704,115): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(709,93): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(715,76): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(720,128): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(738,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(739,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(752,56): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(760,75): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(763,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(768,57): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(776,70): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(781,70): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(789,72): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(797,72): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(804,89): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(769,70): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(774,70): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(782,72): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(790,72): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(797,89): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(805,72): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(823,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(824,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(834,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(840,64): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(798,72): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(816,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(817,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(827,57): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(833,64): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(840,100): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(848,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(869,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(870,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(879,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(885,94): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(833,100): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(841,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(862,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(863,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(872,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(878,94): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(886,94): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(879,94): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(900,27): warning C4305: "=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(909,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(910,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(914,86): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(893,27): warning C4305: "=": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(902,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(903,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(907,86): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(914,122): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(918,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(907,122): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(911,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(919,64): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(912,64): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(919,100): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(926,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(912,100): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(919,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(927,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(931,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(920,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(924,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(932,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(936,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(925,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(929,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(937,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(941,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(930,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(934,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(942,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(946,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(935,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(939,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(947,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(966,28): warning C4305: "=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(974,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(975,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(979,86): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(940,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(959,28): warning C4305: "=": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(967,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(968,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(972,86): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(979,122): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(983,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(972,122): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(976,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(984,64): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(977,64): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(984,100): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(991,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(977,100): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(984,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(992,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(996,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(985,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(989,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(997,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1002,21): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(990,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(995,21): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1003,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1007,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(996,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1000,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1008,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1014,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1001,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1007,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1015,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1019,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1008,51): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1012,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1020,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1026,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1013,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1019,26): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1027,115): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1046,28): warning C4305: "=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1054,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1055,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1076,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1077,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1091,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1092,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1096,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1151,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1152,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1166,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1167,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1171,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1182,77): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1187,44): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1020,115): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1039,28): warning C4305: "=": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1047,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1048,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1069,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1070,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1084,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1085,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1089,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1142,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1143,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1157,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1158,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1162,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1173,77): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1178,44): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1192,44): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1197,44): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1182,44): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1187,44): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1202,87): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1191,87): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1206,45): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1195,45): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1207,45): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1196,45): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1228,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1229,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1238,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1243,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1244,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1247,20): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1247,43): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1248,82): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1217,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1218,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1227,55): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1232,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1233,26): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1236,20): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1236,43): warning C4244: "=": Konvertierung von "int" in "float", möglicher Datenverlust
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1237,82): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
           with
           [
               T=float
           ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1252,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1273,33): warning C4244: "Argument": Konvertierung von "int" in "float", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1274,46): warning C4244: "Argument": Konvertierung von "float" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1284,40): warning C4244: "-=": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1286,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1290,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1294,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1299,39): warning C4244: "=": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1300,39): warning C4244: "=": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1302,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1306,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1309,117): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1309,81): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1310,33): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1314,87): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1314,51): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1317,40): warning C4244: "+=": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1320,118): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1320,81): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1321,33): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1325,88): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1325,51): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1328,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1332,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1339,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1345,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1351,13): warning C4244: "Initialisierung": Konvertierung von "double" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1352,18): warning C4305: "Initialisierung": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1353,37): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1353,29): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1354,33): warning C4244: "+=": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1356,137): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1357,15): warning C4305: "-=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1360,45): warning C4244: "=": Konvertierung von "double" in "int", möglicher Datenverlust
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1361,12): warning C4305: "=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1363,137): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1364,15): warning C4305: "-=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1373,33): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1383,50): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1384,50): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1385,50): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1386,50): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1392,88): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1392,63): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1393,90): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1393,64): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1394,91): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1394,64): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1405,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1408,46): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1410,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1414,94): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1415,94): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1416,94): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1423,27): warning C4305: "=": Verkürzung von "double" in "float"
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1428,86): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1428,50): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1429,72): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1434,52): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1439,50): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1444,52): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1450,76): warning C4244: "Argument": Konvertierung von "double" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1454,53): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
-C:\Users\paulk\source\repos\SPH Fluid Solver\SPH Fluid Solver\InitManager.cpp(1455,54): warning C4244: "Argument": Konvertierung von "int" in "T", möglicher Datenverlust
-          with
-          [
-              T=float
-          ]
+C:\Users\Paul\source\repos\SPH-Fluid-Solver\SPH Fluid Solver\InitManager.cpp(1241,74): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
   Code wird generiert.
-  1 of 1281 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  3 of 1256 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    6 functions had inline decision re-evaluated but remain unchanged
+    4 functions had inline decision re-evaluated but remain unchanged
   Codegenerierung ist abgeschlossen.
-  SPH Fluid Solver.vcxproj -> C:\Users\paulk\source\repos\SPH Fluid Solver\x64\Release\SPH Fluid Solver.exe
+  SPH Fluid Solver.vcxproj -> C:\Users\Paul\source\repos\SPH-Fluid-Solver\x64\Release\SPH Fluid Solver.exe

@@ -8,6 +8,7 @@ public:
 	static const bool S_VD;
 	static const bool S_VD_DI;
 	static const bool S_VD_DI_SIMPLE;
+	static const bool ALTERNATE_S;
 
 	static const int WINDOW_WIDTH;
 	static const int WINDOW_HEIGHT;
@@ -53,6 +54,7 @@ public:
 	static const bool DOCUMENT_TIME;
 	static const bool DOCUMENT_AVG_DENSITY;
 	static const bool DOCUMENT_ESTIMATED_DENSITY;
+	static const bool DOCUMENT_CFL_NUMBER;
 	static const bool WRITE_SCREEN_IMAGES;
 
 	static const float EOS_STIFFNESS;

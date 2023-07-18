@@ -93,6 +93,7 @@ class Simulation {
 	  std::fstream _timeStepFile;
 	  std::fstream _iterationsFile;
 	  std::fstream _estimatedDensityFile;
+	  std::fstream _cflNumberFile;
 
 	  Simulation(int framelimit = 30);
 

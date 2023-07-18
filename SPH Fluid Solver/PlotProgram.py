@@ -7,10 +7,11 @@ import numpy as np
 
 # Options:
 plotAvgDensityAndIterations = 1
-plotTimeStep = 1
-plotDensityOnly = 1
+plotTimeStep = 0
+plotDensityOnly = 0
 plotDensityAndEstimatedDensity = 0
 plotDensityAndAverageDensity = 0
+plotCflNumber = 0
 
 DensityThreshhold = 0.001
 FrameIntervals = 1 / 25
@@ -94,8 +95,21 @@ if (plotDensityOnly or plotDensityAndEstimatedDensity or plotDensityAndAverageDe
     if (plotDensityAndEstimatedDensity):
         estimatedDensityData = np.loadtxt("./estimatedDensityFile.dat", dtype=float)
         plt.plot(*zip(*estimatedDensityData), 'g-', label = 'estimated average density')
-
     #plt.legend(["Average density", "Density threshhold", "Estimated average density"])
     plt.xlabel('simulated time (s)')
     plt.ylabel('average density')
+    plt.show()
+
+
+if (plotCflNumber):
+    cflNumberData = np.loadtxt("./cflNumberFile.dat", dtype=float)
+    cflNumberSum = 0
+    for i in range(len(cflNumberData)):
+        cflNumberSum += cflNumberData[i][1]
+    cflNumberSum = cflNumberSum / len(cflNumberData)
+    plt.plot(*zip(*cflNumberData), 'm-')
+    plt.plot([0, cflNumberData[-1][0]], [cflNumberSum, cflNumberSum], 'y--', label = 'average CFL number')
+    plt.legend(["CFL number", "Average CFL number"])
+    plt.xlabel('simulated time (s)')
+    plt.ylabel('CFL number')
     plt.show()

@@ -243,7 +243,7 @@ void Simulation::calculate_s_di() {
 		}
 		_particles[i]._density = density;
 		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
-		if (Parameters::COLOR_CODE_VELOCITY_DIV) { _particles[i]._colorFactor = std::max(std::min((int)(10 * velocityDiv), 255), -255); }
+		if (Parameters::COLOR_CODE_VELOCITY_DIV) { _particles[i]._colorFactor = std::max(std::min((int)(100 * velocityDiv), 255), -255); }
 		_averageDensity += std::max(density, FluidParticle::_restDensity);
 		_particles[i]._v_adv = _particles[i]._velocity + _timeStepSize * (_gravity
 			+ FluidParticle::_materialParameter * 8 * viscosity);
@@ -359,7 +359,7 @@ void Simulation::calculate_s_vd() {
 		}
 		_particles[i]._density = density;
 		if (_particles[i]._id == _watchedParticleId) { _watchedParticleDensity = density; }
-		if (Parameters::COLOR_CODE_VELOCITY_DIV) { _particles[i]._colorFactor = std::max(std::min((int)(10 * velocityDiv), 255), -255); }
+		if (Parameters::COLOR_CODE_VELOCITY_DIV) { _particles[i]._colorFactor = std::max(std::min((int)(100 * velocityDiv), 255), -255); }
 		_averageDensity += std::max(density, FluidParticle::_restDensity);
 		_particles[i]._v_adv = _particles[i]._velocity + _timeStepSize * (_gravity
 			+ FluidParticle::_materialParameter * 8 * viscosity);
@@ -395,10 +395,10 @@ void Simulation::calculate_s_vd() {
 					Functions::scalar_product2D(_particles[i].c_f, kernelDeriv);
 			}
 		}
-		_particles[i]._s_i = _timeStepSize * velocityDivAdv;
-		_particles[i]._a_ii = _timeStepSize * _timeStepSize * a_ii;
+		_particles[i]._s_i = velocityDivAdv;
+		_particles[i]._a_ii = _timeStepSize * a_ii;
 		_particles[i]._pressure = std::max(_particles[i]._s_i / _particles[i]._a_ii, 0.f);
-		if (_particles[i]._s_i / _particles[i]._density < FluidParticle::_restDensity * 0.95) { _particles[i]._pressure = 0; }
+		if (_particles[i]._s_i * _timeStepSize / _particles[i]._density < FluidParticle::_restDensity * 1) { _particles[i]._pressure = 0; }
 	}
 }
 
@@ -464,20 +464,17 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 						* Functions::scalar_product2D(_particles[i]._pressureAcc, kernelDeriv);
 				}
 			}
-			Ap = Ap * _timeStepSize * _timeStepSize;
+			if (vd) { Ap = Ap * _timeStepSize; }
+			else { Ap = Ap * _timeStepSize * _timeStepSize; }
 
 
 			if (_particles[i]._a_ii != 0 && !vd) {
 				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA
 					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
-			}
-			else if (_particles[i]._a_ii != 0 && vd && _particles[i]._density - _particles[i]._s_i >= FluidParticle::_restDensity * 0.95) {
-				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA * (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
-			}
-			if (!vd) {
 				_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);
 			}
-			else if (_particles[i]._density - _particles[i]._s_i >= FluidParticle::_restDensity * 0.95) {
+			else if (_particles[i]._a_ii != 0 && vd && _particles[i]._density - _particles[i]._s_i * _timeStepSize >= FluidParticle::_restDensity * 1) {
+				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA * (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 				_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);
 			}
 
@@ -509,7 +506,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 // _________________________________________________________________________________
 void Simulation::solve_vd_di() {
 	// == Solve vd == 
-	int maxVdIterations = 15;
+	int maxVdIterations = 20;
 	calculate_s_vd();
 	jacobi_solve(maxVdIterations, true);
 	std::cout << _numSolverIterations << std::endl;
@@ -557,6 +554,7 @@ void Simulation::solve_vd_di() {
 		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - _timeStepSize * velocityDivAdv;
 		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
 		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
+		_particles[i]._a_ii = _particles[i]._a_ii * _timeStepSize;
 	}
 	jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, false);
 	std::cout << _numSolverIterations << "\n" << std::endl;
@@ -636,7 +634,7 @@ void Simulation::solve_vd_di() {
 // ________________________________________________________________________________
 void Simulation::solve_vd_di_simple() {
 	// == Solve vd == 
-	int maxVdIterations = 15;
+	int maxVdIterations = 2;
 	calculate_s_vd();
 	jacobi_solve(maxVdIterations, true);
 	std::cout << _numSolverIterations << std::endl;
@@ -681,6 +679,7 @@ void Simulation::solve_vd_di_simple() {
 		_particles[i]._s_i = FluidParticle::_restDensity - _particles[i]._density - _timeStepSize * rho_adv;
 		_particles[i]._pressure = std::max(Parameters::OMEGA * _particles[i]._s_i / _particles[i]._a_ii, 0.f);
 		if (_particles[i]._a_ii == 0) { _particles[i]._pressure = 0; }
+		_particles[i]._a_ii = _particles[i]._a_ii * _timeStepSize;
 	}
 	jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, false);
 	std::cout << _numSolverIterations << "\n" << std::endl;
@@ -846,6 +845,15 @@ void Simulation::update_physics() {
 		else if (Parameters::S_VD_DI_SIMPLE) {
 			solve_vd_di_simple();
 		}
+		else if (Parameters::ALTERNATE_S) {
+			if (_numIterations % 5 == 0) {
+				calculate_s_di(); jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, false);
+			}
+			else {
+				calculate_s_vd(); jacobi_solve(_numSolverIterations, true);
+			}
+			if (_moveParticles) { update_x_and_v(); }
+		}
 	}
 	else {
 		EOS_solve();
@@ -873,6 +881,7 @@ void Simulation::run() {
 	_timeStepFile.open("./timeStepFile.dat", std::fstream::out | std::fstream::trunc);
 	_iterationsFile.open("./iterationsFile.dat", std::fstream::out | std::fstream::trunc);
 	_estimatedDensityFile.open("./estimatedDensityFile.dat", std::fstream::out | std::fstream::trunc);
+	_cflNumberFile.open("./cflNumberFile.dat", std::fstream::out | std::fstream::trunc);
 	if (Parameters::WRITE_SCREEN_IMAGES) {
 		_renderer._screenTexture.create(Parameters::WINDOW_WIDTH, Parameters::WINDOW_HEIGHT);
 		_renderer._frameCounter = 0;
@@ -958,6 +967,11 @@ void Simulation::run() {
 			if (_maxVelocity > maxMaxVelocity) { maxMaxVelocity = _maxVelocity; }
 			frameIterations++;
 			avgSolverIterations = _totalNumSolverIterations / frameIterations;
+
+			if (Parameters::DOCUMENT_CFL_NUMBER) {
+				_cflNumberFile << _simulatedTime << " " << _cflNumber << "\n";
+			}
+
 
 			if (_simulatedTime >= _nextFrame) {
 				run_tests();
@@ -1248,6 +1262,7 @@ void Simulation::run() {
 	_timeStepFile.close();
 	_iterationsFile.close();
 	_avgDensityFile.close();
+	_cflNumberFile.close();
 }
 
 

@@ -322,10 +322,10 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_layer_simulation(39, 10, 4);
 		break;
 	case ManyLayers:
-		init_layer_simulation(59, 8, 40, 1, 1);
+		init_layer_simulation(230, 2, 200, 1, 1);
 		break;
 	case WideLayers:
-		init_wide_layer_simulation(80, 6, 40);	// 50 for error analysis, 80 for layers
+		init_wide_layer_simulation(80, 6, 30);	// 50 for error analysis, 80 for layers
 		break;
 	case Cup:
 		init_cup_simulation(120, 4);	//3
@@ -355,7 +355,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_moving_wall_simulation(50, 8);
 		break;
 	case WaveGenerator:
-		init_wave_generator_simulation(120, 4);
+		init_wave_generator_simulation(91, 4);
 		break;
 	case CubeDrop:
 		init_cube_drop_simulation(120, 4);
@@ -526,8 +526,8 @@ void  InitManager::init_breaking_dam_simulation(int size, int zoom, bool adaptiv
 		_sim->_particles.push_back(box[i]);
 	}
 
-	float xOffsetSize = 0.02;	// 0.3
-	float yOffsetSize = 0.02;	// 0.05
+	float xOffsetSize = 0.02;	// 0.02
+	float yOffsetSize = 0.02;	// 0.02
 	float xFluidSize = 1;
 	float yFluidSize = 1;
 	pos = sf::Vector2f(SolidParticle::_size * 2, SolidParticle::_size * (size - 2));
