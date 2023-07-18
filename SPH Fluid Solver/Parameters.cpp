@@ -23,22 +23,22 @@ const float Parameters::MAX_DENSITY_ERROR = 0.001;	// vd 0.00001
 const float Parameters::OMEGA = 0.5;
 const int Parameters::MAX_SOLVER_ITERATIONS = 500;
 const int Parameters::MIN_SOLVER_ITERATIONS = 2;
-const float Parameters::TIME_STEP = 0.001;	//VD 0.002
+const float Parameters::TIME_STEP = 0.0025;	//VD 0.002
 
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
 const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 0;
-const float Parameters::SIMULATION_LENGTH = 2.f;
+const float Parameters::SIMULATION_LENGTH = 30.f;
 
-const bool Parameters::COLOR_CODE_SPEED = 0;
+const bool Parameters::COLOR_CODE_SPEED = 1;
 const bool Parameters::COLOR_CODE_PRESSURE = 0;
 const bool Parameters::COLOR_CODE_DENSITY = 0;
-const bool Parameters::COLOR_CODE_VELOCITY_DIV = 1;
+const bool Parameters::COLOR_CODE_VELOCITY_DIV = 0;
 
-const bool Parameters::ADAPTIVE_TIME_STEP = 0;
-const float Parameters::MAX_TIME_STEP = 0.0075;
+const bool Parameters::ADAPTIVE_TIME_STEP = 1;
+const float Parameters::MAX_TIME_STEP = 0.0066;
 const float Parameters::INITIALIZATION_PHASE = 0.25f;
 const float Parameters::CFL_NUMBER = 0.85;
 const double Parameters::TIME_OFFSET = 0.0000001;
@@ -52,9 +52,9 @@ const float Parameters::DENSITY_CODE_INTENSITY = 100;
 const bool Parameters::DOCUMENT_AVG_DENSITY = 1;
 const bool Parameters::DOCUMENT_ITERATIONS = 1;
 const bool Parameters::DOCUMENT_TIME = 1;
-const bool Parameters::DOCUMENT_ESTIMATED_DENSITY = 1;
-const bool Parameters::DOCUMENT_CFL_NUMBER = 1;
-const bool Parameters::WRITE_SCREEN_IMAGES = 0;
+const bool Parameters::DOCUMENT_ESTIMATED_DENSITY = 0;
+const bool Parameters::DOCUMENT_CFL_NUMBER = 0;
+const bool Parameters::WRITE_SCREEN_IMAGES = 1;
 
 const float Parameters::EOS_STIFFNESS = 500000;	// 1000000
 const float Parameters::EOS_VISCOSITY = 35;

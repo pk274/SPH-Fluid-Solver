@@ -1302,7 +1302,7 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 		_sim->_particles.push_back(SolidParticle(_sim->_particles.size(), pos1));
 		pos1.y += SolidParticle::_size;
 	}
-	for (int i = 0; i < size * 0.1; i++) {
+	for (int i = 0; i < size * 0.09; i++) {
 		_sim->_particles.push_back(SolidParticle(_sim->_particles.size(), pos1));
 		pos1.x += SolidParticle::_size;
 	}
@@ -1314,7 +1314,7 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 	pos1 += sf::Vector2f(SolidParticle::_size * size * 0.05, SolidParticle::_size * size * 0.03);
 
 	pos2 = pos1;
-	pos1.x += SolidParticle::_size * size * 0.05;
+	pos1.x += SolidParticle::_size * size * 0.07;
 	pos3 = pos1;
 
 	wall = placeParticleLine(pos1, pos1 + sf::Vector2f(SolidParticle::_size * size * 0.05, -SolidParticle::_size * size * 0.03),
@@ -1324,7 +1324,7 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 	}
 	pos1 += sf::Vector2f(SolidParticle::_size * size * 0.05, -SolidParticle::_size * size * 0.03);
 
-	for (int i = 0; i < size * 0.1; i++) {
+	for (int i = 0; i < size * 0.09; i++) {
 		_sim->_particles.push_back(SolidParticle(_sim->_particles.size(), pos1));
 		pos1.x += SolidParticle::_size;
 	}
@@ -1354,10 +1354,10 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 	pos4.y += SolidParticle::_size * 3.5;
 	for (int i = 0; i < size * 0.3; i++) {
 		_sim->_particles.push_back(SolidParticle(_sim->_particles.size(), pos4 + sf::Vector2f(radius * std::cos(phi), radius * std::sin(phi))));
-		phi -= 0.039;
+		phi -= 0.038;
 	}
 	pos3 = pos4 + sf::Vector2f(radius * std::cos(phi), radius * std::sin(phi));
-	radius = size * SolidParticle::_size * 0.1 + SolidParticle::_size * size * 0.05;
+	radius = size * SolidParticle::_size * 0.1 + SolidParticle::_size * size * 0.07;
 	phi = 3.14;
 	for (int i = 0; i < size * 0.47; i++) {
 		_sim->_particles.push_back(SolidParticle(_sim->_particles.size(), pos4 + sf::Vector2f(radius * std::cos(phi), radius * std::sin(phi))));
@@ -1380,18 +1380,18 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 		object1._ids.push_back(movingParticle->_id);
 	}
 	
-	object1._conditions.push_back(sf::Vector2f(1.07 * pos2.x, SolidParticle::_size * 20 * size));
-	object1._conditions.push_back(sf::Vector2f(1.08 * pos2.x, SolidParticle::_size * 20 * size));
-	object1._conditions.push_back(sf::Vector2f(0.93 * pos2.x, 0));
-	object1._conditions.push_back(sf::Vector2f(0.92 * pos2.x, 0));
+	object1._conditions.push_back(sf::Vector2f(1.1 * pos2.x, SolidParticle::_size * 20 * size));
+	object1._conditions.push_back(sf::Vector2f(1.11 * pos2.x, SolidParticle::_size * 20 * size));
+	object1._conditions.push_back(sf::Vector2f(0.9 * pos2.x, 0));
+	object1._conditions.push_back(sf::Vector2f(0.89 * pos2.x, 0));
 	object1._conditionBigger.push_back(true);
 	object1._conditionBigger.push_back(true);
 	object1._conditionBigger.push_back(false);
 	object1._conditionBigger.push_back(false);
 	object1._directions.push_back(sf::Vector2f((pos2.x - pos3.x) * 1, (pos2.y - pos3.y) * 1));
-	object1._directions.push_back(sf::Vector2f((pos2.x - pos3.x) * 0.1, (pos2.y - pos3.y) * 0.1));
-	object1._directions.push_back(sf::Vector2f(-(pos2.x - pos3.x) * 0.5, -(pos2.y - pos3.y) * 0.5));
-	object1._directions.push_back(sf::Vector2f(-(pos2.x - pos3.x) * 0.05, -(pos2.y - pos3.y) * 0.05));
+	object1._directions.push_back(sf::Vector2f((pos2.x - pos3.x) * 0.06, (pos2.y - pos3.y) * 0.06));
+	object1._directions.push_back(sf::Vector2f(-(pos2.x - pos3.x) * 1, -(pos2.y - pos3.y) * 1));
+	object1._directions.push_back(sf::Vector2f(-(pos2.x - pos3.x) * 0.02, -(pos2.y - pos3.y) * 0.02));
 	object1._state = 0;
 	_sim->_movingObjects.push_back(object1);
 
@@ -1421,43 +1421,31 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 	_sim->_spawnVelocities.push_back(sf::Vector2f(400, 0));
 	
 	_sim->_spawnDelay = 0.005;
-	_sim->_maxNumParticles = 10000;
+	_sim->_maxNumParticles = 12000;
 
 	// Add moving cube
-	MovingObject object2 = MovingObject();
-	pos1 = sf::Vector2f(SolidParticle::_size * size * 0.75, SolidParticle::_size * size * 0.8);
-	std::vector<Particle> box = placeBox(pos1, 40, _sim->_particles.size());
-	for (int i = 0; i < box.size(); i++) {
-		_sim->_particles.push_back(box[i]);
-		Particle* movingParticle = &_sim->_particles.at(_sim->_particles.size() - 1);
-		movingParticle->_type = moving;
-		movingParticle->_velocity = sf::Vector2f(0, size / 4);
-		object2._particles.push_back(movingParticle);
-		object2._ids.push_back(movingParticle->_id);
-	}
-	pos1 = pos1 + sf::Vector2f(SolidParticle::_size, SolidParticle::_size);
-	box = placeBox(pos1, 38, _sim->_particles.size());
-	for (int i = 0; i < box.size(); i++) {
-		_sim->_particles.push_back(box[i]);
-		Particle* movingParticle = &_sim->_particles.at(_sim->_particles.size() - 1);
-		movingParticle->_type = moving;
-		movingParticle->_velocity = sf::Vector2f(0, size / 4);
-		object2._particles.push_back(movingParticle);
-		object2._ids.push_back(movingParticle->_id);
-	}
-	
-	object2._conditions.push_back(sf::Vector2f(SolidParticle::_size * 20 * size, lowerLeft.y - 5 * SolidParticle::_size));
-	object2._conditions.push_back(sf::Vector2f(0, SolidParticle::_size * size * 0.5));
-	std::cout << object2._conditions[0].x << " " << object2._conditions[0].y << "	 " << object2._conditions[1].x << " " << object2._conditions[1].y << std::endl;
-	object2._conditionBigger.push_back(true);
-	object2._conditionBigger.push_back(false);
-	object2._directions.push_back(sf::Vector2f(0, size / 4));
-	object2._directions.push_back(sf::Vector2f(0, -size / 4));
-	object2._state = 0;
-	_sim->_movingObjects.push_back(object2);
+	//MovingObject object2 = MovingObject();
+	//pos1 = sf::Vector2f(SolidParticle::_size * size * 0.75, SolidParticle::_size * size * 0.8);
+	//std::vector<Particle> box = placeBox(pos1, size * 0.15, _sim->_particles.size());
+	//for (int i = 0; i < box.size(); i++) {
+	//	_sim->_particles.push_back(box[i]);
+	//	Particle* movingParticle = &_sim->_particles.at(_sim->_particles.size() - 1);
+	//	movingParticle->_type = moving;
+	//	movingParticle->_velocity = sf::Vector2f(0, size / 4);
+	//	object2._particles.push_back(movingParticle);
+	//	object2._ids.push_back(movingParticle->_id);
+	//}
+	//
+	//object2._conditions.push_back(sf::Vector2f(SolidParticle::_size * 20 * size, lowerLeft.y - 7 * SolidParticle::_size));
+	//object2._conditions.push_back(sf::Vector2f(0, SolidParticle::_size * size * 0.6));
+	//object2._conditionBigger.push_back(true);
+	//object2._conditionBigger.push_back(false);
+	//object2._directions.push_back(sf::Vector2f(0, size / 4));
+	//object2._directions.push_back(sf::Vector2f(0, -size / 4));
+	//object2._state = 0;
+	//_sim->_movingObjects.push_back(object2);
 
 	
-
 
 	_sim->_moveParticles = true;
 	_sim->_testNeighbors = false;
