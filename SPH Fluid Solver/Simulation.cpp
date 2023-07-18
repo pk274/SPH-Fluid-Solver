@@ -97,7 +97,7 @@ void Simulation::EOS_solve() {
 	sf::Vector2f a_nonp = sf::Vector2f();
 	float distanceNorm = 1;
 	sf::Vector2f kernelDeriv;
-	float kernel;
+	float kernel = 0;
 	float firstFraction = 0;
 	float secondFraction = 0;
 	float velocityNorm = 0;
@@ -644,7 +644,7 @@ void Simulation::solve_vd_di_simple() {
 		_particles[i]._velocity = _timeStepSize * _particles[i]._pressureAcc
 			+ _particles[i]._v_adv;
 	}
-	float density;
+	float density = 0;
 	sf::Vector2f v_ij;
 	sf::Vector2f x_ij;
 	sf::Vector2f distance;
@@ -735,29 +735,54 @@ void Simulation::update_x_and_v() {
 // _________________________________________________________________________________
 void Simulation::update_moving_objects() {
 	bool switchState;
+	std::vector<int> oldIds;
+	int numParts;
 	for (int i = 0; i < _movingObjects.size(); i++) {
 		switchState = false;
+		oldIds.clear();
+		numParts = 0;
 		for (int ii = 0; ii < _movingObjects[i]._particles.size(); ii++) {
+			if (_movingObjects[i]._particles[ii]->_id != _movingObjects[i]._ids[ii]) {
+				std::cout << _numIterations << std::endl;
+				// re-find pointers
+				oldIds = _movingObjects[i]._ids;
+				numParts = _movingObjects[i]._ids.size();
+				_movingObjects[i]._ids.clear();
+				_movingObjects[i]._particles.clear();
+				for (int j = 0; j <= _particles.size(); j++) {
+					if (_particles[j]._type == moving) {
+						for (int jj = 0; jj < oldIds.size(); jj++) {
+							if (_particles[j]._id == oldIds[jj]) {
+								_movingObjects[i]._particles.push_back(&_particles[j]);
+								_movingObjects[i]._ids.push_back(_particles[j]._id);
+								break;
+							}
+						}
+					}
+					if (_movingObjects[i]._ids.size() == numParts) { break; }
+				}
+			}
 			if (_movingObjects[i]._conditionBigger[_movingObjects[i]._state]) {
-				if (_movingObjects[i]._particles[ii]->_position.x >
+				if (_movingObjects[i]._particles[ii]->_position.x >=
 					_movingObjects[i]._conditions[_movingObjects[i]._state].x
 					||
-					_movingObjects[i]._particles[ii]->_position.y >
+					_movingObjects[i]._particles[ii]->_position.y >=
 					_movingObjects[i]._conditions[_movingObjects[i]._state].y) {
 					switchState = true;
 					break;
 				}
 			}
-			else if (_movingObjects[i]._particles[ii]->_position.x <
+			else if (_movingObjects[i]._particles[ii]->_position.x <=
 				_movingObjects[i]._conditions[_movingObjects[i]._state].x
 				||
-				_movingObjects[i]._particles[ii]->_position.y <
+				_movingObjects[i]._particles[ii]->_position.y <=
 				_movingObjects[i]._conditions[_movingObjects[i]._state].y) {
 				switchState = true;
 				break;
 			}
 		}
 		if (switchState) {
+			std::cout << "\n\nSDSDSDSwkljerhwejrh\n\n\n" << std::endl;
 			_movingObjects[i]._state++;
 			if (_movingObjects[i]._state >= _movingObjects[i]._directions.size()) {
 				_movingObjects[i]._state = 0;
@@ -769,9 +794,11 @@ void Simulation::update_moving_objects() {
 		}
 	}
 }
+
 // _________________________________________________________________________________
 void Simulation::spawn_particles() {
 	if (_simulatedTime - _lastSpawnTime < _spawnDelay || _numFluidParticles >= _maxNumParticles) { return; }
+	//_particles.reserve(_particles.size() + _spawnLocations.size());
 	for (int i = 0; i < _spawnLocations.size(); i++) {
 		_particles.push_back(FluidParticle(_particles.size(), _spawnLocations[i], _spawnVelocities[i]));
 	}
@@ -780,7 +807,8 @@ void Simulation::spawn_particles() {
 
 // _________________________________________________________________________________
 void Simulation::delete_particles() {
-	for (int i = 0; i < _particles.size(); i++) {
+	int numParticles = _particles.size();
+	for (int i = 0; i < numParticles; i++) {
 		if (_particles[i]._type != fluid) { continue; }
 		// Delete Particles which fell out of the window
 		if (_particles[i]._position.x < -10 || _particles[i]._position.y < -10 ||
@@ -788,6 +816,7 @@ void Simulation::delete_particles() {
 			_particles[i]._position.y > Parameters::WINDOW_HEIGHT / _zoomFactor) {
 			_particles.erase(_particles.begin() + i);
 			_numFluidParticles--;
+			numParticles = _particles.size();
 		}
 	}
 
@@ -800,11 +829,15 @@ void Simulation::update_physics() {
 	if (Parameters::SOLVE_PPE) {
 		// Calculate source term and solve pressure
 	    if (Parameters::S_VD) {
-			calculate_s_vd(); jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, true);
+			if (_numFluidParticles > 0) {
+				calculate_s_vd(); jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, true);
+			}
 			if (_moveParticles) { update_x_and_v(); }
 		}
 		else if (Parameters::S_DI){
-			calculate_s_di(); jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, false);
+			if (_numFluidParticles > 0) {
+				calculate_s_di(); jacobi_solve(Parameters::MAX_SOLVER_ITERATIONS, false);
+			}
 			if (_moveParticles) { update_x_and_v(); }
 		}
 		else if (Parameters::S_VD_DI) {
@@ -880,6 +913,7 @@ void Simulation::run() {
 			}
 
 			update_hashTable();
+
 			_numFluidParticles = 0;
 			_numParticles = _particles.size();
 
@@ -893,11 +927,9 @@ void Simulation::run() {
 			_neighborhoodTime += _clock.getElapsedTime() - _beforeNeighborhood;
 
 			// Update Physics
-			if (_numFluidParticles > 0) {
-				_beforePhysics = _clock.getElapsedTime();
-				update_physics();
-				_physicsTime += _clock.getElapsedTime() - _beforePhysics;
-			}
+			_beforePhysics = _clock.getElapsedTime();
+			update_physics();
+			_physicsTime += _clock.getElapsedTime() - _beforePhysics;
 
 			// Update moving objects
 			if (_moveSolids) { update_moving_objects(); }

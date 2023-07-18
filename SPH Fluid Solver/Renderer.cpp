@@ -180,6 +180,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 
 	window->clear(Parameters::BACKGROUND_COLOR);
 
+
 	int numParticles = particles->size();
 	std::tuple<int, int, int> rgb;
 
@@ -195,7 +196,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 
 
 		if (Parameters::PRETTY_MODE) {
-			if (particles->at(i)._density < 0.9) { continue; }
+			if (particles->at(i)._density < 0.8) { continue; }
 			_fluidShape.setRadius(_fluidShapeRadius * std::pow(particles->at(i)._density, _zoomFactor));
 		}
 

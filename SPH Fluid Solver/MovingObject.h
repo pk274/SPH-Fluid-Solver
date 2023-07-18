@@ -11,5 +11,6 @@ public:
 	std::vector<bool> _conditionBigger;
 	std::vector<sf::Vector2f> _directions;
 	std::vector<Particle*> _particles;
+	std::vector<int> _ids;
 	int _state;
 };

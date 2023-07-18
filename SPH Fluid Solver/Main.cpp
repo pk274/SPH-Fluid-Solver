@@ -13,7 +13,7 @@ int main()
 {
     Simulation simulation = Simulation(25);
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(CubeDrop);
+    initManager.init_simulation(Complex2);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

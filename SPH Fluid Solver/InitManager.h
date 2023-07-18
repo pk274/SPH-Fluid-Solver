@@ -33,6 +33,7 @@ enum SimulationPreset {
 	TallBreakingDam = 14,
 	Cup = 20,
 	Complex = 30,
+	Complex2 = 31,
 	Osmosis = 40,
 	SideSpawn = 50,
 	Rain = 51,
@@ -66,6 +67,7 @@ public:
 	void init_wide_layer_simulation(int size, int zoom, int layers, bool xOffset = true, bool yOffset = true);
 	void init_cup_simulation(int size, int zoom);
 	void init_complex_simulation(int size, int zoom);
+	void init_complex_2_simulation(int size, int zoom);
 	void init_osmosis_simulation(int size, int zoom);
 	void init_side_spawn_simulation(int size, int zoom);
 	void init_rain_simulation(int size, int zoom);
