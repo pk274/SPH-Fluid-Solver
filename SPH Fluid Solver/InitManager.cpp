@@ -1455,4 +1455,5 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 	_sim->_deleteParticles = true;
 	_sim->_spawnParticles = true;
 	_sim->_moveSolids = true;
+	_sim->_particles.reserve(_sim->_particles.size() + _sim->_maxNumParticles + 10);
 }

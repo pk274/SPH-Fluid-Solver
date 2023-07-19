@@ -32,10 +32,10 @@ const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 0;
 const float Parameters::SIMULATION_LENGTH = 30.f;
 
-const bool Parameters::COLOR_CODE_SPEED = 1;
+const bool Parameters::COLOR_CODE_SPEED = 0;
 const bool Parameters::COLOR_CODE_PRESSURE = 0;
 const bool Parameters::COLOR_CODE_DENSITY = 0;
-const bool Parameters::COLOR_CODE_VELOCITY_DIV = 0;
+const bool Parameters::COLOR_CODE_VELOCITY_DIV = 1;
 
 const bool Parameters::ADAPTIVE_TIME_STEP = 1;
 const float Parameters::MAX_TIME_STEP = 0.0066;
@@ -54,14 +54,14 @@ const bool Parameters::DOCUMENT_ITERATIONS = 1;
 const bool Parameters::DOCUMENT_TIME = 1;
 const bool Parameters::DOCUMENT_ESTIMATED_DENSITY = 0;
 const bool Parameters::DOCUMENT_CFL_NUMBER = 0;
-const bool Parameters::WRITE_SCREEN_IMAGES = 1;
+const bool Parameters::WRITE_SCREEN_IMAGES = 0;
 
 const float Parameters::EOS_STIFFNESS = 500000;	// 1000000
 const float Parameters::EOS_VISCOSITY = 35;
 
 const sf::Color Parameters::BACKGROUND_COLOR = sf::Color::Black;	//230
 const sf::Color Parameters::SOLID_COLOR = sf::Color::White;		//150
-const bool Parameters::PRETTY_MODE = 0;
+const bool Parameters::PRETTY_MODE = 1;
 
 //const sf::Color Parameters::BACKGROUND_COLOR = sf::Color::Color(230, 230, 230);	//230
 //const sf::Color Parameters::SOLID_COLOR = sf::Color::Color(150, 150, 150);		//150

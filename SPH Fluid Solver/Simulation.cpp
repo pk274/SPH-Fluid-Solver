@@ -736,29 +736,32 @@ void Simulation::update_moving_objects() {
 	bool switchState;
 	std::vector<int> oldIds;
 	int numParts;
+	bool test;
 	for (int i = 0; i < _movingObjects.size(); i++) {
 		switchState = false;
 		oldIds.clear();
 		numParts = 0;
 		for (int ii = 0; ii < _movingObjects[i]._particles.size(); ii++) {
-			if (_movingObjects[i]._particles[ii]->_id != _movingObjects[i]._ids[ii]) {
-				std::cout << _numIterations << std::endl;
+			// Issues due to reallocation, pointerstuff
+			// PROBLEM: _particles[ii] falscher pointer führt zu problem weil dann kein _id existiert!
+			if(_movingObjects[i]._particles[ii]->_id != _movingObjects[i]._ids[ii]) {
+				std::cout << _simulatedTime << std::endl;
 				// re-find pointers
 				oldIds = _movingObjects[i]._ids;
 				numParts = _movingObjects[i]._ids.size();
 				_movingObjects[i]._ids.clear();
 				_movingObjects[i]._particles.clear();
 				for (int j = 0; j <= _particles.size(); j++) {
-					if (_particles[j]._type == moving) {
-						for (int jj = 0; jj < oldIds.size(); jj++) {
-							if (_particles[j]._id == oldIds[jj]) {
-								_movingObjects[i]._particles.push_back(&_particles[j]);
-								_movingObjects[i]._ids.push_back(_particles[j]._id);
-								break;
-							}
+					if (_particles[j]._type != moving) { continue; }
+					for (int jj = 0; jj < oldIds.size(); jj++) {
+						if (_particles[j]._id == oldIds[jj]) {
+							oldIds.erase(oldIds.begin() + jj);
+							_movingObjects[i]._particles.push_back(&_particles[j]);
+							_movingObjects[i]._ids.push_back(_particles[j]._id);
+							break;
 						}
 					}
-					if (_movingObjects[i]._ids.size() == numParts) { break; }
+					if (_movingObjects[i]._ids.size() == numParts && _movingObjects[i]._particles.size() == _movingObjects[i]._ids.size()) { break; }
 				}
 			}
 			if (_movingObjects[i]._conditionBigger[_movingObjects[i]._state]) {
@@ -875,7 +878,6 @@ void Simulation::run_tests() {
 // _________________________________________________________________________________
 void Simulation::run() {
 	_totalNumSolverIterations = 0;
-	_particles.reserve(_particles.size());
 
 	_avgDensityFile.open("./avgDensityFile.dat", std::fstream::out | std::fstream::trunc);
 	_timeStepFile.open("./timeStepFile.dat", std::fstream::out | std::fstream::trunc);
