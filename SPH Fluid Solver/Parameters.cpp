@@ -16,13 +16,13 @@ const float Parameters::NEIGHBORHOOD_RADIUS = 4;
 const int Parameters::NUM_SUPPOSED_NEIGHBORS = 9;
 const float Parameters::GRAVITY = 981; // 981;
 const float Parameters::GAMMA = 0.7;
-const float Parameters::BOUNDARY_VISCOSITY = 0.5f;		// 0.3
+const float Parameters::BOUNDARY_VISCOSITY = 0.f;		// 0.3
 
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
 const float Parameters::MAX_DENSITY_ERROR = 0.001;	// vd 0.00001
 const float Parameters::OMEGA = 0.5;
-const int Parameters::MAX_SOLVER_ITERATIONS = 100;
-const int Parameters::MIN_SOLVER_ITERATIONS = 2;
+const int Parameters::MAX_SOLVER_ITERATIONS = 0;
+const int Parameters::MIN_SOLVER_ITERATIONS = 0;
 const float Parameters::TIME_STEP = 0.0001;	//VD 0.002
 
 const float Parameters::GRAPH_ZOOM = 17;
