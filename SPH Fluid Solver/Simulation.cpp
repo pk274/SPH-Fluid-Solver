@@ -474,7 +474,8 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 				_estimatedDensityError += std::max(Ap - _particles[i]._s_i, 0.f);
 			}
 			else if (_particles[i]._a_ii != 0 && vd && _particles[i]._density - _particles[i]._s_i * _timeStepSize >= FluidParticle::_restDensity * 1) {
-				_particles[i]._pressure = std::max(_particles[i]._pressure + Parameters::OMEGA * (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
+				_particles[i]._pressure = std::max(_particles[i]._pressure + (Parameters::OMEGA)
+					* (_particles[i]._s_i - Ap) / _particles[i]._a_ii, 0.f);
 				_estimatedDensityError += std::abs(Ap - _particles[i]._s_i);
 			}
 
@@ -506,7 +507,7 @@ void Simulation::jacobi_solve(int maxIterations, bool vd) {
 // _________________________________________________________________________________
 void Simulation::solve_vd_di() {
 	// == Solve vd == 
-	int maxVdIterations = 20;
+	int maxVdIterations = 100;
 	calculate_s_vd();
 	jacobi_solve(maxVdIterations, true);
 	std::cout << _numSolverIterations << std::endl;

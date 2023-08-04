@@ -7,8 +7,8 @@ import numpy as np
 
 # Options:
 plotAvgDensityAndIterations = 0
-plotTimeStep = 1
-plotDensityOnly = 0
+plotTimeStep = 0
+plotDensityOnly = 1
 plotDensityAndEstimatedDensity = 0
 plotDensityAndAverageDensity = 0
 plotCflNumber = 0

@@ -179,6 +179,7 @@ void Renderer::draw(sf::RenderWindow* window, std::vector<Particle>* particles,
 	std::vector<int> testedParticlesId, bool updateArrows, bool drawGraph, bool drawArrows) {
 
 	window->clear(Parameters::BACKGROUND_COLOR);
+	_fluidShape.setFillColor(sf::Color::Blue);
 
 
 	int numParticles = particles->size();

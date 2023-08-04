@@ -310,7 +310,7 @@ void InitManager::init_simulation(SimulationPreset preset) {
 		init_breaking_dam_simulation(200, 2, false, 10000);
 		break;
 	case SmallBreakingDam:
-		init_breaking_dam_simulation(40, 13);
+		init_breaking_dam_simulation(45, 11);
 		break;
 	case TallBreakingDam:
 		init_tall_breaking_dam_simulation(250, 2);
