@@ -11,9 +11,9 @@
 
 int main()
 {
-    Simulation simulation = Simulation(120);
+    Simulation simulation = Simulation(60);
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(SmallBreakingDam);
+    initManager.init_simulation(FixedBreakingDam);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

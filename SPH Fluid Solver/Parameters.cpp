@@ -16,37 +16,37 @@ const float Parameters::NEIGHBORHOOD_RADIUS = 4;
 const int Parameters::NUM_SUPPOSED_NEIGHBORS = 9;
 const float Parameters::GRAVITY = 981; // 981;
 const float Parameters::GAMMA = 0.7;
-const float Parameters::BOUNDARY_VISCOSITY = 0.f;		// 0.3
+const float Parameters::BOUNDARY_VISCOSITY = 0.3f;		// 0.3
 
 const float Parameters::H = 2;				// Distance of 2*H is supported by kernel -> H = neigRad / 2
 const float Parameters::MAX_DENSITY_ERROR = 0.001;	// vd 0.00001
 const float Parameters::OMEGA = 0.5;
-const int Parameters::MAX_SOLVER_ITERATIONS = 0;
-const int Parameters::MIN_SOLVER_ITERATIONS = 0;
-const float Parameters::TIME_STEP = 0.0001;	//VD 0.002
+const int Parameters::MAX_SOLVER_ITERATIONS = 300;
+const int Parameters::MIN_SOLVER_ITERATIONS = 2;
+const float Parameters::TIME_STEP = 0.0008;	//VD 0.002
 
 const float Parameters::GRAPH_ZOOM = 17;
 const float Parameters::GRAPH_SPEED = 2;
 
 const bool Parameters::INTERACTIVE = 1;
 const bool Parameters::JUST_RENDER = 0;
-const float Parameters::SIMULATION_LENGTH = 30.f;
+const float Parameters::SIMULATION_LENGTH = 5.f;
 
-const bool Parameters::COLOR_CODE_SPEED = 0;
+const bool Parameters::COLOR_CODE_SPEED = 1;
 const bool Parameters::COLOR_CODE_PRESSURE = 0;
 const bool Parameters::COLOR_CODE_DENSITY = 0;
 const bool Parameters::COLOR_CODE_VELOCITY_DIV = 0;
 
-const bool Parameters::ADAPTIVE_TIME_STEP = 0;
-const float Parameters::MAX_TIME_STEP = 0.0066;
-const float Parameters::INITIALIZATION_PHASE = 0.33f;
-const float Parameters::CFL_NUMBER = 0.85;
+const bool Parameters::ADAPTIVE_TIME_STEP = 1;
+const float Parameters::MAX_TIME_STEP = 0.001;
+const float Parameters::INITIALIZATION_PHASE = 0.4f;
+const float Parameters::CFL_NUMBER = 0.7;
 const double Parameters::TIME_OFFSET = 0.0000001;
 const float Parameters::SLOW_DOWN = 1;
 const float Parameters::SMOOTHING = 0.f;
 
 const float Parameters::PRESSURE_CODE_ROUGHNESS = 1.5;
-const float Parameters::VELOCITY_CODE_RANGE = 2.5;
+const float Parameters::VELOCITY_CODE_RANGE = 3.5;
 const float Parameters::DENSITY_CODE_INTENSITY = 100;
 
 const bool Parameters::DOCUMENT_AVG_DENSITY = 1;
