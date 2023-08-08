@@ -360,6 +360,8 @@ void InitManager::init_simulation(SimulationPreset preset) {
 	case CubeDrop:
 		init_cube_drop_simulation(120, 4);
 		break;
+	case CompressionState:
+		init_compressed_state_simulation(30, 20);
 	}
 }
 
@@ -1456,4 +1458,69 @@ void InitManager::init_complex_2_simulation(int size, int zoom) {
 	_sim->_spawnParticles = true;
 	_sim->_moveSolids = true;
 	_sim->_particles.reserve(_sim->_particles.size() + _sim->_maxNumParticles + 10);
+}
+
+
+// _________________________________________________________________________________
+void  InitManager::init_compressed_state_simulation(int size, int zoom) {
+
+	_sim->_zoomFactor = zoom;
+	_sim->_renderer = Renderer(_sim->_zoomFactor, FluidParticle::_size, SolidParticle::_size, _sim->_neighborRadius);
+	_sim->_hashManager = CompactHashManager(_sim->_neighborRadius, size / 2, size / 2);
+	// _hashManager = HashManager(_neighborRadius, size / 2, size / 2);
+
+	sf::Vector2f pos = sf::Vector2f(0, 0);
+	float offsets[] = {-0.01,0.06,-0.081,0.055,-0.06,-0.022,
+		-0.092,-0.096,-0.097,0.09,-0.015,0.009,-0.049,-0.084,0.051,-0.009,
+		-0.013,-0.086,0.074,0.055,0.019,0.074,-0.085,-0.085,0.024,-0.043,
+		0.064,0.026,0.035,0.093,0.021,-0.022,0.069,-0.008,0.097,0.072,0.087,
+		-0.009,0.009,0.087,-0.09,0.021,-0.082,0.077,0.076,0.048,-0.045,0.073,
+		-0.024,0.035,-0.092,0.071,0.05,0.066,-0.003,-0.075,0.004,-0.056,-0.092,
+		0.006,-0.03,-0.098,-0.096,0.033,-0.015,0.087,0.004,0.04,0.042,0.031,
+		-0.041,0.015,-0.03,-0.051,-0.028,-0.013,-0.01,0.026,-0.018,0.096,-0.098,
+		0.055,0.049,0.026,-0.02,0.057,0.069,-0.099,-0.047,0.086,0.088,-0.057,
+		-0.016,-0.061,0.091,0.014,-0.08,0.008,0.01,-0.034,0.027,0.01,0.068,
+		0.007,0.061,-0.082,0.009,-0.086,-0.068,-0.002,0.098,0.097,-0.091,-0.05,
+		0.077,-0.055,-0.093,-0.062,0.09,-0.041,0.09,0.067,-0.031,-0.073,-0.069,
+		-0.094,-0.092,0.01,0.009,0.095,-0.04,-0.01,0.064,-0.024,-0.023,0.032,
+		-0.043,0.04,0.061,0.018,0.08,-0.017,0.029,-0.043,-0.039,-0.034,0.028,
+		0.074,0.078,0.081,0.022,-0.098,0.048,-0.078,0.049,0.004,-0.045,-0.026,
+		0.001,-0.012 };
+
+	float xFluidSize = 20;
+	float yFluidSize = 20;
+	pos = sf::Vector2f(SolidParticle::_size * 5, SolidParticle::_size * 5);
+	pos.x = SolidParticle::_size * 5;
+	int index = 10;
+	for (int i = 0; i < yFluidSize; i++) {
+		for (int j = 0; j < xFluidSize; j++) {
+			_sim->_particles.push_back(FluidParticle(_sim->_particles.size(),
+				pos + sf::Vector2f(offsets[index], offsets[index+1])));
+			pos.x += FluidParticle::_size * 0.8;
+			//index += 2;
+			//index = index % 160;
+		}
+		pos.x = SolidParticle::_size * 5;
+		pos.y += FluidParticle::_size * 0.8;
+	}
+
+
+	_sim->_moveParticles = true;
+	_sim->_testNeighbors = false;
+	_sim->_testKernel = false;
+	_sim->_printFPS = true;
+	_sim->_printParticleInfo = false;
+	_sim->_deleteParticles = true;
+	_sim->_spawnParticles = false;
+
+	
+	//for (int j = 0; j < xFluidSize * 4; j++) {
+	//	float x = (std::rand() % (100)) * 0.001;
+	//	float y = (std::rand() % (100)) * 0.001;
+	//	int xPositive = (std::rand() % (2));
+	//	int yPositive = (std::rand() % (2));
+	//	if (xPositive > 0) { x = -x; }
+	//	if (yPositive > 0) { y = -y; }
+	//	std::cout << x << "," << y << ",";
+	//}
 }

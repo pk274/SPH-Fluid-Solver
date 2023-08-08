@@ -43,6 +43,7 @@ enum SimulationPreset {
 	WaveGenerator = 71,
 	Island = 75,
 	CubeDrop = 80,
+	CompressionState = 90,
 };
 
 
@@ -77,4 +78,5 @@ public:
 	void init_wave_generator_simulation(int size, int zoom);
 	void init_island_simulation(int size, int zoom);
 	void init_cube_drop_simulation(int size, int zoom);
+	void init_compressed_state_simulation(int size, int zoom);
 };

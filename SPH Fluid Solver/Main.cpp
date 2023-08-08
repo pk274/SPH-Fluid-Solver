@@ -11,9 +11,9 @@
 
 int main()
 {
-    Simulation simulation = Simulation(60);
+    Simulation simulation = Simulation(120);
     InitManager initManager = InitManager(&simulation);
-    initManager.init_simulation(FixedBreakingDam);
+    initManager.init_simulation(CompressionState);
     // TestManager::test_kernel_integral();
     simulation.run();
     // simulation.render_from_file("testrender");

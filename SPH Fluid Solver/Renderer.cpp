@@ -133,8 +133,8 @@ void Renderer::update_information(float time, float simTime, int numParticles, i
 
 // ___________________________________________________________
 void Renderer::update_arrows(Particle* watchedParticle) {
-	float scalingFactor = 0.00002;
-	int thickness = 2;
+	float scalingFactor = 0.00005;	// 0.00002
+	int thickness = 4;
 
 
 	float sizeAccel = Functions::calculate_distance_norm(watchedParticle->_v_adv) * scalingFactor;

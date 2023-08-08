@@ -988,7 +988,8 @@ void Simulation::run() {
 					_numFluidParticles, _numUpdatesPerSec, _averageDensity, _maxCflNumber,
 					avgSolverIterations, _watchedParticleDensity);
 
-				_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId);
+				_renderer.draw(&_window, &_particles, _watchedParticleId, _markedParticlesId, _testedParticlesId,
+					false, false, false);
 
 				lastFrameTimeStamp = _currentTime;
 				_nextFrame += _frameDistance;
